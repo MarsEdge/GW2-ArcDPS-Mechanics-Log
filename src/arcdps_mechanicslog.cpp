@@ -13,6 +13,8 @@ typedef struct arcdps_exports {
 	uintptr_t ext_sig; /* pick a number between 0 and uint64_t max that isn't used by other modules */
 	void* ext_wnd; /* wndproc callback, fn(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) */
 	void* ext_combat; /* combat event callback, fn(cbtevent* ev, ag* src, ag* dst, char* skillname) */
+	void* ext_imgui; /* id3dd9::present callback, before imgui::render, fn() */
+	void* ext_options; /* id3dd9::present callback, appending to the end of options window in arcdps, fn() */
 } arcdps_exports;
 
 /* combat event */
@@ -72,6 +74,9 @@ uintptr_t mod_release();
 uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 
+
+cbtevent* last_mechanic;
+
 /* dll main -- winapi */
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ulReasonForCall, LPVOID lpReserved) {
 	switch (ulReasonForCall) {
@@ -124,7 +129,7 @@ arcdps_exports* mod_init() {
 
 	/* for arcdps */
 	arc_exports.ext_size = sizeof(arcdps_exports);
-	arc_exports.ext_sig = 0x81004122;
+	arc_exports.ext_sig = 0x81004122;//from random.org
 	arc_exports.ext_wnd = mod_wnd;
 	arc_exports.ext_combat = mod_combat;
 	return &arc_exports;
@@ -193,6 +198,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 			if(ev->dst_agent) {
                 //if attack hits (not evaded/invuln)
                 if(ev->result==0){
+
+                    last_mechanic = ev;
                     //vg teleport
                     if(ev->skillid==MECHANIC_VG_GREEN_TELEPORT) {
                         p +=  _snprintf(p, 400, "%llu: %s was teleported\n",ev->time, dst->name);
