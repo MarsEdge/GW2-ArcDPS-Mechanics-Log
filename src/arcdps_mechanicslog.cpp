@@ -196,12 +196,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		/* physical */
 		else {
 			if(ev->dst_agent) {
-                //if attack hits (not evaded/invuln)
-                if(ev->result==0){
+                //if attack hits (not block/evaded/invuln/miss)
+                if(ev->result!=3 && ev->result!=4 && ev->result!=6 && ev->result!=7){
 
                     last_mechanic = ev;
                     //vg teleport
-                    if(ev->skillid==MECHANIC_VG_GREEN_TELEPORT) {
+                    if(ev->skillid==MECHANIC_VG_GREEN_TELEPORT || ev->skillid==MECHANIC_VG_RAINBOW_TELEPORT) {
                         p +=  _snprintf(p, 400, "%llu: %s was teleported\n",ev->time, dst->name);
                     }
                     //deimos oil
