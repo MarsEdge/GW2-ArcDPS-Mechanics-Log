@@ -78,6 +78,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 cbtevent* last_mechanic;
 uint64_t start_time;
 
+inline int get_elapsed_time(uint64_t current_time){
+    return ((int)(current_time-start_time))/1000;
+}
+
 /* dll main -- winapi */
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ulReasonForCall, LPVOID lpReserved) {
 	switch (ulReasonForCall) {
@@ -201,16 +205,29 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		else {
 			if(ev->dst_agent) {
                 //if attack hits (not block/evaded/invuln/miss)
-                if(ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8){
+                //and it's a player, not a summon
+                if((ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
+                   && dst->prof <10){
 
                     last_mechanic = ev;
                     //vg teleport
                     if(ev->skillid==MECHANIC_VG_GREEN_TELEPORT || ev->skillid==MECHANIC_VG_RAINBOW_TELEPORT) {
-                        p +=  _snprintf(p, 400, "%llu: %s was teleported\n",ev->time-start_time, dst->name);
+                        p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                     }
+
+                    //gors slam
+                    if(ev->skillid==MECHANIC_GORS_SLAM) {
+                        p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
+                    }
+
+                    //gors egg
+                    if(ev->skillid==MECHANIC_GORS_EGG) {
+                        p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
+                    }
+
                     //deimos oil
                     if(ev->skillid==MECHANIC_DEIMOS_OIL) {
-                        p +=  _snprintf(p, 400, "%llu: %s touched an oil\n",ev->time-start_time, dst->name);
+                        p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
                     }
                 }
 
