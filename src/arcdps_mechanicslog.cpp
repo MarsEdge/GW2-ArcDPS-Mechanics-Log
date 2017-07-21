@@ -76,6 +76,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 
 
 cbtevent* last_mechanic;
+uint64_t start_time;
 
 /* dll main -- winapi */
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ulReasonForCall, LPVOID lpReserved) {
@@ -179,6 +180,9 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 		/* statechange */
 		if (ev->is_statechange) {
+                if(ev->is_statechange==1){
+                    start_time = ev->time;
+                }
 		}
 
 		/* activation */
@@ -197,16 +201,16 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		else {
 			if(ev->dst_agent) {
                 //if attack hits (not block/evaded/invuln/miss)
-                if(ev->result!=3 && ev->result!=4 && ev->result!=6 && ev->result!=7){
+                if(ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8){
 
                     last_mechanic = ev;
                     //vg teleport
                     if(ev->skillid==MECHANIC_VG_GREEN_TELEPORT || ev->skillid==MECHANIC_VG_RAINBOW_TELEPORT) {
-                        p +=  _snprintf(p, 400, "%llu: %s was teleported\n",ev->time, dst->name);
+                        p +=  _snprintf(p, 400, "%llu: %s was teleported\n",ev->time-start_time, dst->name);
                     }
                     //deimos oil
                     if(ev->skillid==MECHANIC_DEIMOS_OIL) {
-                        p +=  _snprintf(p, 400, "%llu: %s touched an oil\n",ev->time, dst->name);
+                        p +=  _snprintf(p, 400, "%llu: %s touched an oil\n",ev->time-start_time, dst->name);
                     }
                 }
 
