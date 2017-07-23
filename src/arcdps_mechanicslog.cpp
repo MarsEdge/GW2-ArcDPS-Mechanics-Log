@@ -77,6 +77,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 
 cbtevent* last_mechanic;
 uint64_t start_time;
+uint16_t last_oil_slick = 0;
 
 inline int get_elapsed_time(uint64_t current_time){
     return ((int)(current_time-start_time))/1000;
@@ -226,7 +227,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                     }
 
                     //deimos oil
-                    if(ev->skillid==MECHANIC_DEIMOS_OIL) {
+                    if(ev->skillid==MECHANIC_DEIMOS_OIL && last_oil_slick != ev->src_instid) {
+                        last_oil_slick = ev->src_instid;
                         p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
                     }
                 }
