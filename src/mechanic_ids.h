@@ -4,7 +4,7 @@
 
 //gorseval
 #define MECHANIC_GORS_SLAM 31875
-#define MECHANIC_GORS_EGG 31623
+#define MECHANIC_GORS_EGG 31456
 
 //deimos
 #define MECHANIC_DEIMOS_OIL 37716
