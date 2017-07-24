@@ -76,7 +76,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 
 
 cbtevent* last_mechanic;
-uint64_t start_time;
+uint64_t start_time = 0;
 uint16_t last_oil_slick = 0;
 
 inline float get_elapsed_time(uint64_t current_time){
