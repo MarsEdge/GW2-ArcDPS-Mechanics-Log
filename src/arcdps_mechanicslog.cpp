@@ -79,8 +79,8 @@ cbtevent* last_mechanic;
 uint64_t start_time = 0;
 uint16_t last_oil_slick = 0;
 
-inline float get_elapsed_time(uint64_t current_time){
-    return ((float)(current_time-start_time))/1000.0;
+inline int get_elapsed_time(uint64_t current_time){
+    return ((int)(current_time-start_time))/1000;
 }
 
 /* dll main -- winapi */
@@ -214,23 +214,23 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                     last_mechanic = ev;
                     //vg teleport
                     if(ev->skillid==MECHANIC_VG_GREEN_TELEPORT || ev->skillid==MECHANIC_VG_RAINBOW_TELEPORT) {
-                        p +=  _snprintf(p, 400, "%f: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
+                        p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                     }
 
                     //gors slam
                     if(ev->skillid==MECHANIC_GORS_SLAM) {
-                        p +=  _snprintf(p, 400, "%f: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
+                        p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
                     }
 
                     //gors egg
                     if(ev->skillid==MECHANIC_GORS_EGG) {
-                        p +=  _snprintf(p, 400, "%f: %s was egged\n",get_elapsed_time(ev->time), dst->name);
+                        p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
                     }
 
                     //deimos oil
                     if(ev->skillid==MECHANIC_DEIMOS_OIL && last_oil_slick != ev->src_instid) {
                         last_oil_slick = ev->src_instid;
-                        p +=  _snprintf(p, 400, "%f: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
+                        p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
                     }
                 }
 
