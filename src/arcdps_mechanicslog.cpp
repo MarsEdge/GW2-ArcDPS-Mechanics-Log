@@ -185,7 +185,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 		/* statechange */
 		if (ev->is_statechange) {
-                if(ev->is_statechange==9){
+                if(ev->is_statechange==1
+                   && src->self){
                     start_time = ev->time;
                 }
 		}
