@@ -74,8 +74,41 @@ uintptr_t mod_release();
 uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 
+struct mechanic
+{
+    char* name; //name of mechanic
+    uint16_t id; //skill id;
+    uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
+    uint64_t last_time=0; //time of last instance of mechanic
+    uint16_t latest_instance=0; //most recent instance id of this mechanic
+    uint16_t latest_target=0; //id of player hit with most recent instance of mechanic
+};
 
-cbtevent* last_mechanic;
+struct vg_teleport : mechanic
+{
+    char* name="teleport"; //name of mechanic
+    uint16_t id_A=MECHANIC_VG_RAINBOW_TELEPORT; //skill id;
+    uint16_t id_B=MECHANIC_VG_GREEN_TELEPORT; //skill id;
+} vg_teleport;
+
+struct gors_slam : mechanic
+{
+    char* name="slam"; //name of mechanic
+    uint16_t id=MECHANIC_GORS_SLAM; //skill id;
+} gors_slam;
+
+struct gors_egg : mechanic
+{
+    char* name="egg"; //name of mechanic
+    uint16_t id=MECHANIC_GORS_EGG; //skill id;
+} gors_egg;
+
+struct deimos_oil : mechanic
+{
+    char* name="oil"; //name of mechanic
+    uint16_t id=MECHANIC_DEIMOS_OIL; //skill id;
+} deimos_oil;
+
 uint64_t start_time = 0;
 uint16_t last_oil_slick = 0;
 
@@ -211,10 +244,17 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if((ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
                    && dst->prof <10){
 
-                    last_mechanic = ev;
                     //vg teleport
-                    if(ev->skillid==MECHANIC_VG_GREEN_TELEPORT || ev->skillid==MECHANIC_VG_RAINBOW_TELEPORT) {
+                    if(
+                       (ev->skillid==vg_teleport.id_A || ev->skillid==vg_teleport.id_B)//correct skill id
+                       &&
+                       (ev->time > (vg_teleport.last_time+vg_teleport.frequency)//it's been some time since last teleport
+                       || ev->dst_instid != vg_teleport.latest_target)//or it's a different person from last time
+                       ) {
                         p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
+                        vg_teleport.last_time=ev->time;
+                        vg_teleport.latest_instance = ev->src_instid;
+                        vg_teleport.latest_target = ev->dst_instid;
                     }
 
                     //gors slam
