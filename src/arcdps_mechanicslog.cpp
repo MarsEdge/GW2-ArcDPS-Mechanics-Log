@@ -80,37 +80,95 @@ struct mechanic
     uint16_t id; //skill id;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     uint64_t last_time=0; //time of last instance of mechanic
-    uint16_t latest_instance=0; //most recent instance id of this mechanic
     uint16_t latest_target=0; //id of player hit with most recent instance of mechanic
+
+    bool is_valid_hit(uint64_t time, uint16_t skillid, uint16_t target)
+    {
+        if(skillid==this->id//correct skill id
+               &&
+               (time > (this->last_time+this->frequency)//it's been some time since last teleport
+               || target != this->latest_target))//or it's a different person from last time
+       {
+            this->last_time=time;
+            this->latest_target = target;
+            return true;
+       }
+       else
+       {
+           return false;
+       }
+    }
 };
 
 struct vg_teleport : mechanic
 {
-    char* name="teleport"; //name of mechanic
     uint16_t id_A=MECHANIC_VG_RAINBOW_TELEPORT; //skill id;
     uint16_t id_B=MECHANIC_VG_GREEN_TELEPORT; //skill id;
+
+    vg_teleport()
+    {
+        name="teleport"; //name of mechanic
+    }
+
+    //rainbow vg and green vg have a different skill id
+    //so gotta overload this to check both ids
+    bool is_valid_hit(uint64_t time, uint16_t skillid, uint16_t target)
+    {
+        if((skillid==this->id_A || skillid==this->id_B)//correct skill id
+               &&
+               (time > (this->last_time+this->frequency)//it's been some time since last teleport
+               || target != this->latest_target))//or it's a different person from last time
+       {
+            this->last_time=time;
+            this->latest_target = target;
+            return true;
+       }
+       else
+       {
+           return false;
+       }
+    }
 } vg_teleport;
 
 struct gors_slam : mechanic
 {
-    char* name="slam"; //name of mechanic
-    uint16_t id=MECHANIC_GORS_SLAM; //skill id;
+    gors_slam()
+    {
+        name="slam"; //name of mechanic
+        id=MECHANIC_GORS_SLAM; //skill id;
+    }
 } gors_slam;
 
 struct gors_egg : mechanic
 {
-    char* name="egg"; //name of mechanic
-    uint16_t id=MECHANIC_GORS_EGG; //skill id;
+    gors_egg()
+    {
+        name="egg"; //name of mechanic
+        id=MECHANIC_GORS_EGG; //skill id;
+    }
+
 } gors_egg;
 
 struct deimos_oil : mechanic
 {
-    char* name="oil"; //name of mechanic
-    uint16_t id=MECHANIC_DEIMOS_OIL; //skill id;
+    deimos_oil()
+    {
+        name="oil"; //name of mechanic
+        id=MECHANIC_DEIMOS_OIL; //skill id;
+    }
+
+    bool is_valid_hit(uint64_t time, uint16_t skillid, uint16_t target)
+    {
+        if(skillid==this->id)
+        {
+            this->last_time=time;
+        }
+        return mechanic::is_valid_hit(time, skillid, target);
+    }
+
 } deimos_oil;
 
 uint64_t start_time = 0;
-uint16_t last_oil_slick = 0;
 
 inline int get_elapsed_time(uint64_t current_time){
     return ((int)(current_time-start_time))/1000;
@@ -245,31 +303,22 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                    && dst->prof <10){
 
                     //vg teleport
-                    if(
-                       (ev->skillid==vg_teleport.id_A || ev->skillid==vg_teleport.id_B)//correct skill id
-                       &&
-                       (ev->time > (vg_teleport.last_time+vg_teleport.frequency)//it's been some time since last teleport
-                       || ev->dst_instid != vg_teleport.latest_target)//or it's a different person from last time
-                       ) {
+                    if(vg_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
                         p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
-                        vg_teleport.last_time=ev->time;
-                        vg_teleport.latest_instance = ev->src_instid;
-                        vg_teleport.latest_target = ev->dst_instid;
                     }
 
                     //gors slam
-                    if(ev->skillid==MECHANIC_GORS_SLAM) {
+                    if(gors_slam.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
                         p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
                     }
 
                     //gors egg
-                    if(ev->skillid==MECHANIC_GORS_EGG) {
+                    if(gors_egg.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
                         p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
                     }
 
                     //deimos oil
-                    if(ev->skillid==MECHANIC_DEIMOS_OIL && last_oil_slick != ev->src_instid) {
-                        last_oil_slick = ev->src_instid;
+                    if(deimos_oil.is_valid_hit(ev->time,ev->skillid,ev->src_instid)) {
                         p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
                     }
                 }
