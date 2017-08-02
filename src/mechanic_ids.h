@@ -9,5 +9,8 @@
 //matthias
 #define MECHANIC_MATT_HADOUKEN 34543
 
+//carin
+#define MECHANIC_CARIN_TELEPORT 38113
+
 //deimos
 #define MECHANIC_DEIMOS_OIL 37716
