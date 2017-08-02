@@ -82,7 +82,7 @@ struct mechanic
     uint64_t last_time=0; //time of last instance of mechanic
     uint16_t latest_target=0; //id of player hit with most recent instance of mechanic
 
-    bool is_valid_hit(uint64_t time, uint16_t skillid, uint16_t target)
+    bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target)
     {
         if(skillid==this->id//correct skill id
                &&
@@ -112,7 +112,7 @@ struct vg_teleport : mechanic
 
     //rainbow vg and green vg have a different skill id
     //so gotta overload this to check both ids
-    bool is_valid_hit(uint64_t time, uint16_t skillid, uint16_t target)
+    bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target)
     {
         if((skillid==this->id_A || skillid==this->id_B)//correct skill id
                &&
@@ -157,7 +157,7 @@ struct deimos_oil : mechanic
         id=MECHANIC_DEIMOS_OIL; //skill id;
     }
 
-    bool is_valid_hit(uint64_t time, uint16_t skillid, uint16_t target)
+    bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target)
     {
         if(skillid==this->id)
         {
@@ -170,7 +170,7 @@ struct deimos_oil : mechanic
 
 uint64_t start_time = 0;
 
-inline int get_elapsed_time(uint64_t current_time){
+inline int get_elapsed_time(uint64_t &current_time){
     return ((int)(current_time-start_time))/1000;
 }
 
