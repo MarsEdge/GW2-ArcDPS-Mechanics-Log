@@ -149,6 +149,16 @@ struct gors_egg : mechanic
 
 } gors_egg;
 
+struct matt_hadouken : mechanic
+{
+    matt_hadouken()
+    {
+        name="hadouken"; //name of mechanic
+        id=MECHANIC_MATT_HADOUKEN; //skill id;
+    }
+
+} matt_hadouken;
+
 struct deimos_oil : mechanic
 {
     deimos_oil()
@@ -315,6 +325,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                     //gors egg
                     if(gors_egg.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
                         p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
+                    }
+
+                    //matti hadouken
+                    if(matt_hadouken.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                        p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
                     }
 
                     //deimos oil
