@@ -179,6 +179,16 @@ struct sam_shockwave : mechanic
 
 } sam_shockwave;
 
+struct sam_slap : mechanic
+{
+    sam_slap()
+    {
+        name="slap"; //name of mechanic
+        id=MECHANIC_SAM_SLAP; //skill id;
+    }
+
+} sam_slap;
+
 struct deimos_oil : mechanic
 {
     deimos_oil()
@@ -360,6 +370,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                     p +=  _snprintf(p, 400, "%d: %s was hit by shockwave\n",get_elapsed_time(ev->time), dst->name);
                 }
 
+                //sam slap
+                if(sam_slap.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s was slapped\n",get_elapsed_time(ev->time), dst->name);
+                }
 
                 //deimos oil
                 if(deimos_oil.is_valid_hit(ev->time,ev->skillid,ev->src_instid)) {
