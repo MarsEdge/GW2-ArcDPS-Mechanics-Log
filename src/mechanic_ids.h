@@ -12,5 +12,8 @@
 //carin
 #define MECHANIC_CARIN_TELEPORT 38113
 
+//sam
+#define MECHANIC_SAM_SHOCKWAVE 37996
+
 //deimos
 #define MECHANIC_DEIMOS_OIL 37716

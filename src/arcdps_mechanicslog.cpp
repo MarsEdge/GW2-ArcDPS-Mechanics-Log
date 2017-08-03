@@ -169,6 +169,16 @@ struct carin_teleport : mechanic
 
 } carin_teleport;
 
+struct sam_shockwave : mechanic
+{
+    sam_shockwave()
+    {
+        name="shockwave"; //name of mechanic
+        id=MECHANIC_SAM_SHOCKWAVE; //skill id;
+    }
+
+} sam_shockwave;
+
 struct deimos_oil : mechanic
 {
     deimos_oil()
@@ -344,6 +354,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(carin_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                 }
+
+                //sam shockwave
+                if(sam_shockwave.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s was hit by shockwave\n",get_elapsed_time(ev->time), dst->name);
+                }
+
 
                 //deimos oil
                 if(deimos_oil.is_valid_hit(ev->time,ev->skillid,ev->src_instid)) {
