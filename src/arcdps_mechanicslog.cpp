@@ -314,48 +314,44 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		else if (ev->buff) {
 		}
 
-		/* physical */
-		else {
-			if(ev->dst_agent) {
-                //if attack hits (not block/evaded/invuln/miss)
-                //and it's a player, not a summon
-                if((ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
-                   && dst->prof <10){
+        if(ev->dst_agent) {
+            //if attack hits (not block/evaded/invuln/miss)
+            //and it's a player, not a summon
+            if((ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
+               && dst->prof <10){
 
-                    //vg teleport
-                    if(vg_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
-                        p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
-                    }
-
-                    //gors slam
-                    if(gors_slam.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
-                        p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
-                    }
-
-                    //gors egg
-                    if(gors_egg.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
-                        p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
-                    }
-
-                    //matti hadouken
-                    if(matt_hadouken.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
-                        p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
-                    }
-
-                    //carin teleport
-                    if(carin_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
-                        p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
-                    }
-
-                    //deimos oil
-                    if(deimos_oil.is_valid_hit(ev->time,ev->skillid,ev->src_instid)) {
-                        p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
-                    }
+                //vg teleport
+                if(vg_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                 }
 
-			}
+                //gors slam
+                if(gors_slam.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
+                }
 
-		}
+                //gors egg
+                if(gors_egg.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //matti hadouken
+                if(matt_hadouken.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //carin teleport
+                if(carin_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //deimos oil
+                if(deimos_oil.is_valid_hit(ev->time,ev->skillid,ev->src_instid)) {
+                    p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
+                }
+            }
+
+        }
 
 		/* common */
 		cbtcount += 1;
