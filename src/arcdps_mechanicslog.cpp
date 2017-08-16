@@ -152,12 +152,13 @@ struct gors_egg : mechanic
 
 } gors_egg;
 
-struct matt_hadouken : mechanic
+struct matt_hadouken : vg_teleport
 {
     matt_hadouken()
     {
         name="hadouken"; //name of mechanic
-        id=MECHANIC_MATT_HADOUKEN; //skill id;
+        id_A=MECHANIC_MATT_HADOUKEN_HUMAN; //skill id;
+        id_B=MECHANIC_MATT_HADOUKEN_ABOM; //skill id;
     }
 
 } matt_hadouken;
