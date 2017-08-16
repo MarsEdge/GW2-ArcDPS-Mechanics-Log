@@ -48,6 +48,7 @@ typedef struct cbtevent {
 	uint8_t is_moving; /* source agent was moving */
 	uint8_t is_statechange; /* from cbtstatechange enum */
 	uint8_t is_flanking; /* target agent was not facing source */
+	uint8_t is_shields; /* all or partial damage was vs barrier/shield */
 	uint8_t result_local; /* internal tracking. garbage */
 	uint8_t ident_local; /* internal tracking. garbage */
 } cbtevent;
