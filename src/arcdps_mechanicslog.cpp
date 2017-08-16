@@ -214,6 +214,17 @@ struct deimos_oil : mechanic
 
 } deimos_oil;
 
+struct deimos_smash : mechanic
+{
+    deimos_smash()
+    {
+        name="smash"; //name of mechanic
+        id=MECHANIC_DEIMOS_SMASH; //skill id;
+        is_interupt=true;
+    }
+
+} deimos_smash;
+
 uint64_t start_time = 0;
 
 inline int get_elapsed_time(uint64_t &current_time){
