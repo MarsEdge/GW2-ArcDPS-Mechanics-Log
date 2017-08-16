@@ -74,6 +74,8 @@ arcdps_exports* mod_init();
 uintptr_t mod_release();
 uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
+uintptr_t mod_imgui();
+uintptr_t mod_options();
 
 struct mechanic
 {
@@ -287,6 +289,8 @@ arcdps_exports* mod_init() {
 	arc_exports.ext_sig = 0x81004122;//from random.org
 	arc_exports.ext_wnd = mod_wnd;
 	arc_exports.ext_combat = mod_combat;
+	arc_exports.ext_imgui = mod_imgui;
+	arc_exports.ext_options = mod_options;
 	return &arc_exports;
 }
 
@@ -415,4 +419,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
 	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
 	return 0;
+}
+
+uintptr_t mod_imgui()
+{
+    return 0;
+}
+
+uintptr_t mod_options()
+{
+    return 0;
 }
