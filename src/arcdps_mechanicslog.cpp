@@ -397,6 +397,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(deimos_oil.is_valid_hit(ev->time,ev->skillid,ev->src_instid,ev->result)) {
                     p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
                 }
+
+                //deimos smash
+                if(deimos_smash.is_valid_hit(ev->time,ev->skillid,ev->src_instid,ev->result)) {
+                    p +=  _snprintf(p, 400, "%d: %s was hit by smash\n",get_elapsed_time(ev->time), dst->name);
+                }
             }
 
         }
