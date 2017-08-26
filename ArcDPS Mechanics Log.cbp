@@ -42,9 +42,12 @@
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
+			<Add option="-static" />
+			<Add option="-static-libgcc" />
 		</Linker>
 		<Unit filename="src/arcdps_mechanicslog.cpp" />
 		<Unit filename="src/mechanic_ids.h" />
+		<Unit filename="src/player.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
