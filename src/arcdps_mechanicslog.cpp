@@ -82,6 +82,7 @@ uintptr_t mod_options();
 std::vector<Player> players;
 Player* get_player(uint16_t new_id);
 void reset_all_player_stats();
+Player* current_player = nullptr;
 
 struct mechanic
 {
@@ -89,7 +90,6 @@ struct mechanic
     uint16_t id; //skill id;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     bool is_interupt=false;
-    Player* current_player = nullptr;
 
     bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target, uint8_t &result)
     {
@@ -98,14 +98,9 @@ struct mechanic
        {
             current_player=get_player(target);
 
-            if(current_player == nullptr)
-            {
-                players.push_back(Player(target));
-                current_player=get_player(target);
-            }
-
             if(current_player != nullptr
-               && time > (current_player->last_hit_time+this->frequency))
+               && time > (current_player->last_hit_time+this->frequency)
+               && (!is_interupt || current_player->last_stab_time < time))
             {
                 current_player->last_hit_time=time;
                 current_player->mechanics_failed++;
@@ -149,6 +144,7 @@ struct gors_slam : mechanic
     {
         name="slam"; //name of mechanic
         id=MECHANIC_GORS_SLAM; //skill id;
+        is_interupt=true;
     }
 } gors_slam;
 
@@ -246,7 +242,8 @@ Player* get_player(uint16_t new_id)
             return &players[index];
         }
     }
-    return nullptr;
+    players.push_back(Player(new_id));
+    return &players.back();
 }
 
 void reset_all_player_stats()
@@ -379,10 +376,23 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 		/* buff remove */
 		else if (ev->is_buffremove) {
+            if (ev->skillid==1122)//if it's stability
+            {
+                current_player=get_player(ev->dst_instid);
+                current_player->last_stab_time = ev->time;//cut the ending time of stab early
+            }
 		}
 
 		/* buff */
 		else if (ev->buff) {
+            if (ev->skillid==1122)//if it's stability
+            {
+                current_player=get_player(ev->dst_instid);
+                if(current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
+                {
+                    current_player->last_stab_time = ev->time+ev->value;//add prediction of when new stab will end
+                }
+            }
 		}
 
         if(ev->dst_agent) {
