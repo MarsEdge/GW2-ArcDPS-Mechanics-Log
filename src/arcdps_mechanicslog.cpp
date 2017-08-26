@@ -5,7 +5,9 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <Windows.h>
+#include <vector>
 #include "mechanic_ids.h"
+#include "player.cpp"
 
 /* arcdps export table */
 typedef struct arcdps_exports {
@@ -77,32 +79,41 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
 
+std::vector<Player> players;
+Player* get_player(uint16_t new_id);
+void reset_all_player_stats();
+
 struct mechanic
 {
     char* name; //name of mechanic
     uint16_t id; //skill id;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
-    uint64_t last_time=0; //time of last instance of mechanic
-    uint16_t latest_target=0; //id of player hit with most recent instance of mechanic
     bool is_interupt=false;
+    Player* current_player = nullptr;
 
     bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target, uint8_t &result)
     {
-        if(skillid==this->id//correct skill id
-               &&
-               (time > (this->last_time+this->frequency)//it's been some time since last teleport
-                || target != this->latest_target)//or it's a different person from last time
+        if(skillid==this->id)//correct skill id
                 //&& (!is_interupt || result==5)
-           )
        {
-            this->last_time=time;
-            this->latest_target = target;
-            return true;
+            current_player=get_player(target);
+
+            if(current_player == nullptr)
+            {
+                players.push_back(Player(target));
+                current_player=get_player(target);
+            }
+
+            if(current_player != nullptr
+               && time > (current_player->last_hit_time+this->frequency))
+            {
+                current_player->last_hit_time=time;
+                current_player->mechanics_failed++;
+                current_player->last_machanic=skillid;
+                return true;
+            }
        }
-       else
-       {
-           return false;
-       }
+       return false;
     }
 };
 
@@ -114,25 +125,21 @@ struct vg_teleport : mechanic
     vg_teleport()
     {
         name="teleport"; //name of mechanic
+        id = id_A;
     }
 
     //rainbow vg and green vg have a different skill id
     //so gotta overload this to check both ids
     bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target, uint8_t &result)
     {
-        if((skillid==this->id_A || skillid==this->id_B)//correct skill id
-               &&
-               (time > (this->last_time+this->frequency)//it's been some time since last teleport
-               || target != this->latest_target))//or it's a different person from last time
-       {
-            this->last_time=time;
-            this->latest_target = target;
-            return true;
-       }
-       else
-       {
-           return false;
-       }
+        if( skillid == id_B)
+        {
+            return mechanic::is_valid_hit(time, id_A, target, result);
+        }
+        else
+        {
+            return mechanic::is_valid_hit(time, skillid, target, result);
+        }
     }
 } vg_teleport;
 
@@ -200,6 +207,8 @@ struct sam_slap : mechanic
 
 struct deimos_oil : mechanic
 {
+    uint64_t last_time=0;
+
     deimos_oil()
     {
         name="oil"; //name of mechanic
@@ -227,6 +236,23 @@ struct deimos_smash : mechanic
     }
 
 } deimos_smash;
+
+Player* get_player(uint16_t new_id)
+{
+    for(int index=0;index<players.size();index++)
+    {
+        if(players[index].id == new_id)
+        {
+            return &players[index];
+        }
+    }
+    return nullptr;
+}
+
+void reset_all_player_stats()
+{
+    players.clear();
+}
 
 uint64_t start_time = 0;
 
@@ -337,11 +363,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		/* common */
 
 		/* statechange */
-		if (ev->is_statechange) {
-                if(ev->is_statechange==1
-                   && src->self){
+		if (ev->is_statechange)
+        {
+            if(ev->is_statechange==1
+                && src->self)
+            {
                     start_time = ev->time;
-                }
+                    reset_all_player_stats();
+            }
 		}
 
 		/* activation */
