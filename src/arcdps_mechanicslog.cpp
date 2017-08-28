@@ -347,9 +347,11 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	p += _snprintf(p, 400, "umsg %u, wparam %lld, lparam %lld\n", uMsg, wParam, lParam);
 
 	/* print */
+#if 0
 	DWORD written = 0;
 	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
-	//WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
+	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
+#endif
 	return uMsg;
 }
 
