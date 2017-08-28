@@ -87,8 +87,8 @@ Player* current_player = nullptr;
 
 struct mechanic
 {
-    std::string name; //name of mechanic
-    uint16_t id; //skill id;
+    std::string name = ""; //name of mechanic
+    uint16_t id = 0; //skill id;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     bool is_interupt=false;
     bool target_is_dst = true;
