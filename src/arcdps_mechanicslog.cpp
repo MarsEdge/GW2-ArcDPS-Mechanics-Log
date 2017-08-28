@@ -169,6 +169,17 @@ struct matt_hadouken : vg_teleport
 
 } matt_hadouken;
 
+struct xera_magic : mechanic
+{
+    xera_magic()
+    {
+        name="magic"; //name of mechanic
+        id=MECHANIC_XERA_MAGIC; //skill id;
+        frequency=5000; //the bubbles don't happen very often
+    }
+
+} xera_magic;
+
 struct carin_teleport : mechanic
 {
     carin_teleport()
@@ -419,6 +430,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 //matti hadouken
                 if(matt_hadouken.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
                     p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //xera magic
+                if(xera_magic.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                    p +=  _snprintf(p, 400, "%d: %s has magic\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //carin teleport
