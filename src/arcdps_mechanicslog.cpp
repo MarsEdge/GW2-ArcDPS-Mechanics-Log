@@ -247,7 +247,7 @@ struct deimos_smash : mechanic
 
 Player* get_player(uint16_t new_id)
 {
-    for(int index=0;index<players.size();index++)
+    for(unsigned int index=0;index<players.size();index++)
     {
         if(players[index].id == new_id)
         {
