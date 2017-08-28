@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-typedef struct Player
+struct Player
 {
     uint16_t id = 0;            //instance id
     int downs = 0;              //number of times the player has downed
