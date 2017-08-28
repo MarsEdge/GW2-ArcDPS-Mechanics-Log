@@ -91,21 +91,29 @@ struct mechanic
     uint16_t id; //skill id;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     bool is_interupt=false;
+    bool target_is_dst = true;
 
-    bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target, uint8_t &result)
+    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
-        if(skillid==this->id)//correct skill id
+        if(ev->skillid==this->id)//correct skill id
                 //&& (!is_interupt || result==5)
        {
-            current_player=get_player(target);
+           if(target_is_dst)
+            {
+                current_player=get_player(ev->dst_instid);
+            }
+            else
+            {
+                current_player=get_player(ev->src_instid);
+            }
 
             if(current_player != nullptr
-               && time > (current_player->last_hit_time+this->frequency)
-               && (!is_interupt || current_player->last_stab_time < time))
+               && ev->time > (current_player->last_hit_time+this->frequency)
+               && (!is_interupt || current_player->last_stab_time < ev->time))
             {
-                current_player->last_hit_time=time;
+                current_player->last_hit_time=ev->time;
                 current_player->mechanics_failed++;
-                current_player->last_machanic=skillid;
+                current_player->last_machanic=ev->skillid;
                 return true;
             }
        }
@@ -126,16 +134,13 @@ struct vg_teleport : mechanic
 
     //rainbow vg and green vg have a different skill id
     //so gotta overload this to check both ids
-    bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target, uint8_t &result)
+    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
-        if( skillid == id_B)
+        if( ev->skillid == id_B)
         {
-            return mechanic::is_valid_hit(time, id_A, target, result);
+            ev->skillid = id_A;
         }
-        else
-        {
-            return mechanic::is_valid_hit(time, skillid, target, result);
-        }
+        return mechanic::is_valid_hit(ev, src, dst);
     }
 } vg_teleport;
 
@@ -221,15 +226,16 @@ struct deimos_oil : mechanic
     {
         name="oil"; //name of mechanic
         id=MECHANIC_DEIMOS_OIL; //skill id;
+        target_is_dst = false;
     }
 
-    bool is_valid_hit(uint64_t &time, uint16_t &skillid, uint16_t &target, uint8_t &result)
+    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
-        if(skillid==this->id)
+        if(ev->skillid==this->id)
         {
-            this->last_time=time;
+            this->last_time=ev->time;
         }
-        return mechanic::is_valid_hit(time, skillid, target,result);
+        return mechanic::is_valid_hit(ev, src, dst);
     }
 
 } deimos_oil;
@@ -416,52 +422,52 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                && dst->prof <10){
 
                 //vg teleport
-                if(vg_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(vg_teleport.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //gors slam
-                if(gors_slam.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(gors_slam.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //gors egg
-                if(gors_egg.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(gors_egg.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //matti hadouken
-                if(matt_hadouken.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(matt_hadouken.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //xera magic
-                if(xera_magic.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(xera_magic.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s has magic\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //carin teleport
-                if(carin_teleport.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(carin_teleport.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //sam shockwave
-                if(sam_shockwave.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(sam_shockwave.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was hit by shockwave\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //sam slap
-                if(sam_slap.is_valid_hit(ev->time,ev->skillid,ev->dst_instid,ev->result)) {
+                if(sam_slap.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was slapped\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //deimos oil
-                if(deimos_oil.is_valid_hit(ev->time,ev->skillid,ev->src_instid,ev->result)) {
+                if(deimos_oil.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //deimos smash
-                if(deimos_smash.is_valid_hit(ev->time,ev->skillid,ev->src_instid,ev->result)) {
+                if(deimos_smash.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was hit by smash\n",get_elapsed_time(ev->time), dst->name);
                 }
             }
