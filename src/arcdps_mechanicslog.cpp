@@ -96,7 +96,6 @@ struct mechanic
     bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
         if(ev->skillid==this->id)//correct skill id
-                //&& (!is_interupt || result==5)
        {
            if(target_is_dst)
             {
