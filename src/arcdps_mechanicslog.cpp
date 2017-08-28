@@ -122,8 +122,8 @@ struct mechanic
 
 struct vg_teleport : mechanic
 {
-    uint16_t id_A=MECHANIC_VG_RAINBOW_TELEPORT; //skill id;
-    uint16_t id_B=MECHANIC_VG_GREEN_TELEPORT; //skill id;
+    uint16_t id_A=MECHANIC_VG_TELEPORT_RAINBOW; //skill id;
+    uint16_t id_B=MECHANIC_VG_TELEPORT_GREEN; //skill id;
 
     vg_teleport()
     {
