@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <vector>
+#include <string>
 #include "mechanic_ids.h"
 #include "player.cpp"
 
@@ -86,7 +87,7 @@ Player* current_player = nullptr;
 
 struct mechanic
 {
-    char* name; //name of mechanic
+    std::string name; //name of mechanic
     uint16_t id; //skill id;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     bool is_interupt=false;
