@@ -2,6 +2,11 @@
 #define MECHANIC_VG_TELEPORT_GREEN 31860
 #define MECHANIC_VG_TELEPORT_RAINBOW 31392
 
+#define MECHANIC_VG_GREEN_A 31340//I'm not sure why this mechanic has 4 ids, but it appears to for some reason
+#define MECHANIC_VG_GREEN_B 31391//all these ids are for when 4 people are in the green circle
+#define MECHANIC_VG_GREEN_C 31529//it appears to be a separate id for the 90% hp blast when <4 people are in the green
+#define MECHANIC_VG_GREEN_D 31750
+
 //gorseval
 #define MECHANIC_GORS_SLAM 31875
 #define MECHANIC_GORS_EGG 31623

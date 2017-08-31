@@ -92,6 +92,7 @@ struct mechanic
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     bool is_interupt=false;
     bool target_is_dst = true;
+    bool fail_if_hit = true;
 
     bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
@@ -111,7 +112,10 @@ struct mechanic
                && (!is_interupt || current_player->last_stab_time < ev->time))
             {
                 current_player->last_hit_time=ev->time;
-                current_player->mechanics_failed++;
+                if(fail_if_hit)
+                {
+                    current_player->mechanics_failed++;
+                }
                 current_player->last_machanic=ev->skillid;
                 return true;
             }
@@ -142,6 +146,34 @@ struct vg_teleport : mechanic
         return mechanic::is_valid_hit(ev, src, dst);
     }
 } vg_teleport;
+
+struct vg_green : mechanic
+{
+    uint16_t id_A=MECHANIC_VG_GREEN_A; //skill ids;
+    uint16_t id_B=MECHANIC_VG_GREEN_B;
+    uint16_t id_C=MECHANIC_VG_GREEN_C;
+    uint16_t id_D=MECHANIC_VG_GREEN_D;
+
+    vg_green()
+    {
+        name="green"; //name of mechanic
+        id = id_A;
+        fail_if_hit = false;
+    }
+
+    //check all 4 skill ids. if the id is any of the 4, set the event skill id to the 1st one and pass it to the main validity check
+    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
+    {
+        if( ev->skillid == id_B
+           || ev->skillid == id_C
+           || ev->skillid == id_D
+           )
+        {
+            ev->skillid = id_A;
+        }
+        return mechanic::is_valid_hit(ev, src, dst);
+    }
+} vg_green;
 
 struct gors_slam : mechanic
 {
@@ -181,6 +213,7 @@ struct xera_magic : mechanic
         name="magic"; //name of mechanic
         id=MECHANIC_XERA_MAGIC; //skill id;
         frequency=5000; //the bubbles don't happen very often
+        fail_if_hit = false;
     }
 
 } xera_magic;
@@ -317,7 +350,7 @@ arcdps_exports* mod_init() {
 	/* big buffer */
 	char buff[4096];
 	char* p = &buff[0];
-	p += _snprintf(p, 400, "==== mod_init ====\n");
+	p += _snprintf(p, 400, "==== mechanics log ====\n");
 
 	/* print */
 	DWORD written = 0;
@@ -422,6 +455,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 //vg teleport
                 if(vg_teleport.is_valid_hit(ev, src, dst)) {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //vg green circle
+                if(vg_green.is_valid_hit(ev, src, dst)) {
+                    p +=  _snprintf(p, 400, "%d: %s stood in the green circle\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //gors slam
