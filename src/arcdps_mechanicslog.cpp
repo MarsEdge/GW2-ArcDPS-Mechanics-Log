@@ -252,22 +252,11 @@ struct sam_slap : mechanic
 
 struct deimos_oil : mechanic
 {
-    uint64_t last_time=0;
-
     deimos_oil()
     {
         name="oil"; //name of mechanic
         id=MECHANIC_DEIMOS_OIL; //skill id;
         target_is_dst = false;
-    }
-
-    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
-    {
-        if(ev->skillid==this->id)
-        {
-            this->last_time=ev->time;
-        }
-        return mechanic::is_valid_hit(ev, src, dst);
     }
 
 } deimos_oil;
