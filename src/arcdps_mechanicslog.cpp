@@ -419,7 +419,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             if (ev->skillid==1122)//if it's stability
             {
                 current_player=get_player(ev->dst_instid);
-                current_player->last_stab_time = ev->time;//cut the ending time of stab early
+                if(current_player != nullptr)
+                {
+                    current_player->last_stab_time = ev->time;//cut the ending time of stab early
+                }
             }
 		}
 
@@ -428,7 +431,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             if (ev->skillid==1122)//if it's stability
             {
                 current_player=get_player(ev->dst_instid);
-                if(current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
+                if(current_player != nullptr
+                   && current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
                 {
                     current_player->last_stab_time = ev->time+ev->value;//add prediction of when new stab will end
                 }
