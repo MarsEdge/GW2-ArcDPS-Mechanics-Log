@@ -261,12 +261,13 @@ struct deimos_oil : mechanic
 
 } deimos_oil;
 
-struct deimos_smash : mechanic
+struct deimos_smash : vg_teleport
 {
     deimos_smash()
     {
         name="smash"; //name of mechanic
-        id=MECHANIC_DEIMOS_SMASH; //skill id;
+        id_A=MECHANIC_DEIMOS_SMASH; //skill id;
+        id_B=MECHANIC_DEIMOS_SMASH_INITIAL;
         is_interupt=true;
     }
 

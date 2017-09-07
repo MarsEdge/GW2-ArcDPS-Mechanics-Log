@@ -29,4 +29,5 @@
 
 //deimos
 #define MECHANIC_DEIMOS_OIL 37716
-#define MECHANIC_DEIMOS_SMASH 38208
+#define MECHANIC_DEIMOS_SMASH 38208 //smash from the actual boss
+#define MECHANIC_DEIMOS_SMASH_INITIAL 37929 //smash while killing the initial chains
