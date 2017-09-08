@@ -84,6 +84,7 @@ std::vector<Player> players;
 Player* get_player(uint16_t new_id);
 void reset_all_player_stats();
 Player* current_player = nullptr;
+const unsigned int ms_per_tick = 40;// 1000/25
 
 struct mechanic
 {
@@ -422,7 +423,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 current_player=get_player(ev->dst_instid);
                 if(current_player != nullptr)
                 {
-                    current_player->last_stab_time = ev->time;//cut the ending time of stab early
+                    current_player->last_stab_time = ev->time+ms_per_tick;//cut the ending time of stab early
                 }
             }
 		}
@@ -435,7 +436,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(current_player != nullptr
                    && current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
                 {
-                    current_player->last_stab_time = ev->time+ev->value;//add prediction of when new stab will end
+                    current_player->last_stab_time = ev->time+ev->value+ms_per_tick;//add prediction of when new stab will end
                 }
             }
 		}
