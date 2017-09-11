@@ -85,6 +85,7 @@ Player* get_player(uint16_t new_id);
 void reset_all_player_stats();
 Player* current_player = nullptr;
 const unsigned int ms_per_tick = 40;// 1000/25
+uint64_t start_time = 0;
 
 struct mechanic
 {
@@ -292,8 +293,6 @@ void reset_all_player_stats()
     players.clear();
 }
 
-uint64_t start_time = 0;
-
 inline int get_elapsed_time(uint64_t &current_time){
     return ((int)(current_time-start_time))/1000;
 }
@@ -392,12 +391,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 	char* p = &buff[0];
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
-	if (!ev) {
+	if (!ev)
+    {
 
 	}
 
 	/* combat event. skillname may be null. non-null skillname will remain static until module is unloaded. refer to evtc notes for complete detail */
-	else {
+	else
+    {
 
 		/* common */
 
@@ -413,11 +414,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		}
 
 		/* activation */
-		else if (ev->is_activation) {
+		else if (ev->is_activation)
+        {
+
 		}
 
 		/* buff remove */
-		else if (ev->is_buffremove) {
+		else if (ev->is_buffremove)
+        {
             if (ev->skillid==1122)//if it's stability
             {
                 current_player=get_player(ev->dst_instid);
@@ -429,7 +433,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		}
 
 		/* buff */
-		else if (ev->buff) {
+		else if (ev->buff)
+        {
             if (ev->skillid==1122)//if it's stability
             {
                 current_player=get_player(ev->dst_instid);
@@ -441,68 +446,80 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             }
 		}
 
-        if(ev->dst_agent) {
+        if(ev->dst_agent)
+        {
             //if attack hits (not block/evaded/invuln/miss)
             //and it's a player, not a summon
             if((ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
-               && dst->prof <10){
+               && dst->prof <10)
+            {
 
                 //vg teleport
-                if(vg_teleport.is_valid_hit(ev, src, dst)) {
+                if(vg_teleport.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //vg green circle
-                if(vg_green.is_valid_hit(ev, src, dst)) {
+                if(vg_green.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s stood in the green circle\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //gors slam
-                if(gors_slam.is_valid_hit(ev, src, dst)) {
+                if(gors_slam.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //gors egg
-                if(gors_egg.is_valid_hit(ev, src, dst)) {
+                if(gors_egg.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //matti hadouken
-                if(matt_hadouken.is_valid_hit(ev, src, dst)) {
+                if(matt_hadouken.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //xera magic
-                if(xera_magic.is_valid_hit(ev, src, dst)) {
+                if(xera_magic.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s has magic\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //carin teleport
-                if(carin_teleport.is_valid_hit(ev, src, dst)) {
+                if(carin_teleport.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //sam shockwave
-                if(sam_shockwave.is_valid_hit(ev, src, dst)) {
+                if(sam_shockwave.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was hit by shockwave\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //sam slap
-                if(sam_slap.is_valid_hit(ev, src, dst)) {
+                if(sam_slap.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was slapped\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //deimos oil
-                if(deimos_oil.is_valid_hit(ev, src, dst)) {
+                if(deimos_oil.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //deimos smash
-                if(deimos_smash.is_valid_hit(ev, src, dst)) {
+                if(deimos_smash.is_valid_hit(ev, src, dst))
+                {
                     p +=  _snprintf(p, 400, "%d: %s was hit by smash\n",get_elapsed_time(ev->time), dst->name);
                 }
             }
-
         }
 
 		/* common */
