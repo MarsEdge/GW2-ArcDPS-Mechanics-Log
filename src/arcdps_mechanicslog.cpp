@@ -459,13 +459,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
                 }
-
+#if 0
                 //vg green circle
                 if(vg_green.is_valid_hit(ev, src, dst))
                 {
                     p +=  _snprintf(p, 400, "%d: %s stood in the green circle\n",get_elapsed_time(ev->time), dst->name);
                 }
-
+#endif
                 //gors slam
                 if(gors_slam.is_valid_hit(ev, src, dst))
                 {
