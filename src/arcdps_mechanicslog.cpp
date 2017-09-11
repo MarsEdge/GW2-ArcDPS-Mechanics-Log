@@ -99,7 +99,7 @@ struct mechanic
     bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
         if(ev->skillid==this->id)//correct skill id
-       {
+        {
            if(target_is_dst)
             {
                 current_player=get_player(ev->dst_instid);
@@ -121,8 +121,8 @@ struct mechanic
                 current_player->last_machanic=ev->skillid;
                 return true;
             }
-       }
-       return false;
+        }
+        return false;
     }
 };
 
