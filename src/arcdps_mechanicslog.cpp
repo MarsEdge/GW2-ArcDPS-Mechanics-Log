@@ -241,7 +241,6 @@ struct deimos_oil : mechanic
     {
         name="oil"; //name of mechanic
         ids.push_back(MECHANIC_DEIMOS_OIL); //skill id;
-        target_is_dst = false;
     }
 
 } deimos_oil;
