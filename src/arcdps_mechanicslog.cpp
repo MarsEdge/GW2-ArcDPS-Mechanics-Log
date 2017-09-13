@@ -90,17 +90,28 @@ uint64_t start_time = 0;
 struct mechanic
 {
     std::string name = ""; //name of mechanic
-    uint16_t id = 0; //skill id;
+    std::vector<uint16_t> ids; //skill ids;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     bool is_interupt=false;
     bool target_is_dst = true;
     bool fail_if_hit = true;
+    uint16_t index = 0;
 
     bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
-        if(ev->skillid==this->id)//correct skill id
+        bool correct_id = false;
+
+        for(index=0;index<ids.size();index++)
         {
-           if(target_is_dst)
+            if(ev->skillid==this->ids[index])
+            {
+                correct_id = true;
+            }
+        }
+
+        if(correct_id)//correct skill id
+        {
+            if(target_is_dst)
             {
                 current_player=get_player(ev->dst_instid);
             }
@@ -109,7 +120,7 @@ struct mechanic
                 current_player=get_player(ev->src_instid);
             }
 
-            if(current_player != nullptr
+            if(current_player
                && ev->time > (current_player->last_hit_time+this->frequency)
                && (!is_interupt || current_player->last_stab_time < ev->time))
             {
@@ -128,52 +139,24 @@ struct mechanic
 
 struct vg_teleport : mechanic
 {
-    uint16_t id_A=MECHANIC_VG_TELEPORT_RAINBOW; //skill id;
-    uint16_t id_B=MECHANIC_VG_TELEPORT_GREEN; //skill id;
-
     vg_teleport()
     {
         name="teleport"; //name of mechanic
-        id = id_A;
-    }
-
-    //rainbow vg and green vg have a different skill id
-    //so gotta overload this to check both ids
-    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
-    {
-        if( ev->skillid == id_B)
-        {
-            ev->skillid = id_A;
-        }
-        return mechanic::is_valid_hit(ev, src, dst);
+        ids.push_back(MECHANIC_VG_TELEPORT_RAINBOW);
+        ids.push_back(MECHANIC_VG_TELEPORT_GREEN);
     }
 } vg_teleport;
 
 struct vg_green : mechanic
 {
-    uint16_t id_A=MECHANIC_VG_GREEN_A; //skill ids;
-    uint16_t id_B=MECHANIC_VG_GREEN_B;
-    uint16_t id_C=MECHANIC_VG_GREEN_C;
-    uint16_t id_D=MECHANIC_VG_GREEN_D;
-
     vg_green()
     {
         name="green"; //name of mechanic
-        id = id_A;
+        ids.push_back(MECHANIC_VG_GREEN_A);
+        ids.push_back(MECHANIC_VG_GREEN_B);
+        ids.push_back(MECHANIC_VG_GREEN_C);
+        ids.push_back(MECHANIC_VG_GREEN_D);
         fail_if_hit = false;
-    }
-
-    //check all 4 skill ids. if the id is any of the 4, set the event skill id to the 1st one and pass it to the main validity check
-    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
-    {
-        if( ev->skillid == id_B
-           || ev->skillid == id_C
-           || ev->skillid == id_D
-           )
-        {
-            ev->skillid = id_A;
-        }
-        return mechanic::is_valid_hit(ev, src, dst);
     }
 } vg_green;
 
@@ -182,7 +165,7 @@ struct gors_slam : mechanic
     gors_slam()
     {
         name="slam"; //name of mechanic
-        id=MECHANIC_GORS_SLAM; //skill id;
+        ids.push_back(MECHANIC_GORS_SLAM); //skill id;
         is_interupt=true;
     }
 } gors_slam;
@@ -192,18 +175,18 @@ struct gors_egg : mechanic
     gors_egg()
     {
         name="egg"; //name of mechanic
-        id=MECHANIC_GORS_EGG; //skill id;
+        ids.push_back(MECHANIC_GORS_EGG); //skill id;
     }
 
 } gors_egg;
 
-struct matt_hadouken : vg_teleport
+struct matt_hadouken : mechanic
 {
     matt_hadouken()
     {
         name="hadouken"; //name of mechanic
-        id_A=MECHANIC_MATT_HADOUKEN_HUMAN; //skill id;
-        id_B=MECHANIC_MATT_HADOUKEN_ABOM; //skill id;
+        ids.push_back(MECHANIC_MATT_HADOUKEN_HUMAN); //skill id;
+        ids.push_back(MECHANIC_MATT_HADOUKEN_ABOM); //skill id;
     }
 
 } matt_hadouken;
@@ -213,7 +196,7 @@ struct xera_magic : mechanic
     xera_magic()
     {
         name="magic"; //name of mechanic
-        id=MECHANIC_XERA_MAGIC; //skill id;
+        ids.push_back(MECHANIC_XERA_MAGIC); //skill id;
         frequency=5000; //the bubbles don't happen very often
         fail_if_hit = false;
     }
@@ -225,7 +208,7 @@ struct carin_teleport : mechanic
     carin_teleport()
     {
         name="teleport"; //name of mechanic
-        id=MECHANIC_CARIN_TELEPORT; //skill id;
+        ids.push_back(MECHANIC_CARIN_TELEPORT); //skill id;
     }
 
 } carin_teleport;
@@ -235,7 +218,7 @@ struct sam_shockwave : mechanic
     sam_shockwave()
     {
         name="shockwave"; //name of mechanic
-        id=MECHANIC_SAM_SHOCKWAVE; //skill id;
+        ids.push_back(MECHANIC_SAM_SHOCKWAVE); //skill id;
         is_interupt=true;
     }
 
@@ -246,7 +229,7 @@ struct sam_slap : mechanic
     sam_slap()
     {
         name="slap"; //name of mechanic
-        id=MECHANIC_SAM_SLAP; //skill id;
+        ids.push_back(MECHANIC_SAM_SLAP); //skill id;
         is_interupt=true;
     }
 
@@ -257,19 +240,19 @@ struct deimos_oil : mechanic
     deimos_oil()
     {
         name="oil"; //name of mechanic
-        id=MECHANIC_DEIMOS_OIL; //skill id;
+        ids.push_back(MECHANIC_DEIMOS_OIL); //skill id;
         target_is_dst = false;
     }
 
 } deimos_oil;
 
-struct deimos_smash : vg_teleport
+struct deimos_smash : mechanic
 {
     deimos_smash()
     {
         name="smash"; //name of mechanic
-        id_A=MECHANIC_DEIMOS_SMASH; //skill id;
-        id_B=MECHANIC_DEIMOS_SMASH_INITIAL;
+        ids.push_back(MECHANIC_DEIMOS_SMASH); //skill id;
+        ids.push_back(MECHANIC_DEIMOS_SMASH_INITIAL);
         is_interupt=true;
     }
 
@@ -425,7 +408,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             if (ev->skillid==1122)//if it's stability
             {
                 current_player=get_player(ev->dst_instid);
-                if(current_player != nullptr)
+                if(current_player)
                 {
                     current_player->last_stab_time = ev->time+ms_per_tick;//cut the ending time of stab early
                 }
@@ -438,7 +421,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             if (ev->skillid==1122)//if it's stability
             {
                 current_player=get_player(ev->dst_instid);
-                if(current_player != nullptr
+                if(current_player
                    && current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
                 {
                     current_player->last_stab_time = ev->time+ev->value+ms_per_tick;//add prediction of when new stab will end
