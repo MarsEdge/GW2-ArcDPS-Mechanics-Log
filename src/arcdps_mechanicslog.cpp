@@ -80,7 +80,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
 
-std::vector<Player> players;
+std::vector<Player> players(10);
 Player* get_player(uint16_t new_id);
 void reset_all_player_stats();
 Player* current_player = nullptr;
@@ -271,7 +271,12 @@ Player* get_player(uint16_t new_id)
 {
     for(unsigned int index=0;index<players.size();index++)
     {
-        if(players[index].id == new_id)
+        if(players[index].id==0)
+        {
+            players[index] = Player(new_id);
+            return &players[index];
+        }
+        else if(players[index].id == new_id)
         {
             return &players[index];
         }
@@ -283,6 +288,7 @@ Player* get_player(uint16_t new_id)
 void reset_all_player_stats()
 {
     players.clear();
+    players.reserve(10);
 }
 
 inline int get_elapsed_time(uint64_t &current_time)
@@ -338,6 +344,7 @@ arcdps_exports* mod_init() {
 	/* print */
 	DWORD written = 0;
 	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
+    players.reserve(10);
 	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
 
 	/* for arcdps */

@@ -10,6 +10,11 @@ struct Player
     uint64_t last_hit_time=0;       //time player was last hit with a mechanic
     uint16_t last_machanic=0;       //skill id of last failed mechanic
 
+    Player()
+    {
+
+    }
+
     explicit Player(uint16_t new_id)
     {
         id = new_id;
