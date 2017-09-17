@@ -285,8 +285,9 @@ void reset_all_player_stats()
     players.clear();
 }
 
-inline int get_elapsed_time(uint64_t &current_time){
-    return ((int)(current_time-start_time))/1000;
+inline int get_elapsed_time(uint64_t &current_time)
+{
+    return (current_time-start_time)/1000;
 }
 
 /* dll main -- winapi */
