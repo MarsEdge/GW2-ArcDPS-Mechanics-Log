@@ -95,10 +95,10 @@ struct mechanic
     bool is_interupt=false;
     bool target_is_dst = true;
     bool fail_if_hit = true;
-    uint16_t index = 0;
 
     bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
+        uint16_t index = 0;
         bool correct_id = false;
 
         for(index=0;index<ids.size();index++)
@@ -179,6 +179,16 @@ struct gors_egg : mechanic
     }
 
 } gors_egg;
+
+struct sloth_tantrum : mechanic
+{
+    sloth_tantrum()
+    {
+        name="tantrum"; //name of mechanic
+        ids.push_back(MECHANIC_SLOTH_TANTRUM); //skill id;
+    }
+
+} sloth_tantrum;
 
 struct matt_hadouken : mechanic
 {
@@ -458,6 +468,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(gors_egg.is_valid_hit(ev, src, dst))
                 {
                     p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //sloth tantrum
+                if(sloth_tantrum.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s was hit with tantrum\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //matti hadouken
