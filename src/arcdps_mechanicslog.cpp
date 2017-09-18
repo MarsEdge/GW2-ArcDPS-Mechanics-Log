@@ -201,6 +201,16 @@ struct matt_hadouken : mechanic
 
 } matt_hadouken;
 
+struct xera_half : mechanic
+{
+    xera_half()
+    {
+        name="half"; //name of mechanic
+        ids.push_back(MECHANIC_XERA_HALF); //skill id;
+    }
+
+} xera_half;
+
 struct xera_magic : mechanic
 {
     xera_magic()
@@ -508,6 +518,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(matt_hadouken.is_valid_hit(ev, src, dst))
                 {
                     p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //xera half
+                if(xera_half.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s stood in the red half\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //xera magic
