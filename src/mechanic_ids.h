@@ -20,7 +20,8 @@
 
 //xera
 #define MECHANIC_XERA_HALF 34883
-#define MECHANIC_XERA_ORB 35139
+#define MECHANIC_XERA_ORB 35128//Temporal Shred
+#define MECHANIC_XERA_ORB_AOE 34913//Temporal Shred
 #define MECHANIC_XERA_MAGIC 34956
 
 //carin

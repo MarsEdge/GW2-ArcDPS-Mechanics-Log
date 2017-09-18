@@ -80,7 +80,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
 
-std::vector<Player> players(10);
+Player players[10] = {Player()};
 Player* get_player(uint16_t new_id);
 void reset_all_player_stats();
 Player* current_player = nullptr;
@@ -213,6 +213,26 @@ struct xera_magic : mechanic
 
 } xera_magic;
 
+struct xera_orb : mechanic
+{
+    xera_orb()
+    {
+        name="orb"; //name of mechanic
+        ids.push_back(MECHANIC_XERA_ORB); //skill id;
+    }
+
+} xera_orb;
+
+struct xera_orb_aoe : mechanic
+{
+    xera_orb_aoe()
+    {
+        name="orb aoe"; //name of mechanic
+        ids.push_back(MECHANIC_XERA_ORB_AOE); //skill id;
+    }
+
+} xera_orb_aoe;
+
 struct carin_teleport : mechanic
 {
     carin_teleport()
@@ -269,7 +289,7 @@ struct deimos_smash : mechanic
 
 Player* get_player(uint16_t new_id)
 {
-    for(unsigned int index=0;index<players.size();index++)
+    for(unsigned int index=0;index<sizeof(players);index++)
     {
         if(players[index].id==0)
         {
@@ -281,14 +301,15 @@ Player* get_player(uint16_t new_id)
             return &players[index];
         }
     }
-    players.push_back(Player(new_id));
-    return &players.back();
+    return nullptr;
 }
 
 void reset_all_player_stats()
 {
-    players.clear();
-    players.reserve(10);
+    for(unsigned int index=0;index<10;index++)
+    {
+        players[index].reset_all();
+    }
 }
 
 inline int get_elapsed_time(uint64_t &current_time)
@@ -344,7 +365,6 @@ arcdps_exports* mod_init() {
 	/* print */
 	DWORD written = 0;
 	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
-    players.reserve(10);
 	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
 
 	/* for arcdps */
@@ -494,6 +514,18 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(xera_magic.is_valid_hit(ev, src, dst))
                 {
                     p +=  _snprintf(p, 400, "%d: %s has magic\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //xera orb
+                if(xera_orb.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s touched an orb\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //xera orb aoe
+                if(xera_orb_aoe.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s stood in an orb aoe\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //carin teleport

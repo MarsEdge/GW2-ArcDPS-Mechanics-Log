@@ -26,4 +26,12 @@ struct Player
         mechanics_failed = 0;
         last_stab_time = 0;
     }
+    void reset_all()
+    {
+        id = 0;
+        downs = 0;
+        is_downed = false;
+        mechanics_failed = 0;
+        last_stab_time = 0;
+    }
 };
