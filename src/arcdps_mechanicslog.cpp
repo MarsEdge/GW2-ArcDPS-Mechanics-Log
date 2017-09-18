@@ -121,6 +121,8 @@ struct mechanic
             }
 
             if(current_player
+               && ((dst->prof < 10 && target_is_dst)
+                    || (src -> prof < 10 && !target_is_dst))
                && ev->time > (current_player->last_hit_time+this->frequency)
                && (!is_interupt || current_player->last_stab_time < ev->time))
             {
@@ -305,6 +307,17 @@ struct carin_teleport : mechanic
     }
 
 } carin_teleport;
+
+struct carin_shard_reflect : mechanic
+{
+    carin_shard_reflect()
+    {
+        name="shard reflect"; //name of mechanic
+        ids.push_back(MECHANIC_CARIN_SHARD); //skill id;
+        target_is_dst = false;
+    }
+
+} carin_shard_reflect;
 
 struct sam_shockwave : mechanic
 {
@@ -533,8 +546,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
         {
             //if attack hits (not block/evaded/invuln/miss)
             //and it's a player, not a summon
-            if((ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
-               && dst->prof <10)
+            if(ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
             {
 
                 //vg teleport
@@ -631,6 +643,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(carin_teleport.is_valid_hit(ev, src, dst))
                 {
                     p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //carin shard reflect
+                if(carin_shard_reflect.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s reflected shards\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //sam shockwave

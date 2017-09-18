@@ -32,6 +32,7 @@
 
 //carin
 #define MECHANIC_CARIN_TELEPORT 38113
+#define MECHANIC_CARIN_SHARD 38313//Meteor Swarm
 
 //sam
 #define MECHANIC_SAM_SHOCKWAVE 37996
