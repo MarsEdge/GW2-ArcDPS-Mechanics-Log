@@ -190,6 +190,47 @@ struct sloth_tantrum : mechanic
 
 } sloth_tantrum;
 
+struct sloth_bomb : mechanic
+{
+    sloth_bomb()
+    {
+        name="bomb"; //name of mechanic
+        ids.push_back(MECHANIC_SLOTH_BOMB); //skill id;
+        fail_if_hit = false;
+    }
+
+} sloth_bomb;
+
+struct sloth_bomb_aoe : mechanic
+{
+    sloth_bomb_aoe()
+    {
+        name="bomb aoe"; //name of mechanic
+        ids.push_back(MECHANIC_SLOTH_BOMB_AOE); //skill id;
+    }
+
+} sloth_bomb_aoe;
+
+struct sloth_flame : mechanic
+{
+    sloth_flame()
+    {
+        name="flame breath"; //name of mechanic
+        ids.push_back(MECHANIC_SLOTH_FLAME_BREATH); //skill id;
+    }
+
+} sloth_flame;
+
+struct sloth_shake : mechanic
+{
+    sloth_shake()
+    {
+        name="shake"; //name of mechanic
+        ids.push_back(MECHANIC_SLOTH_SHAKE); //skill id;
+    }
+
+} sloth_shake;
+
 struct matt_hadouken : mechanic
 {
     matt_hadouken()
@@ -200,6 +241,18 @@ struct matt_hadouken : mechanic
     }
 
 } matt_hadouken;
+
+struct matt_shard_reflect : mechanic
+{
+    matt_shard_reflect()
+    {
+        name="shard reflect"; //name of mechanic
+        ids.push_back(MECHANIC_MATT_SHARD_HUMAN); //skill id;
+        ids.push_back(MECHANIC_MATT_SHARD_ABOM); //skill id;
+        target_is_dst = false;
+    }
+
+} matt_shard_reflect;
 
 struct xera_half : mechanic
 {
@@ -514,10 +567,40 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                     p +=  _snprintf(p, 400, "%d: %s was hit with tantrum\n",get_elapsed_time(ev->time), dst->name);
                 }
 
+                //sloth bomb
+                if(sloth_bomb.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s got a bomb\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //sloth bomb aoe
+                if(sloth_bomb_aoe.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s stood in a bomb aoe\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //sloth flame breath
+                if(sloth_flame.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s was hit by flame breath\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                //sloth shake
+                if(sloth_shake.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s was hit by shake\n",get_elapsed_time(ev->time), dst->name);
+                }
+
                 //matti hadouken
                 if(matt_hadouken.is_valid_hit(ev, src, dst))
                 {
                     p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
+                }
+
+                 //matti shard reflect
+                if(matt_shard_reflect.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s reflected shards\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //xera half
