@@ -612,7 +612,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                  //matti shard reflect
                 if(matt_shard_reflect.is_valid_hit(ev, src, dst))
                 {
-                    p +=  _snprintf(p, 400, "%d: %s reflected shards\n",get_elapsed_time(ev->time), dst->name);
+                    p +=  _snprintf(p, 400, "%d: %s reflected shards\n",get_elapsed_time(ev->time), src->name);
                 }
 
                 //xera half
