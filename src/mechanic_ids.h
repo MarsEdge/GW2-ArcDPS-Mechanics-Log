@@ -23,6 +23,7 @@
 #define MECHANIC_MATT_HADOUKEN_ABOM 34371
 #define MECHANIC_MATT_SHARD_HUMAN 34404//Shards of Rage
 #define MECHANIC_MATT_SHARD_ABOM 34411//Shards of Rage
+#define MECHANIC_MATT_BOMB 34450//Unstable Blood Magic
 
 //xera
 #define MECHANIC_XERA_HALF 34883

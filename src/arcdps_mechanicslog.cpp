@@ -10,6 +10,8 @@
 #include "mechanic_ids.h"
 #include "player.cpp"
 
+#define MAX_PLAYER_COUNT 10
+
 /* arcdps export table */
 typedef struct arcdps_exports {
 	uintptr_t ext_size; /* arcdps internal use, ignore */
@@ -80,7 +82,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
 
-Player players[10] = {Player()};
+Player players[MAX_PLAYER_COUNT] = {Player()};
 Player* get_player(uint16_t new_id);
 void reset_all_player_stats();
 Player* current_player = nullptr;
@@ -256,6 +258,17 @@ struct matt_shard_reflect : mechanic
 
 } matt_shard_reflect;
 
+struct matt_bomb : mechanic
+{
+    matt_bomb()
+    {
+        name="bomb"; //name of mechanic
+        ids.push_back(MECHANIC_MATT_BOMB); //skill id;
+        frequency = 12000;
+    }
+
+} matt_bomb;
+
 struct xera_half : mechanic
 {
     xera_half()
@@ -365,7 +378,7 @@ struct deimos_smash : mechanic
 
 Player* get_player(uint16_t new_id)
 {
-    for(unsigned int index=0;index<sizeof(players);index++)
+    for(unsigned int index=0;index<MAX_PLAYER_COUNT;index++)
     {
         if(players[index].id==0)
         {
@@ -382,7 +395,7 @@ Player* get_player(uint16_t new_id)
 
 void reset_all_player_stats()
 {
-    for(unsigned int index=0;index<10;index++)
+    for(unsigned int index=0;index<MAX_PLAYER_COUNT;index++)
     {
         players[index].reset_all();
     }
@@ -613,6 +626,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 if(matt_shard_reflect.is_valid_hit(ev, src, dst))
                 {
                     p +=  _snprintf(p, 400, "%d: %s reflected shards\n",get_elapsed_time(ev->time), src->name);
+                }
+
+                //matti bomb
+                if(matt_bomb.is_valid_hit(ev, src, dst))
+                {
+                    p +=  _snprintf(p, 400, "%d: %s got a bomb\n",get_elapsed_time(ev->time), dst->name);
                 }
 
                 //xera half
