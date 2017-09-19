@@ -201,6 +201,7 @@ struct sloth_bomb : mechanic
         name="bomb"; //name of mechanic
         ids.push_back(MECHANIC_SLOTH_BOMB); //skill id;
         fail_if_hit = false;
+        frequency = 6000;
     }
 
 } sloth_bomb;
