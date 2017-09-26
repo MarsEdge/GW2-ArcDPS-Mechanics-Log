@@ -85,7 +85,7 @@ uintptr_t mod_options();
 Player players[MAX_PLAYER_COUNT] = {Player()};
 Player* get_player(uint16_t new_id);
 void reset_all_player_stats();
-Player* current_player = nullptr;
+bool is_player(ag* new_player);
 const unsigned int ms_per_tick = 40;// 1000/25
 uint64_t start_time = 0;
 
@@ -102,6 +102,7 @@ struct mechanic
     {
         uint16_t index = 0;
         bool correct_id = false;
+        Player* current_player = nullptr;
 
         for(index=0;index<ids.size();index++)
         {
@@ -113,18 +114,16 @@ struct mechanic
 
         if(correct_id)//correct skill id
         {
-            if(target_is_dst)
+            if(target_is_dst && is_player(dst))
             {
                 current_player=get_player(ev->dst_instid);
             }
-            else
+            else if(!target_is_dst && is_player(src))
             {
                 current_player=get_player(ev->src_instid);
             }
 
             if(current_player
-               && ((dst->prof < 10 && target_is_dst)
-                    || (src -> prof < 10 && !target_is_dst))
                && ev->time > (current_player->last_hit_time+this->frequency)
                && (!is_interupt || current_player->last_stab_time < ev->time))
             {
@@ -407,6 +406,11 @@ inline int get_elapsed_time(uint64_t &current_time)
     return (current_time-start_time)/1000;
 }
 
+inline bool is_player(ag* new_player)
+{
+    return new_player->prof < 10;
+}
+
 /* dll main -- winapi */
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ulReasonForCall, LPVOID lpReserved) {
 	switch (ulReasonForCall) {
@@ -499,6 +503,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 	/* big buffer */
 	char buff[4096];
 	char* p = &buff[0];
+	Player* current_player = nullptr;
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
 	if (!ev)
@@ -532,12 +537,15 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		/* buff remove */
 		else if (ev->is_buffremove)
         {
-            if (ev->skillid==1122)//if it's stability
+            if(is_player(dst))
             {
-                current_player=get_player(ev->dst_instid);
-                if(current_player)
+                if (ev->skillid==1122)//if it's stability
                 {
-                    current_player->last_stab_time = ev->time+ms_per_tick;//cut the ending time of stab early
+                    current_player=get_player(ev->dst_instid);
+                    if(current_player)
+                    {
+                        current_player->last_stab_time = ev->time+ms_per_tick;//cut the ending time of stab early
+                    }
                 }
             }
 		}
@@ -545,13 +553,16 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		/* buff */
 		else if (ev->buff)
         {
-            if (ev->skillid==1122)//if it's stability
+            if(is_player(dst))
             {
-                current_player=get_player(ev->dst_instid);
-                if(current_player
-                   && current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
+                if (ev->skillid==1122)//if it's stability
                 {
-                    current_player->last_stab_time = ev->time+ev->value+ms_per_tick;//add prediction of when new stab will end
+                    current_player=get_player(ev->dst_instid);
+                    if(current_player
+                       && current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
+                    {
+                        current_player->last_stab_time = ev->time+ev->value+ms_per_tick;//add prediction of when new stab will end
+                    }
                 }
             }
 		}
