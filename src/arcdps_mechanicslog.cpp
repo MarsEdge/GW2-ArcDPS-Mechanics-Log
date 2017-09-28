@@ -88,6 +88,9 @@ void reset_all_player_stats();
 bool is_player(ag* new_player);
 const unsigned int ms_per_tick = 40;// 1000/25
 uint64_t start_time = 0;
+bool have_added_line_break = true;
+uint64_t last_mechanic_time = 0;
+uint64_t line_break_frequency = 5000;
 
 struct mechanic
 {
@@ -133,6 +136,10 @@ struct mechanic
                     current_player->mechanics_failed++;
                 }
                 current_player->last_machanic=ev->skillid;
+
+                last_mechanic_time = ev->time;
+                have_added_line_break = false;
+
                 return true;
             }
         }
@@ -711,6 +718,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		/* common */
 		cbtcount += 1;
 	}
+
+	if(!have_added_line_break
+    && ev->time > (last_mechanic_time + line_break_frequency))
+    {
+        have_added_line_break = true;
+        p +=  _snprintf(p, 400, "\n");
+    }
 
 	/* print */
 	DWORD written = 0;
