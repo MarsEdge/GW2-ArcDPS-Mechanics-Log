@@ -14,12 +14,14 @@
 
 /* arcdps export table */
 typedef struct arcdps_exports {
-	uintptr_t ext_size; /* arcdps internal use, ignore */
-	uintptr_t ext_sig; /* pick a number between 0 and uint64_t max that isn't used by other modules */
-	void* ext_wnd; /* wndproc callback, fn(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) */
-	void* ext_combat; /* combat event callback, fn(cbtevent* ev, ag* src, ag* dst, char* skillname) */
-	void* ext_imgui; /* id3dd9::present callback, before imgui::render, fn() */
-	void* ext_options; /* id3dd9::present callback, appending to the end of options window in arcdps, fn() */
+	uintptr_t size; /* arcdps internal use, ignore */
+	uintptr_t sig; /* pick a number between 0 and uint64_t max that isn't used by other modules */
+	char* out_name; /* name string */
+	char* out_build; /* build string */
+	void* wnd; /* wndproc callback, fn(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) */
+	void* combat; /* combat event callback, fn(cbtevent* ev, ag* src, ag* dst, char* skillname) */
+	void* imgui; /* id3dd9::present callback, before imgui::render, fn() */
+	void* options; /* id3dd9::present callback, appending to the end of options window in arcdps, fn() */
 } arcdps_exports;
 
 /* combat event */
@@ -54,8 +56,8 @@ typedef struct cbtevent {
 	uint8_t is_statechange; /* from cbtstatechange enum */
 	uint8_t is_flanking; /* target agent was not facing source */
 	uint8_t is_shields; /* all or partial damage was vs barrier/shield */
-	uint8_t result_local; /* internal tracking. garbage */
-	uint8_t ident_local; /* internal tracking. garbage */
+	uint8_t pad63; /* internal tracking. garbage */
+	uint8_t pad64; /* internal tracking. garbage */
 } cbtevent;
 
 /* agent short */
@@ -469,12 +471,14 @@ arcdps_exports* mod_init() {
 	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
 
 	/* for arcdps */
-	arc_exports.ext_size = sizeof(arcdps_exports);
-	arc_exports.ext_sig = 0x81004122;//from random.org
-	arc_exports.ext_wnd = mod_wnd;
-	arc_exports.ext_combat = mod_combat;
-	arc_exports.ext_imgui = mod_imgui;
-	arc_exports.ext_options = mod_options;
+	arc_exports.size = sizeof(arcdps_exports);
+	arc_exports.out_name = "mechanics log";
+	arc_exports.out_build = "0.1";
+	arc_exports.sig = 0x81004122;//from random.org
+	arc_exports.wnd = mod_wnd;
+	arc_exports.combat = mod_combat;
+	arc_exports.imgui = mod_imgui;
+	arc_exports.options = mod_options;
 	return &arc_exports;
 }
 
@@ -510,6 +514,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 	/* big buffer */
 	char buff[4096];
 	char* p = &buff[0];
+	wchar_t buffw[4096];
 	Player* current_player = nullptr;
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
@@ -728,8 +733,9 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 	/* print */
 	DWORD written = 0;
-	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
-	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
+	int32_t rc = MultiByteToWideChar(CP_UTF8, 0, &buff[0], MAX_PATH, &buffw[0], 4096);
+	buffw[rc] = 0;
+	WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE), &buffw[0], wcslen(&buffw[0]), &written, 0);
 	return 0;
 }
 
