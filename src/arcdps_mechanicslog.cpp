@@ -721,14 +721,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 		/* common */
 		cbtcount += 1;
-	}
 
-	if(!have_added_line_break
-    && ev->time > (last_mechanic_time + line_break_frequency))
-    {
-        have_added_line_break = true;
-        p +=  _snprintf(p, 400, "\n");
-    }
+		if(!have_added_line_break
+        && ev->time > (last_mechanic_time + line_break_frequency))
+        {
+            have_added_line_break = true;
+            p +=  _snprintf(p, 400, "\n");
+        }
+	}
 
 	/* print */
 	DWORD written = 0;
