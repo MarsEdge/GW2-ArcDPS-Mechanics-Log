@@ -514,7 +514,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 	/* big buffer */
 	char buff[4096];
 	char* p = &buff[0];
-	wchar_t buffw[4096];
 	Player* current_player = nullptr;
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
@@ -733,9 +732,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 	/* print */
 	DWORD written = 0;
-	int32_t rc = MultiByteToWideChar(CP_UTF8, 0, &buff[0], MAX_PATH, &buffw[0], 4096);
-	buffw[rc] = 0;
-	WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE), &buffw[0], wcslen(&buffw[0]), &written, 0);
+	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
+	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
 	return 0;
 }
 
