@@ -114,6 +114,7 @@ struct mechanic
             if(ev->skillid==this->ids[index])
             {
                 correct_id = true;
+                break;
             }
         }
 
@@ -153,7 +154,7 @@ struct vg_teleport : mechanic
 {
     vg_teleport()
     {
-        name="teleport"; //name of mechanic
+        name="was teleported"; //name of mechanic
         ids.push_back(MECHANIC_VG_TELEPORT_RAINBOW);
         ids.push_back(MECHANIC_VG_TELEPORT_GREEN);
     }
@@ -163,7 +164,7 @@ struct vg_green : mechanic
 {
     vg_green()
     {
-        name="green"; //name of mechanic
+        name="stood in the green circle"; //name of mechanic
         ids.push_back(MECHANIC_VG_GREEN_A);
         ids.push_back(MECHANIC_VG_GREEN_B);
         ids.push_back(MECHANIC_VG_GREEN_C);
@@ -176,7 +177,7 @@ struct gors_slam : mechanic
 {
     gors_slam()
     {
-        name="slam"; //name of mechanic
+        name="was slammed"; //name of mechanic
         ids.push_back(MECHANIC_GORS_SLAM); //skill id;
         is_interupt=true;
     }
@@ -186,7 +187,7 @@ struct gors_egg : mechanic
 {
     gors_egg()
     {
-        name="egg"; //name of mechanic
+        name="was egged"; //name of mechanic
         ids.push_back(MECHANIC_GORS_EGG); //skill id;
     }
 
@@ -196,7 +197,7 @@ struct sloth_tantrum : mechanic
 {
     sloth_tantrum()
     {
-        name="tantrum"; //name of mechanic
+        name="was hit with tantrum"; //name of mechanic
         ids.push_back(MECHANIC_SLOTH_TANTRUM); //skill id;
     }
 
@@ -206,7 +207,7 @@ struct sloth_bomb : mechanic
 {
     sloth_bomb()
     {
-        name="bomb"; //name of mechanic
+        name="got a bomb"; //name of mechanic
         ids.push_back(MECHANIC_SLOTH_BOMB); //skill id;
         fail_if_hit = false;
         frequency = 6000;
@@ -218,7 +219,7 @@ struct sloth_bomb_aoe : mechanic
 {
     sloth_bomb_aoe()
     {
-        name="bomb aoe"; //name of mechanic
+        name="stood in a bomb aoe"; //name of mechanic
         ids.push_back(MECHANIC_SLOTH_BOMB_AOE); //skill id;
     }
 
@@ -228,7 +229,7 @@ struct sloth_flame : mechanic
 {
     sloth_flame()
     {
-        name="flame breath"; //name of mechanic
+        name="was hit by flame breath"; //name of mechanic
         ids.push_back(MECHANIC_SLOTH_FLAME_BREATH); //skill id;
     }
 
@@ -238,7 +239,7 @@ struct sloth_shake : mechanic
 {
     sloth_shake()
     {
-        name="shake"; //name of mechanic
+        name="was hit by shake"; //name of mechanic
         ids.push_back(MECHANIC_SLOTH_SHAKE); //skill id;
     }
 
@@ -248,7 +249,7 @@ struct matt_hadouken : mechanic
 {
     matt_hadouken()
     {
-        name="hadouken"; //name of mechanic
+        name="was hadoukened"; //name of mechanic
         ids.push_back(MECHANIC_MATT_HADOUKEN_HUMAN); //skill id;
         ids.push_back(MECHANIC_MATT_HADOUKEN_ABOM); //skill id;
     }
@@ -259,7 +260,7 @@ struct matt_shard_reflect : mechanic
 {
     matt_shard_reflect()
     {
-        name="shard reflect"; //name of mechanic
+        name="reflected shards"; //name of mechanic
         ids.push_back(MECHANIC_MATT_SHARD_HUMAN); //skill id;
         ids.push_back(MECHANIC_MATT_SHARD_ABOM); //skill id;
         target_is_dst = false;
@@ -271,7 +272,7 @@ struct matt_bomb : mechanic
 {
     matt_bomb()
     {
-        name="bomb"; //name of mechanic
+        name="got a bomb"; //name of mechanic
         ids.push_back(MECHANIC_MATT_BOMB); //skill id;
         frequency = 12000;
     }
@@ -282,7 +283,7 @@ struct xera_half : mechanic
 {
     xera_half()
     {
-        name="half"; //name of mechanic
+        name="stood in the red half"; //name of mechanic
         ids.push_back(MECHANIC_XERA_HALF); //skill id;
     }
 
@@ -292,7 +293,7 @@ struct xera_magic : mechanic
 {
     xera_magic()
     {
-        name="magic"; //name of mechanic
+        name="has magic"; //name of mechanic
         ids.push_back(MECHANIC_XERA_MAGIC); //skill id;
         frequency=5000; //the bubbles don't happen very often
         fail_if_hit = false;
@@ -304,7 +305,7 @@ struct xera_orb : mechanic
 {
     xera_orb()
     {
-        name="orb"; //name of mechanic
+        name="touched an orb"; //name of mechanic
         ids.push_back(MECHANIC_XERA_ORB); //skill id;
     }
 
@@ -314,7 +315,7 @@ struct xera_orb_aoe : mechanic
 {
     xera_orb_aoe()
     {
-        name="orb aoe"; //name of mechanic
+        name="stood in an orb aoe"; //name of mechanic
         ids.push_back(MECHANIC_XERA_ORB_AOE); //skill id;
     }
 
@@ -324,7 +325,7 @@ struct carin_teleport : mechanic
 {
     carin_teleport()
     {
-        name="teleport"; //name of mechanic
+        name="was teleported"; //name of mechanic
         ids.push_back(MECHANIC_CARIN_TELEPORT); //skill id;
     }
 
@@ -334,7 +335,7 @@ struct carin_shard_reflect : mechanic
 {
     carin_shard_reflect()
     {
-        name="shard reflect"; //name of mechanic
+        name="reflected shards"; //name of mechanic
         ids.push_back(MECHANIC_CARIN_SHARD); //skill id;
         target_is_dst = false;
     }
@@ -345,7 +346,7 @@ struct sam_shockwave : mechanic
 {
     sam_shockwave()
     {
-        name="shockwave"; //name of mechanic
+        name="was hit by shockwave"; //name of mechanic
         ids.push_back(MECHANIC_SAM_SHOCKWAVE); //skill id;
         is_interupt=true;
     }
@@ -356,7 +357,7 @@ struct sam_slap : mechanic
 {
     sam_slap()
     {
-        name="slap"; //name of mechanic
+        name="was slapped"; //name of mechanic
         ids.push_back(MECHANIC_SAM_SLAP); //skill id;
         is_interupt=true;
     }
@@ -367,7 +368,7 @@ struct deimos_oil : mechanic
 {
     deimos_oil()
     {
-        name="oil"; //name of mechanic
+        name="touched an oil"; //name of mechanic
         ids.push_back(MECHANIC_DEIMOS_OIL); //skill id;
     }
 
@@ -377,13 +378,39 @@ struct deimos_smash : mechanic
 {
     deimos_smash()
     {
-        name="smash"; //name of mechanic
+        name="was hit by smash"; //name of mechanic
         ids.push_back(MECHANIC_DEIMOS_SMASH); //skill id;
         ids.push_back(MECHANIC_DEIMOS_SMASH_INITIAL);
         is_interupt=true;
     }
 
 } deimos_smash;
+
+std::vector <mechanic> mechanics =
+{
+    vg_teleport,
+//    vg_green,
+    gors_slam,
+    gors_egg,
+    sloth_tantrum,
+    sloth_bomb,
+    sloth_bomb_aoe,
+    sloth_flame,
+    sloth_shake,
+    matt_hadouken,
+    matt_shard_reflect,
+    matt_bomb,
+    xera_half,
+    xera_orb,
+    xera_orb_aoe,
+    xera_magic,
+    carin_teleport,
+    carin_shard_reflect,
+    sam_shockwave,
+    sam_slap,
+    deimos_oil,
+    deimos_smash
+};
 
 Player* get_player(uint16_t new_id)
 {
@@ -585,136 +612,19 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             if(ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
             {
 
-                //vg teleport
-                if(vg_teleport.is_valid_hit(ev, src, dst))
+                for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
-                }
-#if 0
-                //vg green circle
-                if(vg_green.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s stood in the green circle\n",get_elapsed_time(ev->time), dst->name);
-                }
-#endif
-                //gors slam
-                if(gors_slam.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was slammed\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //gors egg
-                if(gors_egg.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was egged\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //sloth tantrum
-                if(sloth_tantrum.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was hit with tantrum\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //sloth bomb
-                if(sloth_bomb.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s got a bomb\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //sloth bomb aoe
-                if(sloth_bomb_aoe.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s stood in a bomb aoe\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //sloth flame breath
-                if(sloth_flame.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was hit by flame breath\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //sloth shake
-                if(sloth_shake.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was hit by shake\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //matti hadouken
-                if(matt_hadouken.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was hadoukened\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                 //matti shard reflect
-                if(matt_shard_reflect.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s reflected shards\n",get_elapsed_time(ev->time), src->name);
-                }
-
-                //matti bomb
-                if(matt_bomb.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s got a bomb\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //xera half
-                if(xera_half.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s stood in the red half\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //xera magic
-                if(xera_magic.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s has magic\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //xera orb
-                if(xera_orb.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s touched an orb\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //xera orb aoe
-                if(xera_orb_aoe.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s stood in an orb aoe\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //carin teleport
-                if(carin_teleport.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was teleported\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //carin shard reflect
-                if(carin_shard_reflect.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s reflected shards\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //sam shockwave
-                if(sam_shockwave.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was hit by shockwave\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //sam slap
-                if(sam_slap.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was slapped\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //deimos oil
-                if(deimos_oil.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s touched an oil\n",get_elapsed_time(ev->time), dst->name);
-                }
-
-                //deimos smash
-                if(deimos_smash.is_valid_hit(ev, src, dst))
-                {
-                    p +=  _snprintf(p, 400, "%d: %s was hit by smash\n",get_elapsed_time(ev->time), dst->name);
+                    if(mechanics[index].is_valid_hit(ev, src, dst))
+                    {
+                        if(mechanics[index].target_is_dst)
+                        {
+                            p +=  _snprintf(p, 400, "%d: %s %s\n",get_elapsed_time(ev->time), dst->name,mechanics[index].name.c_str());
+                        }
+                        else
+                        {
+                            p +=  _snprintf(p, 400, "%d: %s %s\n",get_elapsed_time(ev->time), src->name,mechanics[index].name.c_str());
+                        }
+                    }
                 }
             }
         }
