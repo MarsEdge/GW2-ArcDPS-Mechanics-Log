@@ -1,7 +1,3 @@
-/*
-* arcdps combat api example
-*/
-
 #include <stdint.h>
 #include <stdio.h>
 #include <Windows.h>
