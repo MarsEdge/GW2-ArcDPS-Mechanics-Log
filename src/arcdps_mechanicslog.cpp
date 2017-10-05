@@ -400,7 +400,7 @@ std::vector <mechanic> mechanics =
     matt_hadouken,
     matt_shard_reflect,
     matt_bomb,
-    xera_half,
+//    xera_half,
     xera_orb,
     xera_orb_aoe,
     xera_magic,
