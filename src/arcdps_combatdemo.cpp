@@ -69,7 +69,7 @@ arcdps_exports arc_exports;
 char* arcvers;
 void dll_init(HANDLE hModule);
 void dll_exit();
-extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr);
+extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* imguicontext);
 extern "C" __declspec(dllexport) void* get_release_addr();
 arcdps_exports* mod_init();
 uintptr_t mod_release();
@@ -99,8 +99,9 @@ void dll_exit() {
 }
 
 /* export -- arcdps looks for this exported function and calls the address it returns */
-extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr) {
+extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* imguicontext) {
 	arcvers = arcversionstr;
+	//ImGui::SetCurrentContext((ImGuiContext*)imguicontext);
 	return mod_init;
 }
 
