@@ -89,6 +89,7 @@ uint64_t start_time = 0;
 bool have_added_line_break = true;
 uint64_t last_mechanic_time = 0;
 uint64_t line_break_frequency = 5000;
+bool has_logged_mechanic = false;
 
 struct mechanic
 {
@@ -138,6 +139,7 @@ struct mechanic
 
                 last_mechanic_time = ev->time;
                 have_added_line_break = false;
+                has_logged_mechanic = true;
 
                 return true;
             }
@@ -581,6 +583,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             {
                     start_time = ev->time;
                     reset_all_player_stats();
+                    has_logged_mechanic = false;
+                    p +=  _snprintf(p, 400, "-----------\n");
             }
 		}
 
