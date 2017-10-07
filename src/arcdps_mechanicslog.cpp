@@ -640,11 +640,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                     {
                         if(mechanics[index].target_is_dst)
                         {
-                            p +=  _snprintf(p, 400, "%d: %s %s\n",get_elapsed_time(ev->time), dst->name,mechanics[index].name.c_str());
+                            p +=  _snprintf(p, 400, "%d:%d - %s %s\n",get_elapsed_time(ev->time)/60, get_elapsed_time(ev->time)%60, dst->name,mechanics[index].name.c_str());
                         }
                         else
                         {
-                            p +=  _snprintf(p, 400, "%d: %s %s\n",get_elapsed_time(ev->time), src->name,mechanics[index].name.c_str());
+                            p +=  _snprintf(p, 400, "%d:%d - %s %s\n",get_elapsed_time(ev->time)/60, get_elapsed_time(ev->time)%60, src->name,mechanics[index].name.c_str());
                         }
                     }
                 }
