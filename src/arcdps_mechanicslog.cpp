@@ -562,6 +562,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 	char buff[4096];
 	char* p = &buff[0];
 	Player* current_player = nullptr;
+	std::string output = "";
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
 	if (!ev)
@@ -641,14 +642,27 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                 {
                     if(mechanics[index].is_valid_hit(ev, src, dst))
                     {
+                        output += std::to_string(get_elapsed_time(ev->time)/60);
+                        output += ":";
+                        if(get_elapsed_time(ev->time)%60 < 10)
+                        {
+                            output += "0";
+                        }
+                        output += std::to_string(get_elapsed_time(ev->time)%60);
+                        output += " - ";
                         if(mechanics[index].target_is_dst)
                         {
-                            p +=  _snprintf(p, 400, "%d:%d - %s %s\n",get_elapsed_time(ev->time)/60, get_elapsed_time(ev->time)%60, dst->name,mechanics[index].name.c_str());
+                            output += dst->name;
                         }
                         else
                         {
-                            p +=  _snprintf(p, 400, "%d:%d - %s %s\n",get_elapsed_time(ev->time)/60, get_elapsed_time(ev->time)%60, src->name,mechanics[index].name.c_str());
+                            output += src->name;
                         }
+                        output += " ";
+                        output += mechanics[index].name;
+                        output += "\n";
+
+                        p +=  _snprintf(p, 400, output.c_str());
                     }
                 }
             }
