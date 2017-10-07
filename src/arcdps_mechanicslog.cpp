@@ -362,10 +362,31 @@ struct sam_slap : mechanic
 
 struct deimos_oil : mechanic
 {
+    uint64_t last_touched_time = 0;
+    uint16_t last_oil_id = 0;
+
     deimos_oil()
     {
         name="touched an oil"; //name of mechanic
         ids.push_back(MECHANIC_DEIMOS_OIL); //skill id;
+    }
+    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
+    {
+        if(mechanic::is_valid_hit(ev, src, dst)) //TODO: this will count players failing mechanics
+        {                                        // more than is accurate for internal tracking
+            if(last_touched_time > (ev->time+frequency)
+               && last_oil_id == ev->src_instid)
+            {
+                last_touched_time = ev->time;
+                return false;
+            }
+            else if(last_oil_id != ev->src_instid)
+            {
+                last_oil_id = ev->src_instid;
+            }
+            return true;
+        }
+        return false;
     }
 
 } deimos_oil;
