@@ -583,8 +583,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
             {
                     start_time = ev->time;
                     reset_all_player_stats();
-                    has_logged_mechanic = false;
-                    p +=  _snprintf(p, 400, "-----------\n");
+                    if(has_logged_mechanic)
+                    {
+                        has_logged_mechanic = false;
+                        p +=  _snprintf(p, 400, "-----------\n");
+                    }
             }
 		}
 
