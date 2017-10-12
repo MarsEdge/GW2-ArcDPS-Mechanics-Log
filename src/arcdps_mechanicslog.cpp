@@ -6,6 +6,8 @@
 #include "mechanic_ids.h"
 #include "player.cpp"
 
+#include "imgui.h"
+
 #define MAX_PLAYER_COUNT 10
 
 /* arcdps export table */
@@ -90,6 +92,72 @@ bool have_added_line_break = true;
 uint64_t last_mechanic_time = 0;
 uint64_t line_break_frequency = 5000;
 bool has_logged_mechanic = false;
+
+// Usage:
+//  static ExampleAppLog my_log;
+//  my_log.AddLog("Hello %d world\n", 123);
+//  my_log.Draw("title");
+struct ExampleAppLog
+{
+    ImGuiTextBuffer     Buf;
+    ImGuiTextFilter     Filter;
+    ImVector<int>       LineOffsets;        // Index to lines offset
+    bool                ScrollToBottom;
+
+    void    Clear()     { Buf.clear(); LineOffsets.clear(); }
+
+    void    AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
+    {
+        int old_size = Buf.size();
+        va_list args;
+        va_start(args, fmt);
+        Buf.appendv(fmt, args);
+        va_end(args);
+        for (int new_size = Buf.size(); old_size < new_size; old_size++)
+            if (Buf[old_size] == '\n')
+                LineOffsets.push_back(old_size);
+        ScrollToBottom = true;
+    }
+
+    void    Draw(const char* title, bool* p_open = NULL)
+    {
+        ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
+        ImGui::Begin(title, p_open);
+        if (ImGui::Button("Clear")) Clear();
+        ImGui::SameLine();
+        bool copy = ImGui::Button("Copy");
+        ImGui::SameLine();
+        Filter.Draw("Filter", -100.0f);
+        ImGui::Separator();
+        ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
+        if (copy) ImGui::LogToClipboard();
+
+        if (Filter.IsActive())
+        {
+            const char* buf_begin = Buf.begin();
+            const char* line = buf_begin;
+            for (int line_no = 0; line != NULL; line_no++)
+            {
+                const char* line_end = (line_no < LineOffsets.Size) ? buf_begin + LineOffsets[line_no] : NULL;
+                if (Filter.PassFilter(line, line_end))
+                    ImGui::TextUnformatted(line, line_end);
+                line = line_end && line_end[1] ? line_end + 1 : NULL;
+            }
+        }
+        else
+        {
+            ImGui::TextUnformatted(Buf.begin());
+        }
+
+        if (ScrollToBottom)
+            ImGui::SetScrollHere(1.0f);
+        ScrollToBottom = false;
+        ImGui::EndChild();
+        ImGui::End();
+    }
+};
+
+std::string print_buffer = "";
 
 struct mechanic
 {
@@ -513,7 +581,7 @@ void dll_exit() {
 /* export -- arcdps looks for this exported function and calls the address it returns */
 extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* imguicontext) {
 	arcvers = arcversionstr;
-	//ImGui::SetCurrentContext((ImGuiContext*)imguicontext);
+	ImGui::SetCurrentContext((ImGuiContext*)imguicontext);
 	return mod_init;
 }
 
@@ -524,21 +592,8 @@ extern "C" __declspec(dllexport) void* get_release_addr() {
 }
 
 /* initialize mod -- return table that arcdps will use for callbacks */
-arcdps_exports* mod_init() {
-
-	/* demo */
-	AllocConsole();
-
-	/* big buffer */
-	char buff[4096];
-	char* p = &buff[0];
-	p += _snprintf(p, 400, "==== mechanics log ====\n");
-
-	/* print */
-	DWORD written = 0;
-	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
-	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
-
+arcdps_exports* mod_init()
+{
 	/* for arcdps */
 	arc_exports.size = sizeof(arcdps_exports);
 	arc_exports.out_name = "mechanics log";
@@ -552,8 +607,8 @@ arcdps_exports* mod_init() {
 }
 
 /* release mod -- return ignored */
-uintptr_t mod_release() {
-	FreeConsole();
+uintptr_t mod_release()
+{
 	return 0;
 }
 
@@ -578,11 +633,8 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 /* combat callback -- may be called asynchronously. return ignored */
 /* one participant will be party/squad, or minion of. no spawn statechange events. despawn statechange only on marked boss npcs */
-uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
-
-	/* big buffer */
-	char buff[4096];
-	char* p = &buff[0];
+uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
+{
 	Player* current_player = nullptr;
 	std::string output = "";
 
@@ -609,7 +661,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                     if(has_logged_mechanic)
                     {
                         has_logged_mechanic = false;
-                        p +=  _snprintf(p, 400, "-----------\n");
+                        output += "-----------\n";
                     }
             }
 		}
@@ -683,8 +735,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
                         output += " ";
                         output += mechanics[index].name;
                         output += "\n";
-
-                        p +=  _snprintf(p, 400, output.c_str());
                     }
                 }
             }
@@ -697,19 +747,29 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
         && ev->time > (last_mechanic_time + line_break_frequency))
         {
             have_added_line_break = true;
-            p +=  _snprintf(p, 400, "\n");
+            output += "\n";
         }
 	}
 
-	/* print */
-	DWORD written = 0;
-	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
-	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
+    print_buffer +=output;
 	return 0;
+}
+
+static void ShowMechanicsLog(bool* p_open)
+{
+    static ExampleAppLog log;
+
+    log.AddLog(print_buffer.c_str());
+    print_buffer = "";
+
+    log.Draw("Mechanics", p_open);
 }
 
 uintptr_t mod_imgui()
 {
+    static bool show_app_log = true;
+
+    ShowMechanicsLog(&show_app_log);
     return 0;
 }
 
