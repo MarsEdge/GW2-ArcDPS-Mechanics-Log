@@ -53,7 +53,10 @@
 		<Unit filename="src/imconfig.h" />
 		<Unit filename="src/imgui.cpp" />
 		<Unit filename="src/imgui.h" />
-		<Unit filename="src/imgui_demo.cpp" />
+		<Unit filename="src/imgui_demo.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="src/imgui_draw.cpp" />
 		<Unit filename="src/imgui_internal.h" />
 		<Unit filename="src/mechanic_ids.h" />
