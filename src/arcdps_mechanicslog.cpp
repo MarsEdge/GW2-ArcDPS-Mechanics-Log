@@ -165,6 +165,7 @@ struct mechanic
     std::vector<uint16_t> ids; //skill ids;
     uint64_t frequency=2000; //minimum time between instances of this mechanic(ms)
     bool is_interupt=false;
+    bool is_multihit = true;
     bool target_is_dst = true;
     bool fail_if_hit = true;
 
@@ -195,7 +196,7 @@ struct mechanic
             }
 
             if(current_player
-               && ev->time > (current_player->last_hit_time+this->frequency)
+               && (!is_multihit || ev->time > (current_player->last_hit_time+this->frequency))
                && (!is_interupt || current_player->last_stab_time < ev->time))
             {
                 current_player->last_hit_time=ev->time;
@@ -236,6 +237,7 @@ struct vg_green : mechanic
         ids.push_back(MECHANIC_VG_GREEN_C);
         ids.push_back(MECHANIC_VG_GREEN_D);
         fail_if_hit = false;
+        is_multihit = false;
     }
 } vg_green;
 
@@ -246,6 +248,7 @@ struct gors_slam : mechanic
         name="was slammed"; //name of mechanic
         ids.push_back(MECHANIC_GORS_SLAM); //skill id;
         is_interupt=true;
+        is_multihit=false;
     }
 } gors_slam;
 
@@ -275,6 +278,7 @@ struct sab_time_bomb : mechanic
     {
         name="got a time bomb"; //name of mechanic
         ids.push_back(MECHANIC_SAB_TIME_BOMB); //skill id;
+        is_multihit = false;
     }
 
 } sab_time_bomb;
@@ -296,6 +300,7 @@ struct sloth_bomb : mechanic
         name="got a bomb"; //name of mechanic
         ids.push_back(MECHANIC_SLOTH_BOMB); //skill id;
         fail_if_hit = false;
+        is_multihit = false;
         frequency = 6000;
     }
 
@@ -371,6 +376,7 @@ struct xera_half : mechanic
     {
         name="stood in the red half"; //name of mechanic
         ids.push_back(MECHANIC_XERA_HALF); //skill id;
+        is_multihit = false;
     }
 
 } xera_half;
@@ -381,7 +387,7 @@ struct xera_magic : mechanic
     {
         name="has magic"; //name of mechanic
         ids.push_back(MECHANIC_XERA_MAGIC); //skill id;
-        frequency=5000; //the bubbles don't happen very often
+        is_multihit = false;
         fail_if_hit = false;
     }
 
@@ -393,6 +399,7 @@ struct xera_orb : mechanic
     {
         name="touched an orb"; //name of mechanic
         ids.push_back(MECHANIC_XERA_ORB); //skill id;
+        is_multihit = false;
     }
 
 } xera_orb;
