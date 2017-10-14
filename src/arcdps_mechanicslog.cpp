@@ -603,7 +603,7 @@ arcdps_exports* mod_init()
 {
 	/* for arcdps */
 	arc_exports.size = sizeof(arcdps_exports);
-	arc_exports.out_name = "mechanics log";
+	arc_exports.out_name = "MECHANICS LOG";
 	arc_exports.out_build = "0.1";
 	arc_exports.sig = 0x81004122;//from random.org
 	arc_exports.wnd = mod_wnd;
@@ -769,7 +769,7 @@ static void ShowMechanicsLog(bool* p_open)
     log.AddLog(print_buffer.c_str());
     print_buffer = "";
 
-    log.Draw("Mechanics", p_open);
+    log.Draw("MECHANICS", p_open);
 }
 
 uintptr_t mod_imgui()
