@@ -49,6 +49,7 @@
 			<Add after='cmd /c copy /Y &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE)&quot; &quot;C:\Program Files\Guild Wars 2\bin64\d3d9_arcdps_mechanics.dll&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
+		<Unit filename="src/arcdps_datastructures.h" />
 		<Unit filename="src/arcdps_mechanicslog.cpp" />
 		<Unit filename="src/imconfig.h" />
 		<Unit filename="src/imgui.cpp" />
@@ -59,8 +60,13 @@
 		</Unit>
 		<Unit filename="src/imgui_draw.cpp" />
 		<Unit filename="src/imgui_internal.h" />
+		<Unit filename="src/imgui_panels.cpp" />
+		<Unit filename="src/imgui_panels.h" />
 		<Unit filename="src/mechanic_ids.h" />
+		<Unit filename="src/mechanics.cpp" />
+		<Unit filename="src/mechanics.h" />
 		<Unit filename="src/player.cpp" />
+		<Unit filename="src/player.h" />
 		<Unit filename="src/stb_rect_pack.h" />
 		<Unit filename="src/stb_textedit.h" />
 		<Unit filename="src/stb_truetype.h" />

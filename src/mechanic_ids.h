@@ -1,3 +1,5 @@
+#pragma once
+
 //vale guardian
 #define MECHANIC_VG_TELEPORT_GREEN 31860
 #define MECHANIC_VG_TELEPORT_RAINBOW 31392
