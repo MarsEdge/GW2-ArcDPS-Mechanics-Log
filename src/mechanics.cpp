@@ -128,7 +128,6 @@ sab_time_bomb::sab_time_bomb()
 {
     name="got a time bomb"; //name of mechanic
     ids.push_back(MECHANIC_SAB_TIME_BOMB); //skill id;
-    is_multihit = false;
 }
 
 sloth_tantrum::sloth_tantrum()
@@ -142,7 +141,6 @@ sloth_bomb::sloth_bomb()
     name="got a bomb"; //name of mechanic
     ids.push_back(MECHANIC_SLOTH_BOMB); //skill id;
     fail_if_hit = false;
-    is_multihit = false;
     frequency = 6000;
 }
 
@@ -190,7 +188,6 @@ xera_half::xera_half()
 {
     name="stood in the red half"; //name of mechanic
     ids.push_back(MECHANIC_XERA_HALF); //skill id;
-    is_multihit = false;
 }
 
 xera_magic::xera_magic()
@@ -205,7 +202,6 @@ xera_orb::xera_orb()
 {
     name="touched an orb"; //name of mechanic
     ids.push_back(MECHANIC_XERA_ORB); //skill id;
-    is_multihit = false;
 }
 
 xera_orb_aoe::xera_orb_aoe()
