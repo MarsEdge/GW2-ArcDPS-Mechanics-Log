@@ -257,6 +257,7 @@ bool deimos_oil::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
         }
         else if(last_oil_id != ev->src_instid)
         {
+            last_touched_time = ev->time;
             last_oil_id = ev->src_instid;
         }
         return true;
