@@ -194,8 +194,9 @@ xera_magic::xera_magic()
 {
     name="has magic"; //name of mechanic
     ids.push_back(MECHANIC_XERA_MAGIC); //skill id;
-    is_multihit = false;
     fail_if_hit = false;
+    target_is_dst = false;
+    frequency = 5000;
 }
 
 xera_orb::xera_orb()
