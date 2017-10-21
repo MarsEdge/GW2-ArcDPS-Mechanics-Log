@@ -244,15 +244,17 @@ static void ShowMechanicsLog(bool* p_open)
     log.Draw("MECHANICS", p_open);
 }
 
+static bool show_app_log;
 uintptr_t mod_imgui()
 {
-    static bool show_app_log = true;
+    if(show_app_log) ShowMechanicsLog(&show_app_log);
 
-    ShowMechanicsLog(&show_app_log);
     return 0;
 }
 
 uintptr_t mod_options()
 {
+    ImGui::Checkbox("MECHANICS LOG", &show_app_log);
+
     return 0;
 }
