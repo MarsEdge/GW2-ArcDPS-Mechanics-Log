@@ -76,7 +76,7 @@ arcdps_exports* mod_init()
 	/* for arcdps */
 	arc_exports.size = sizeof(arcdps_exports);
 	arc_exports.out_name = "Mechanics Log";
-	arc_exports.out_build = "0.1";
+	arc_exports.out_build = "0.2";
 	arc_exports.sig = 0x81004122;//from random.org
 	arc_exports.wnd = mod_wnd;
 	arc_exports.combat = mod_combat;
