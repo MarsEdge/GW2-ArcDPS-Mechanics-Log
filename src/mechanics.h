@@ -16,7 +16,9 @@ struct mechanic
 {
     std::string name; //name of mechanic
     std::vector<uint16_t> ids; //skill ids;
-    uint64_t frequency; //minimum time between instances of this mechanic(ms)
+    uint64_t frequency_player; //minimum time between instances of this mechanic per player(ms)
+    uint64_t frequency_global; //minimum time between instances of this mechanic globally(ms)
+    uint64_t last_hit_time; //time of last instance of mechanic
     bool is_interupt;
     bool is_multihit = true;
     bool target_is_dst;
@@ -131,18 +133,19 @@ static struct sam_shockwave : mechanic
     sam_shockwave();
 } sam_shockwave;
 
-static struct sam_slap : mechanic
+static struct sam_slap_horizontal : mechanic
 {
-    sam_slap();
-} sam_slap;
+    sam_slap_horizontal();
+} sam_slap_horizontal;
+
+static struct sam_slap_vertical : mechanic
+{
+    sam_slap_vertical();
+} sam_slap_vertical;
 
 static struct deimos_oil : mechanic
 {
-    uint64_t last_touched_time;
-    uint16_t last_oil_id;
-
     deimos_oil();
-    bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst);
 } deimos_oil;
 
 static struct deimos_smash : mechanic

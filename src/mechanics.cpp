@@ -24,11 +24,12 @@ std::vector <mechanic> mechanics =
 //    xera_half,
     xera_orb,
     xera_orb_aoe,
-//    xera_magic,
+    xera_magic,
     carin_teleport,
     carin_shard_reflect,
     sam_shockwave,
-    sam_slap,
+    sam_slap_horizontal,
+    sam_slap_vertical,
     deimos_oil,
     deimos_smash
 };
@@ -36,7 +37,9 @@ std::vector <mechanic> mechanics =
 mechanic::mechanic()
 {
     name = "";
-    frequency = 2000;
+    frequency_player = 2000;
+    frequency_global = 0;
+    last_hit_time = 0;
     is_interupt = false;
     target_is_dst = true;
     fail_if_hit = true;
@@ -59,6 +62,11 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
 
     if(correct_id)//correct skill id
     {
+        if(ev->time < last_hit_time+frequency_global-1)
+        {
+            return false;
+        }
+
         if(target_is_dst && is_player(dst))
         {
             current_player=get_player(ev->dst_instid);
@@ -69,10 +77,11 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
         }
 
         if(current_player
-           && (!is_multihit || ev->time > (current_player->last_hit_time+this->frequency))
+           && (!is_multihit || ev->time > (current_player->last_hit_time+this->frequency_player))
            && (!is_interupt || current_player->last_stab_time < ev->time))
         {
             current_player->last_hit_time=ev->time;
+            last_hit_time = ev->time;
             if(fail_if_hit)
             {
                 current_player->mechanics_failed++;
@@ -141,7 +150,7 @@ sloth_bomb::sloth_bomb()
     name="got a bomb"; //name of mechanic
     ids.push_back(MECHANIC_SLOTH_BOMB); //skill id;
     fail_if_hit = false;
-    frequency = 6000;
+    frequency_player = 6000;
 }
 
 sloth_bomb_aoe::sloth_bomb_aoe()
@@ -181,7 +190,7 @@ matt_bomb::matt_bomb()
 {
     name="got a bomb"; //name of mechanic
     ids.push_back(MECHANIC_MATT_BOMB); //skill id;
-    frequency = 12000;
+    frequency_player = 12000;
 }
 
 xera_half::xera_half()
@@ -196,7 +205,7 @@ xera_magic::xera_magic()
     ids.push_back(MECHANIC_XERA_MAGIC); //skill id;
     fail_if_hit = false;
     target_is_dst = false;
-    frequency = 5000;
+    frequency_global = 12000;
 }
 
 xera_orb::xera_orb()
@@ -231,39 +240,25 @@ sam_shockwave::sam_shockwave()
     is_interupt=true;
 }
 
-sam_slap::sam_slap()
+sam_slap_horizontal::sam_slap_horizontal()
 {
-    name="was slapped"; //name of mechanic
-    ids.push_back(MECHANIC_SAM_SLAP); //skill id;
+    name="was horizontally slapped"; //name of mechanic
+    ids.push_back(MECHANIC_SAM_SLAP_HORIZONTAL); //skill id;
+    is_interupt=true;
+}
+
+sam_slap_vertical::sam_slap_vertical()
+{
+    name="was vertically smacked"; //name of mechanic
+    ids.push_back(MECHANIC_SAM_SLAP_VERTICAL); //skill id;
     is_interupt=true;
 }
 
 deimos_oil::deimos_oil()
 {
-    last_touched_time = 0;
-    last_oil_id = 0;
-
     name="touched an oil"; //name of mechanic
     ids.push_back(MECHANIC_DEIMOS_OIL); //skill id;
-}
-bool deimos_oil::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
-{
-    if(mechanic::is_valid_hit(ev, src, dst)) //TODO: this will count players failing mechanics
-    {                                        // more than is accurate for internal tracking
-        if(last_touched_time > (ev->time+frequency)
-           && last_oil_id == ev->src_instid)
-        {
-            last_touched_time = ev->time;
-            return false;
-        }
-        else if(last_oil_id != ev->src_instid)
-        {
-            last_touched_time = ev->time;
-            last_oil_id = ev->src_instid;
-        }
-        return true;
-    }
-    return false;
+    frequency_global = 8000;
 }
 
 deimos_smash::deimos_smash()
