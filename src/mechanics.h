@@ -12,6 +12,8 @@ extern uint64_t last_mechanic_time;
 extern uint64_t line_break_frequency;
 extern bool has_logged_mechanic;
 
+const unsigned int ms_per_tick = 40;// 1000/25
+
 struct mechanic
 {
     std::string name; //name of mechanic

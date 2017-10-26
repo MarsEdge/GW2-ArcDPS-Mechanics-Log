@@ -25,7 +25,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
 
-const unsigned int ms_per_tick = 40;// 1000/25
 uint64_t start_time = 0;
 
 std::string print_buffer = "";
