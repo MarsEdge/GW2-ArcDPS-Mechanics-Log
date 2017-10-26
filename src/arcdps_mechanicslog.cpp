@@ -28,6 +28,7 @@ uintptr_t mod_options();
 uint64_t start_time = 0;
 
 std::string print_buffer = "";
+static bool show_app_log;
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
@@ -240,10 +241,9 @@ static void ShowMechanicsLog(bool* p_open)
     log.AddLog(print_buffer.c_str());
     print_buffer = "";
 
-    if(p_open) log.Draw("MECHANICS", p_open);
+    if(show_app_log) log.Draw("MECHANICS", p_open);
 }
 
-static bool show_app_log;
 uintptr_t mod_imgui()
 {
     ShowMechanicsLog(&show_app_log);
