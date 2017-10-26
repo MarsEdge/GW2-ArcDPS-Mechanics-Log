@@ -62,7 +62,8 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
 
     if(correct_id)//correct skill id
     {
-        if(ev->time < last_hit_time+frequency_global-ms_per_tick)
+        if(frequency_global != 0
+           && ev->time < last_hit_time+frequency_global-ms_per_tick)
         {
             return false;
         }
