@@ -140,7 +140,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                     if(has_logged_mechanic)
                     {
                         has_logged_mechanic = false;
-                        output += "-----------\n";
+                        output += "===========\n";
                     }
             }
 		}
