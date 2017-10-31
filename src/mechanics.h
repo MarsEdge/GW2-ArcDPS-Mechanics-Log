@@ -60,6 +60,11 @@ static struct sab_time_bomb : mechanic
     sab_time_bomb();
 } sab_time_bomb;
 
+static struct sab_cannon : mechanic
+{
+    sab_cannon();
+} sab_cannon;
+
 static struct sloth_tantrum : mechanic
 {
     sloth_tantrum();

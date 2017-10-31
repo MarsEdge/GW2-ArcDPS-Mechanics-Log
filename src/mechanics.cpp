@@ -13,6 +13,7 @@ std::vector <mechanic> mechanics =
     gors_egg,
     sab_sapper_bomb,
     sab_time_bomb,
+    sab_cannon,
     sloth_tantrum,
     sloth_bomb,
     sloth_bomb_aoe,
@@ -138,6 +139,12 @@ sab_time_bomb::sab_time_bomb()
 {
     name="got a time bomb"; //name of mechanic
     ids.push_back(MECHANIC_SAB_TIME_BOMB); //skill id;
+}
+
+sab_cannon::sab_cannon()
+{
+    name="stood in cannon fire"; //name of mechanic
+    ids.push_back(MECHANIC_SAB_CANNON); //skill id;
 }
 
 sloth_tantrum::sloth_tantrum()

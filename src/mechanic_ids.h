@@ -16,6 +16,7 @@
 //sabetha
 #define MECHANIC_SAB_SAPPER_BOMB 31473//Sapper Bomb
 #define MECHANIC_SAB_TIME_BOMB 31485//Time Bomb
+#define MECHANIC_SAB_CANNON 31643//Cannon Barrage
 
 //slothasor
 #define MECHANIC_SLOTH_TANTRUM 34479
