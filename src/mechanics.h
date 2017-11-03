@@ -135,6 +135,11 @@ static struct carin_shard_reflect : mechanic
     carin_shard_reflect();
 } carin_shard_reflect;
 
+static struct carin_green : mechanic
+{
+    carin_green();
+} carin_green;
+
 static struct sam_shockwave : mechanic
 {
     sam_shockwave();

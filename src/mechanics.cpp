@@ -28,6 +28,7 @@ std::vector <mechanic> mechanics =
     xera_magic,
     carin_teleport,
     carin_shard_reflect,
+    carin_green,
     sam_shockwave,
     sam_slap_horizontal,
     sam_slap_vertical,
@@ -239,6 +240,13 @@ carin_shard_reflect::carin_shard_reflect()
     name="reflected shards"; //name of mechanic
     ids.push_back(MECHANIC_CARIN_SHARD); //skill id;
     target_is_dst = false;
+}
+
+carin_green::carin_green()
+{
+    name="missed a green circle"; //name of mechanic
+    ids.push_back(MECHANIC_CARIN_GREEN); //skill id;
+    is_interupt = true;
 }
 
 sam_shockwave::sam_shockwave()
