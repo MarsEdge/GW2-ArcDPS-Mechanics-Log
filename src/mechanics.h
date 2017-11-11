@@ -65,6 +65,11 @@ static struct sab_cannon : mechanic
     sab_cannon();
 } sab_cannon;
 
+static struct sab_flamewall : mechanic
+{
+    sab_flamewall();
+} sab_flamewall;
+
 static struct sloth_tantrum : mechanic
 {
     sloth_tantrum();

@@ -14,6 +14,7 @@ std::vector <mechanic> mechanics =
     sab_sapper_bomb,
     sab_time_bomb,
     sab_cannon,
+    sab_flamewall,
     sloth_tantrum,
     sloth_bomb,
     sloth_bomb_aoe,
@@ -146,6 +147,12 @@ sab_cannon::sab_cannon()
 {
     name="stood in cannon fire"; //name of mechanic
     ids.push_back(MECHANIC_SAB_CANNON); //skill id;
+}
+
+sab_flamewall::sab_flamewall()
+{
+    name="touched the flame wall"; //name of mechanic
+    ids.push_back(MECHANIC_SAB_FLAMEWALL); //skill id;
 }
 
 sloth_tantrum::sloth_tantrum()
