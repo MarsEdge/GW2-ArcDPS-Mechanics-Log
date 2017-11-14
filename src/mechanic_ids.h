@@ -48,8 +48,26 @@
 #define MECHANIC_SAM_SHOCKWAVE 37996
 #define MECHANIC_SAM_SLAP_HORIZONTAL 38168
 #define MECHANIC_SAM_SLAP_VERTICAL 38305//Bludgeon
+#define MECHANIC_SAM_FIXATE_SAM 37868//Fixate: Samarog
 
 //deimos
 #define MECHANIC_DEIMOS_OIL 37716
 #define MECHANIC_DEIMOS_SMASH 38208 //smash from the actual boss
 #define MECHANIC_DEIMOS_SMASH_INITIAL 37929 //smash while killing the initial chains
+
+#define MECHANIC_NIGHTMARE_VOMIT 37030//Toxic Sickness
+
+//MAMA
+#define MECHANIC_MAMA_WIRL 37408//Blastwave
+#define MECHANIC_MAMA_KNOCK 37391//Tantrum
+#define MECHANIC_MAMA_LEAP 37577//Leap
+#define MECHANIC_MAMA_ACID 37437//Shoot
+#define MECHANIC_MAMA_ADD_SMASH 37185//Explosive Impact
+
+//Siax
+#define MECHANIC_SIAX_ACID 37477//Vile Spit
+
+//Ensolyss
+#define MECHANIC_ENSOLYSS_LUNGE 37154//Lunge
+#define MECHANIC_ENSOLYSS_SMASH_INITIAL 37278//The knockback part
+#define MECHANIC_ENSOLYSS_SMASH 36962//The torment part (up to 5 hits, 1 per player)

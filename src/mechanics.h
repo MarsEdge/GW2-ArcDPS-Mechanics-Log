@@ -170,4 +170,50 @@ static struct deimos_smash : mechanic
     deimos_smash();
 } deimos_smash;
 
+static struct nightmare_vomit : mechanic
+{
+    nightmare_vomit();
+} nightmare_vomit;
+
+static struct mama_wirl : mechanic
+{
+    mama_wirl();
+} mama_wirl;
+
+static struct mama_knock : mechanic
+{
+    mama_knock();
+} mama_knock;
+
+static struct mama_leap : mechanic
+{
+    mama_leap();
+} mama_leap;
+
+static struct mama_acid : mechanic
+{
+    mama_acid();
+} mama_acid;
+
+static struct mama_add_smash : mechanic
+{
+    mama_add_smash();
+} mama_add_smash;
+
+static struct siax_acid : mechanic
+{
+    siax_acid();
+} siax_acid;
+
+static struct ensolyss_lunge : mechanic
+{
+    ensolyss_lunge();
+} ensolyss_lunge;
+
+static struct ensolyss_smash : mechanic
+{
+    ensolyss_smash();
+} ensolyss_smash;
+
+
 extern std::vector <mechanic> mechanics;

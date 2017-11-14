@@ -34,7 +34,16 @@ std::vector <mechanic> mechanics =
     sam_slap_horizontal,
     sam_slap_vertical,
     deimos_oil,
-    deimos_smash
+    deimos_smash,
+    nightmare_vomit,
+    mama_wirl,
+    mama_knock,
+    mama_leap,
+    mama_acid,
+    mama_add_smash,
+    siax_acid,
+    ensolyss_lunge,
+    ensolyss_smash
 };
 
 mechanic::mechanic()
@@ -290,4 +299,59 @@ deimos_smash::deimos_smash()
     ids.push_back(MECHANIC_DEIMOS_SMASH); //skill id;
     ids.push_back(MECHANIC_DEIMOS_SMASH_INITIAL);
     is_interupt=true;
+}
+
+nightmare_vomit::nightmare_vomit()
+{
+    name="vomited on someone"; //name of mechanic
+    ids.push_back(MECHANIC_NIGHTMARE_VOMIT); //skill id;
+    target_is_dst = false;
+}
+
+mama_wirl::mama_wirl()
+{
+    name="was hit by wirl"; //name of mechanic
+    ids.push_back(MECHANIC_MAMA_WIRL); //skill id;
+}
+
+mama_knock::mama_knock()
+{
+    name="was knocked"; //name of mechanic
+    ids.push_back(MECHANIC_MAMA_KNOCK); //skill id;
+}
+
+mama_leap::mama_leap()
+{
+    name="was leaped on"; //name of mechanic
+    ids.push_back(MECHANIC_MAMA_LEAP); //skill id;
+}
+
+mama_acid::mama_acid()
+{
+    name="stood in acid"; //name of mechanic
+    ids.push_back(MECHANIC_MAMA_ACID); //skill id;
+}
+
+mama_add_smash::mama_add_smash()
+{
+    name="was smashed by an add"; //name of mechanic
+    ids.push_back(MECHANIC_MAMA_ADD_SMASH); //skill id;
+}
+
+siax_acid::siax_acid()
+{
+    name="stood in acid"; //name of mechanic
+    ids.push_back(MECHANIC_SIAX_ACID); //skill id;
+}
+
+ensolyss_lunge::ensolyss_lunge()
+{
+    name="was ran over"; //name of mechanic
+    ids.push_back(MECHANIC_ENSOLYSS_LUNGE); //skill id;
+}
+
+ensolyss_smash::ensolyss_smash()
+{
+    name="was smashed"; //name of mechanic
+    ids.push_back(MECHANIC_ENSOLYSS_SMASH); //skill id;
 }
