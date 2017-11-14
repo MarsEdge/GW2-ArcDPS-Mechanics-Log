@@ -62,7 +62,7 @@
 #define MECHANIC_MAMA_KNOCK 37391//Tantrum
 #define MECHANIC_MAMA_LEAP 37577//Leap
 #define MECHANIC_MAMA_ACID 37437//Shoot
-#define MECHANIC_MAMA_ADD_SMASH 37185//Explosive Impact
+#define MECHANIC_MAMA_KNIGHT_SMASH 37185//Explosive Impact
 
 //Siax
 #define MECHANIC_SIAX_ACID 37477//Vile Spit

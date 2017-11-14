@@ -195,10 +195,10 @@ static struct mama_acid : mechanic
     mama_acid();
 } mama_acid;
 
-static struct mama_add_smash : mechanic
+static struct mama_knight_smash : mechanic
 {
-    mama_add_smash();
-} mama_add_smash;
+    mama_knight_smash();
+} mama_knight_smash;
 
 static struct siax_acid : mechanic
 {

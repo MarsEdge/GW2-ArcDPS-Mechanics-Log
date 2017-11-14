@@ -40,7 +40,7 @@ std::vector <mechanic> mechanics =
     mama_knock,
     mama_leap,
     mama_acid,
-    mama_add_smash,
+    mama_knight_smash,
     siax_acid,
     ensolyss_lunge,
     ensolyss_smash
@@ -332,10 +332,10 @@ mama_acid::mama_acid()
     ids.push_back(MECHANIC_MAMA_ACID); //skill id;
 }
 
-mama_add_smash::mama_add_smash()
+mama_knight_smash::mama_knight_smash()
 {
-    name="was smashed by an add"; //name of mechanic
-    ids.push_back(MECHANIC_MAMA_ADD_SMASH); //skill id;
+    name="was smashed by a knight"; //name of mechanic
+    ids.push_back(MECHANIC_MAMA_KNIGHT_SMASH); //skill id;
 }
 
 siax_acid::siax_acid()
