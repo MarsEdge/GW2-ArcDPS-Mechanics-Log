@@ -215,5 +215,25 @@ static struct ensolyss_smash : mechanic
     ensolyss_smash();
 } ensolyss_smash;
 
+static struct arkk_pie : mechanic
+{
+    arkk_pie();
+} arkk_pie;
+
+static struct arkk_fear : mechanic
+{
+    arkk_fear();
+} arkk_fear;
+
+static struct arkk_overhead_smash : mechanic
+{
+    arkk_overhead_smash();
+} arkk_overhead_smash;
+
+static struct arkk_bomb : mechanic
+{
+    arkk_bomb();
+} arkk_bomb;
+
 
 extern std::vector <mechanic> mechanics;

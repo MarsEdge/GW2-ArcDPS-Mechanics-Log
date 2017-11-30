@@ -71,3 +71,10 @@
 #define MECHANIC_ENSOLYSS_LUNGE 37154//Lunge
 #define MECHANIC_ENSOLYSS_SMASH_INITIAL 37278//The knockback part
 #define MECHANIC_ENSOLYSS_SMASH 36962//The torment part (up to 5 hits, 1 per player)
+
+//Arkk
+#define MECHANIC_ARKK_PIE_A 39685//Horizon Strike (the id appears to be different for each phase of Arkk)
+#define MECHANIC_ARKK_PIE_B 39001//Horizon Strike
+#define MECHANIC_ARKK_FEAR 39442//Blinding Radiance
+#define MECHANIC_ARKK_OVERHEAD_SMASH 38844//Overhead Smash
+#define MECHANIC_ARKK_BOMB 39275//Corporeal Reassignment

@@ -43,7 +43,11 @@ std::vector <mechanic> mechanics =
     mama_knight_smash,
     siax_acid,
     ensolyss_lunge,
-    ensolyss_smash
+    ensolyss_smash,
+    arkk_pie,
+//    arkk_fear,
+    arkk_overhead_smash,
+    arkk_bomb
 };
 
 mechanic::mechanic()
@@ -354,4 +358,29 @@ ensolyss_smash::ensolyss_smash()
 {
     name="was smashed"; //name of mechanic
     ids.push_back(MECHANIC_ENSOLYSS_SMASH); //skill id;
+}
+
+arkk_pie::arkk_pie()
+{
+    name="stood in a pie slice"; //name of mechanic
+    ids.push_back(MECHANIC_ARKK_PIE_A); //skill id;
+    ids.push_back(MECHANIC_ARKK_PIE_B); //skill id;
+}
+
+arkk_fear::arkk_fear()
+{
+    name="was feared"; //name of mechanic
+    ids.push_back(MECHANIC_ARKK_FEAR); //skill id;
+}
+
+arkk_overhead_smash::arkk_overhead_smash()
+{
+    name="was smashed"; //name of mechanic
+    ids.push_back(MECHANIC_ARKK_OVERHEAD_SMASH); //skill id;
+}
+
+arkk_bomb::arkk_bomb()
+{
+    name="blew up a bomb"; //name of mechanic
+    ids.push_back(MECHANIC_ARKK_BOMB); //skill id;
 }
