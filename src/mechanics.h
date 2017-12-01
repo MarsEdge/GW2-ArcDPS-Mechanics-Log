@@ -170,6 +170,41 @@ static struct deimos_smash : mechanic
     deimos_smash();
 } deimos_smash;
 
+static struct horror_donut_inner : mechanic
+{
+    horror_donut_inner();
+} horror_donut_inner;
+
+static struct horror_donut_outer : mechanic
+{
+    horror_donut_outer();
+} horror_donut_outer;
+
+static struct horror_golem_aoe : mechanic
+{
+    horror_golem_aoe();
+} horror_golem_aoe;
+
+static struct horror_pie : mechanic
+{
+    horror_pie();
+} horror_pie;
+
+static struct horror_scythe : mechanic
+{
+    horror_scythe();
+} horror_scythe;
+
+static struct dhuum_golem : mechanic
+{
+    dhuum_golem();
+} dhuum_golem;
+
+static struct dhuum_affliction : mechanic
+{
+    dhuum_affliction();
+} dhuum_affliction;
+
 static struct nightmare_vomit : mechanic
 {
     nightmare_vomit();

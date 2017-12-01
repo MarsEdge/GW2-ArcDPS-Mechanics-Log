@@ -35,6 +35,13 @@ std::vector <mechanic> mechanics =
     sam_slap_vertical,
     deimos_oil,
     deimos_smash,
+    horror_donut_inner,
+    horror_donut_outer,
+    horror_golem_aoe,
+    horror_pie,
+    horror_scythe,
+    dhuum_golem,
+    dhuum_affliction,
     nightmare_vomit,
     mama_wirl,
     mama_knock,
@@ -303,6 +310,49 @@ deimos_smash::deimos_smash()
     ids.push_back(MECHANIC_DEIMOS_SMASH); //skill id;
     ids.push_back(MECHANIC_DEIMOS_SMASH_INITIAL);
     is_interupt=true;
+}
+
+horror_donut_inner::horror_donut_inner()
+{
+    name="stood in inner donut"; //name of mechanic
+    ids.push_back(MECHANIC_HORROR_DONUT_INNER); //skill id;
+}
+
+horror_donut_outer::horror_donut_outer()
+{
+    name="stood in outer donut"; //name of mechanic
+    ids.push_back(MECHANIC_HORROR_DONUT_OUTER); //skill id;
+}
+
+horror_golem_aoe::horror_golem_aoe()
+{
+    name="stood in golem aoe"; //name of mechanic
+    ids.push_back(MECHANIC_HORROR_GOLEM_AOE); //skill id;
+}
+
+horror_pie::horror_pie()
+{
+    name="stood in golem aoe"; //name of mechanic
+    ids.push_back(MECHANIC_HORROR_PIE_4_A); //skill id;
+    ids.push_back(MECHANIC_HORROR_PIE_4_B); //skill id;
+}
+
+horror_scythe::horror_scythe()
+{
+    name="touched a scythe"; //name of mechanic
+    ids.push_back(MECHANIC_HORROR_SCYTHE); //skill id;
+}
+
+dhuum_golem::dhuum_golem()
+{
+    name="touched a golem"; //name of mechanic
+    ids.push_back(MECHANIC_DHUUM_GOLEM); //skill id;
+}
+
+dhuum_affliction::dhuum_affliction()
+{
+    name="is afflicted"; //name of mechanic
+    ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
 }
 
 nightmare_vomit::nightmare_vomit()

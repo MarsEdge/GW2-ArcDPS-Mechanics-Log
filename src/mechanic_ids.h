@@ -55,6 +55,18 @@
 #define MECHANIC_DEIMOS_SMASH 38208 //smash from the actual boss
 #define MECHANIC_DEIMOS_SMASH_INITIAL 37929 //smash while killing the initial chains
 
+//Soulless Horror
+#define MECHANIC_HORROR_DONUT_INNER 47327//Vortex Slash
+#define MECHANIC_HORROR_DONUT_OUTER 48432//Vortex Slash ingame, achieve claims it's called "hurricane slash", but it's not
+#define MECHANIC_HORROR_GOLEM_AOE 47430//Soul Rift
+#define MECHANIC_HORROR_PIE_4_A 48363//Quad Slash
+#define MECHANIC_HORROR_PIE_4_B 47915//Quad Slash
+#define MECHANIC_HORROR_SCYTHE 47363//Spinning Slash
+
+//Dhuum
+#define MECHANIC_DHUUM_GOLEM 48172 //Hateful Ephemera (flesh golem)
+#define MECHANIC_DHUUM_AFFLICTION 47476//Arcing Affliction
+
 #define MECHANIC_NIGHTMARE_VOMIT 37030//Toxic Sickness
 
 //MAMA
