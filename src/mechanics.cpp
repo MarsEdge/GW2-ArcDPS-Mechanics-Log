@@ -332,7 +332,7 @@ horror_golem_aoe::horror_golem_aoe()
 
 horror_pie::horror_pie()
 {
-    name="stood in golem aoe"; //name of mechanic
+    name="stood in pie slice"; //name of mechanic
     ids.push_back(MECHANIC_HORROR_PIE_4_A); //skill id;
     ids.push_back(MECHANIC_HORROR_PIE_4_B); //skill id;
 }
