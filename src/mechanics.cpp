@@ -101,8 +101,8 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
         }
 
         if(current_player
-           && (!is_multihit || ev->time > (current_player->last_hit_time+this->frequency_player))
-           && (!is_interupt || current_player->last_stab_time < ev->time))
+           && (!is_multihit || ev->time >= (current_player->last_hit_time+this->frequency_player))
+           && (!is_interupt || current_player->last_stab_time <= ev->time))
         {
             current_player->last_hit_time=ev->time;
             last_hit_time = ev->time;
@@ -351,8 +351,10 @@ dhuum_golem::dhuum_golem()
 
 dhuum_affliction::dhuum_affliction()
 {
-    name="is afflicted"; //name of mechanic
+    name="hit someone with affliction"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
+    target_is_dst = false;
+    frequency_player = 0;
 }
 
 nightmare_vomit::nightmare_vomit()
