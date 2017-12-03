@@ -28,7 +28,7 @@ std::vector <mechanic> mechanics =
     xera_orb_aoe,
     xera_magic,
     carin_teleport,
-    carin_shard_reflect,
+//    carin_shard_reflect,
     carin_green,
     sam_shockwave,
     sam_slap_horizontal,
