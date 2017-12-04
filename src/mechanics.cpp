@@ -351,10 +351,10 @@ dhuum_golem::dhuum_golem()
 
 dhuum_affliction::dhuum_affliction()
 {
-    name="hit someone with affliction"; //name of mechanic
+    name="has affliction"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
     target_is_dst = false;
-    frequency_player = 0;
+    frequency_global = 9500;
 }
 
 nightmare_vomit::nightmare_vomit()
