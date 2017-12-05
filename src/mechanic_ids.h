@@ -65,7 +65,7 @@
 
 //Dhuum
 #define MECHANIC_DHUUM_GOLEM 48172 //Hateful Ephemera (flesh golem)
-#define MECHANIC_DHUUM_AFFLICTION 47476//Arcing Affliction
+#define MECHANIC_DHUUM_AFFLICTION 47646//Arcing Affliction
 
 #define MECHANIC_NIGHTMARE_VOMIT 37030//Toxic Sickness
 

@@ -353,8 +353,6 @@ dhuum_affliction::dhuum_affliction()
 {
     name="has affliction"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
-    target_is_dst = false;
-    frequency_global = 9500;
 }
 
 nightmare_vomit::nightmare_vomit()
