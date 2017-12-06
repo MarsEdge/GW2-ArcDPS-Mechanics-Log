@@ -205,6 +205,16 @@ static struct dhuum_affliction : mechanic
     dhuum_affliction();
 } dhuum_affliction;
 
+static struct dhuum_shackle : mechanic
+{
+    dhuum_shackle();
+} dhuum_shackle;
+
+static struct dhuum_teleport : mechanic
+{
+    dhuum_teleport();
+} dhuum_teleport;
+
 static struct nightmare_vomit : mechanic
 {
     nightmare_vomit();

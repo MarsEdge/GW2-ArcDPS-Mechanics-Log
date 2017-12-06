@@ -42,6 +42,8 @@ std::vector <mechanic> mechanics =
     horror_scythe,
     dhuum_golem,
     dhuum_affliction,
+    dhuum_shackle,
+    dhuum_teleport,
     nightmare_vomit,
     mama_wirl,
     mama_knock,
@@ -349,10 +351,24 @@ dhuum_golem::dhuum_golem()
     ids.push_back(MECHANIC_DHUUM_GOLEM); //skill id;
 }
 
+dhuum_shackle::dhuum_shackle()
+{
+    name="is shackled"; //name of mechanic
+    ids.push_back(MECHANIC_DHUUM_SHACKLE); //skill id;
+    frequency_player = 8000;
+}
+
 dhuum_affliction::dhuum_affliction()
 {
     name="has affliction"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
+    frequency_player = 45000;
+}
+
+dhuum_teleport::dhuum_teleport()
+{
+    name="stood in a teleport aoe"; //name of mechanic
+    ids.push_back(MECHANIC_DHUUM_TELEPORT); //skill id;
 }
 
 nightmare_vomit::nightmare_vomit()
