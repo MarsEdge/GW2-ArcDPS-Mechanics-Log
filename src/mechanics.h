@@ -216,10 +216,10 @@ static struct dhuum_shackle_dst : mechanic
     dhuum_shackle_dst();
 } dhuum_shackle_dst;
 
-static struct dhuum_teleport : mechanic
+static struct dhuum_crack : mechanic
 {
-    dhuum_teleport();
-} dhuum_teleport;
+    dhuum_crack();
+} dhuum_crack;
 
 static struct nightmare_vomit : mechanic
 {
