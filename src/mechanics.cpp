@@ -42,7 +42,8 @@ std::vector <mechanic> mechanics =
     horror_scythe,
     dhuum_golem,
     dhuum_affliction,
-    dhuum_shackle,
+    dhuum_shackle_src,
+    dhuum_shackle_dst,
     dhuum_teleport,
     nightmare_vomit,
     mama_wirl,
@@ -68,6 +69,7 @@ mechanic::mechanic()
     is_interupt = false;
     target_is_dst = true;
     fail_if_hit = true;
+    is_buffremove = 0;
 }
 
 bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
@@ -89,6 +91,11 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     {
         if(frequency_global != 0
            && ev->time < last_hit_time+frequency_global-ms_per_tick)
+        {
+            return false;
+        }
+
+        if(ev->is_buffremove != is_buffremove)
         {
             return false;
         }
@@ -351,18 +358,24 @@ dhuum_golem::dhuum_golem()
     ids.push_back(MECHANIC_DHUUM_GOLEM); //skill id;
 }
 
-dhuum_shackle::dhuum_shackle()
+dhuum_shackle_src::dhuum_shackle_src()
 {
     name="is shackled"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_SHACKLE); //skill id;
-    frequency_player = 8000;
+}
+
+dhuum_shackle_dst::dhuum_shackle_dst()
+{
+    name="is shackled"; //name of mechanic
+    ids.push_back(MECHANIC_DHUUM_SHACKLE); //skill id;
+    target_is_dst = false;
 }
 
 dhuum_affliction::dhuum_affliction()
 {
     name="has affliction"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
-    frequency_player = 45000;
+    frequency_player = 13000 + ms_per_tick;
 }
 
 dhuum_teleport::dhuum_teleport()

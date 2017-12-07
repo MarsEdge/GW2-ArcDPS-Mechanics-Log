@@ -21,6 +21,7 @@ struct mechanic
     uint64_t frequency_player; //minimum time between instances of this mechanic per player(ms)
     uint64_t frequency_global; //minimum time between instances of this mechanic globally(ms)
     uint64_t last_hit_time; //time of last instance of mechanic
+    uint8_t is_buffremove;
     bool is_interupt;
     bool is_multihit = true;
     bool target_is_dst;
@@ -205,10 +206,15 @@ static struct dhuum_affliction : mechanic
     dhuum_affliction();
 } dhuum_affliction;
 
-static struct dhuum_shackle : mechanic
+static struct dhuum_shackle_src : mechanic
 {
-    dhuum_shackle();
-} dhuum_shackle;
+    dhuum_shackle_src();
+} dhuum_shackle_src;
+
+static struct dhuum_shackle_dst : mechanic
+{
+    dhuum_shackle_dst();
+} dhuum_shackle_dst;
 
 static struct dhuum_teleport : mechanic
 {
