@@ -221,6 +221,16 @@ static struct dhuum_crack : mechanic
     dhuum_crack();
 } dhuum_crack;
 
+static struct dhuum_mark : mechanic
+{
+    dhuum_mark();
+} dhuum_mark;
+
+static struct dhuum_teleport_aoe : mechanic
+{
+    dhuum_teleport_aoe();
+} dhuum_teleport_aoe;
+
 static struct nightmare_vomit : mechanic
 {
     nightmare_vomit();
