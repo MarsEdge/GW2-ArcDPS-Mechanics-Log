@@ -238,8 +238,11 @@ static void ShowMechanicsLog(bool* p_open)
 {
     static ExampleAppLog log;
 
-    log.AddLog(print_buffer.c_str());
-    print_buffer = "";
+    if(print_buffer.size() > 0)
+    {
+        log.AddLog(print_buffer.c_str());
+        print_buffer = "";
+    }
 
     if(show_app_log) log.Draw("MECHANICS", p_open);
 }
