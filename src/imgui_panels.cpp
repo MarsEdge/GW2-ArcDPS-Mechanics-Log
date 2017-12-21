@@ -4,7 +4,12 @@
 //  static ExampleAppLog my_log;
 //  my_log.AddLog("Hello %d world\n", 123);
 //  my_log.Draw("title");
-void    ExampleAppLog::Clear()     { Buf.clear(); LineOffsets.clear(); }
+void    ExampleAppLog::Clear()
+{
+    Buf.clear();
+    LineOffsets.clear();
+    reset_all_player_stats();
+}
 
 void    ExampleAppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 {
@@ -53,5 +58,64 @@ void    ExampleAppLog::Draw(const char* title, bool* p_open = NULL)
         ImGui::SetScrollHere(1.0f);
     ScrollToBottom = false;
     ImGui::EndChild();
+    ImGui::End();
+}
+
+void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_open)
+{
+    ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
+    ImGui::Begin(title, p_open);
+    ImGui::Columns(5);
+
+    ImGui::Text("Name");
+    for(uint16_t index = 0;index<players.size();index++)
+    {
+        if(players[index].id)
+        {
+            ImGui::Text(players[index].name.c_str());
+        }
+    }
+    ImGui::NextColumn();
+
+    ImGui::Text("Received");
+    for(uint16_t index = 0;index<players.size();index++)
+    {
+        if(players[index].id)
+        {
+            ImGui::Text(std::to_string(players[index].mechanics_received).c_str());
+        }
+    }
+    ImGui::NextColumn();
+
+    ImGui::Text("Failed");
+    for(uint16_t index = 0;index<players.size();index++)
+    {
+        if(players[index].id)
+        {
+            ImGui::Text(std::to_string(players[index].mechanics_failed).c_str());
+        }
+    }
+    ImGui::NextColumn();
+
+    ImGui::Text("Downs");
+    for(uint16_t index = 0;index<players.size();index++)
+    {
+        if(players[index].id)
+        {
+            ImGui::Text(std::to_string(players[index].downs).c_str());
+        }
+    }
+    ImGui::NextColumn();
+
+    ImGui::Text("Deaths");
+    for(uint16_t index = 0;index<players.size();index++)
+    {
+        if(players[index].id)
+        {
+            ImGui::Text(std::to_string(players[index].deaths).c_str());
+        }
+    }
+    ImGui::Columns(1);
+
     ImGui::End();
 }

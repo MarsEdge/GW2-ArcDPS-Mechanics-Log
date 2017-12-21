@@ -29,6 +29,7 @@ uint64_t start_time = 0;
 
 std::string print_buffer = "";
 static bool show_app_log;
+static bool show_app_chart;
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
@@ -136,12 +137,41 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                 && src->self)
             {
                     start_time = ev->time;
-                    reset_all_player_stats();
                     if(has_logged_mechanic)
                     {
                         has_logged_mechanic = false;
                         output += "===========\n";
                     }
+            }
+
+            //if rally
+            else if(ev->is_statechange==3)
+            {
+                current_player = get_player(src);
+                if(current_player)
+                {
+                    current_player->rally();
+                }
+            }
+
+            //if dead
+            else if(ev->is_statechange==4)
+            {
+                current_player = get_player(src);
+                if(current_player)
+                {
+                    current_player->dead();
+                }
+            }
+
+            //if downed
+            else if(ev->is_statechange==5)
+            {
+                current_player = get_player(src);
+                if(current_player)
+                {
+                    current_player->down();
+                }
             }
 		}
 
@@ -158,10 +188,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             {
                 if (ev->skillid==1122)//if it's stability
                 {
-                    current_player=get_player(ev->dst_instid);
+                    current_player=get_player(dst);
                     if(current_player)
                     {
-                        current_player->last_stab_time = ev->time+ms_per_tick;//cut the ending time of stab early
+                        current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
                     }
                 }
             }
@@ -174,11 +204,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             {
                 if (ev->skillid==1122)//if it's stability
                 {
-                    current_player=get_player(ev->dst_instid);
-                    if(current_player
-                       && current_player->last_stab_time < (ev->time+ev->value))//if the new stab will last longer than any possible old stab
+                    current_player=get_player(dst);
+                    if(current_player)
                     {
-                        current_player->last_stab_time = ev->time+ev->value+ms_per_tick;//add prediction of when new stab will end
+                        current_player->set_stab_time(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
                     }
                 }
             }
@@ -244,12 +273,21 @@ static void ShowMechanicsLog(bool* p_open)
         print_buffer = "";
     }
 
-    if(show_app_log) log.Draw("MECHANICS", p_open);
+    if(show_app_log) log.Draw("MECHANICS LOG", p_open);
+}
+
+static void ShowMechanicsChart(bool* p_open)
+{
+    static AppChart chart;
+
+    if(show_app_chart) chart.Draw("MECHANICS CHART", players, p_open);
 }
 
 uintptr_t mod_imgui()
 {
     ShowMechanicsLog(&show_app_log);
+
+    ShowMechanicsChart(&show_app_chart);
 
     return 0;
 }
@@ -257,6 +295,7 @@ uintptr_t mod_imgui()
 uintptr_t mod_options()
 {
     ImGui::Checkbox("MECHANICS LOG", &show_app_log);
+    ImGui::Checkbox("MECHANICS CHART", &show_app_chart);
 
     return 0;
 }

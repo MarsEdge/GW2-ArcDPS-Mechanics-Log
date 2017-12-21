@@ -1,6 +1,8 @@
 #pragma once
 
+#include "player.h"
 #include "imgui.h"
+#include <string>
 
 struct ExampleAppLog
 {
@@ -13,4 +15,11 @@ struct ExampleAppLog
     void    AddLog(const char* fmt, ...) IM_PRINTFARGS(2);
 
     void    Draw(const char* title, bool* p_open);
+};
+
+struct AppChart
+{
+    void    Clear();
+
+    void    Draw(const char* title, std::vector<Player> players, bool* p_open);
 };
