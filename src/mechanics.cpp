@@ -45,7 +45,7 @@ std::vector <mechanic> mechanics =
     dhuum_shackle_src,
     dhuum_shackle_dst,
     dhuum_crack,
-//    dhuum_mark,
+    dhuum_mark,
     dhuum_teleport_aoe,
     nightmare_vomit,
     mama_wirl,
