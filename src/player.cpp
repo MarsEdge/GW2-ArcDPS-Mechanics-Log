@@ -17,24 +17,10 @@ Player::Player()
     last_machanic=0;       //skill id of last failed mechanic
 }
 
-Player::Player(uintptr_t new_id)
+Player::Player(ag* new_player)
 {
-    name = std::to_string(new_id);
-    id = new_id;
-    downs = 0;              //number of times the player has downed
-    deaths = 0;
-    is_downed = false;     //is currently is down state
-    mechanics_failed = 0;   //number of mechanics failed
-    mechanics_received = 0;
-    last_stab_time = 0;  //time stability is going to expire
-    last_hit_time=0;       //time player was last hit with a mechanic
-    last_machanic=0;       //skill id of last failed mechanic
-}
-
-Player::Player(uintptr_t new_id, std::string new_name)
-{
-    name = new_name;
-    id = new_id;
+    name = new_player->name;
+    id = new_player->id;
     downs = 0;              //number of times the player has downed
     deaths = 0;
     is_downed = false;     //is currently is down state
@@ -113,18 +99,18 @@ Player* get_player(ag* new_player)
     {
         if(players[index].id==0)
         {
-            players[index] = Player(new_player->id,std::string(new_player->name));
+            players[index] = Player(new_player);
             players_mtx.unlock();
             return &players[index];
         }
-        else if(players[index].id == new_player->id)
+        else if(players[index].id == new_player->id || strcmp(new_player->name,players[index].name.c_str())==0)
         {
             players_mtx.unlock();
             return &players[index];
         }
     }
 
-    players.push_back(Player(new_player->id,std::string(new_player->name)));
+    players.push_back(Player(new_player));
     players_mtx.unlock();
     return &players.back();
 }

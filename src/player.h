@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <mutex>
 #include "arcdps_datastructures.h"
@@ -22,9 +23,7 @@ struct Player
     uint16_t last_machanic;       //skill id of last failed mechanic
 
     Player();
-
-    Player(uintptr_t new_id);
-    Player(uintptr_t new_id, std::string new_name);
+    Player(ag* new_player);
 
     void down();
     void dead();
