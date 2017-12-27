@@ -20,7 +20,7 @@ struct Player
     uint16_t mechanics_received;//number of boss mechanics received
     uint64_t last_stab_time;  //time stability is going to expire
     uint64_t last_hit_time;       //time player was last hit with a mechanic
-    uint16_t last_machanic;       //skill id of last failed mechanic
+    uint16_t last_mechanic;       //skill id of last failed mechanic
 
     Player();
     Player(ag* new_player);
@@ -29,10 +29,18 @@ struct Player
     void dead();
     void rally();
 
+    void mechanic_fail();
+    void mechanic_receive();
+    bool is_relevant();     //if player is relevant for displaying
+
+    uint64_t get_last_stab_time();
     void set_stab_time(uint64_t new_stab_time);
 
-    void reset_stats();
-    void reset_all();
+    uint64_t get_last_hit_time();
+    void set_last_hit_time(uint64_t new_hit_time);
+
+    uint16_t get_last_mechanic();
+    void set_last_mechanic(uint16_t new_mechanic);
 };
 
 extern std::mutex players_mtx;

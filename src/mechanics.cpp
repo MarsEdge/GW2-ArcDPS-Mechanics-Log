@@ -111,24 +111,21 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
             current_player=get_player(src);
         }
 
-        players_mtx.lock();
         if(current_player
-           && (!is_multihit || ev->time >= (current_player->last_hit_time+this->frequency_player))
-           && (!is_interupt || current_player->last_stab_time <= ev->time))
+           && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
+           && (!is_interupt || current_player->get_last_stab_time() <= ev->time))
         {
-            current_player->last_hit_time=ev->time;
+            current_player->set_last_hit_time(ev->time);
             last_hit_time = ev->time;
             if(fail_if_hit)
             {
-                current_player->mechanics_failed++;
+                current_player->mechanic_fail();
             }
             else
             {
-                current_player->mechanics_received++;
+                current_player->mechanic_receive();
             }
-            current_player->last_machanic=ev->skillid;
-
-            players_mtx.unlock();
+            current_player->set_last_mechanic(ev->skillid);
 
             last_mechanic_time = ev->time;
             have_added_line_break = false;

@@ -67,52 +67,56 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
     ImGui::Begin(title, p_open);
     ImGui::Columns(5);
 
+    std::lock_guard<std::mutex> lg(players_mtx);
+
+    size_t players_size = players.size();
+
     ImGui::Text("Name");
-    for(uint16_t index = 0;index<players.size();index++)
+    for(uint16_t index = 0;index<players_size;index++)
     {
-        if(players[index].id)
+        if(players.at(index).is_relevant())
         {
-            ImGui::Text(players[index].name.c_str());
+            ImGui::Text(players.at(index).name.c_str());
         }
     }
     ImGui::NextColumn();
 
     ImGui::Text("Received");
-    for(uint16_t index = 0;index<players.size();index++)
+    for(uint16_t index = 0;index<players_size;index++)
     {
-        if(players[index].id)
+        if(players.at(index).is_relevant())
         {
-            ImGui::Text(std::to_string(players[index].mechanics_received).c_str());
+            ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
         }
     }
     ImGui::NextColumn();
 
     ImGui::Text("Failed");
-    for(uint16_t index = 0;index<players.size();index++)
+    for(uint16_t index = 0;index<players_size;index++)
     {
-        if(players[index].id)
+        if(players.at(index).is_relevant())
         {
-            ImGui::Text(std::to_string(players[index].mechanics_failed).c_str());
+            ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());\
         }
     }
     ImGui::NextColumn();
 
     ImGui::Text("Downs");
-    for(uint16_t index = 0;index<players.size();index++)
+    for(uint16_t index = 0;index<players_size;index++)
     {
-        if(players[index].id)
+        if(players.at(index).is_relevant())
         {
-            ImGui::Text(std::to_string(players[index].downs).c_str());
+            ImGui::Text(std::to_string(players.at(index).downs).c_str());
         }
     }
     ImGui::NextColumn();
 
     ImGui::Text("Deaths");
-    for(uint16_t index = 0;index<players.size();index++)
+    for(uint16_t index = 0;index<players_size;index++)
     {
-        if(players[index].id)
+        if(players.at(index).is_relevant())
         {
-            ImGui::Text(std::to_string(players[index].deaths).c_str());
+            ImGui::Text(std::to_string(players.at(index).deaths).c_str());
         }
     }
     ImGui::Columns(1);
