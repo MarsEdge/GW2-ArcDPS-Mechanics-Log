@@ -113,6 +113,7 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
 
         if(current_player
            && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
+           && (!current_player->is_downed)
            && (!is_interupt || current_player->get_last_stab_time() <= ev->time))
         {
             current_player->set_last_hit_time(ev->time);
