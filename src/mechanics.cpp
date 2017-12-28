@@ -170,12 +170,14 @@ gors_egg::gors_egg()
 sab_sapper_bomb::sab_sapper_bomb()
 {
     name="got a sapper bomb"; //name of mechanic
+    fail_if_hit = false;
     ids.push_back(MECHANIC_SAB_SAPPER_BOMB); //skill id;
 }
 
 sab_time_bomb::sab_time_bomb()
 {
     name="got a time bomb"; //name of mechanic
+    fail_if_hit = false;
     ids.push_back(MECHANIC_SAB_TIME_BOMB); //skill id;
 }
 
@@ -242,6 +244,7 @@ matt_bomb::matt_bomb()
 {
     name="got a bomb"; //name of mechanic
     ids.push_back(MECHANIC_MATT_BOMB); //skill id;
+    fail_if_hit = false;
     frequency_player = 12000;
 }
 
@@ -368,12 +371,14 @@ dhuum_golem::dhuum_golem()
 dhuum_shackle_src::dhuum_shackle_src()
 {
     name="is shackled"; //name of mechanic
+    fail_if_hit = false;
     ids.push_back(MECHANIC_DHUUM_SHACKLE); //skill id;
 }
 
 dhuum_shackle_dst::dhuum_shackle_dst()
 {
     name="is shackled"; //name of mechanic
+    fail_if_hit = false;
     ids.push_back(MECHANIC_DHUUM_SHACKLE); //skill id;
     target_is_dst = false;
 }
@@ -381,6 +386,7 @@ dhuum_shackle_dst::dhuum_shackle_dst()
 dhuum_affliction::dhuum_affliction()
 {
     name="has affliction"; //name of mechanic
+    fail_if_hit = false;
     ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
     frequency_player = 13000 + ms_per_tick;
 }
