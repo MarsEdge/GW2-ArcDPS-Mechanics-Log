@@ -97,6 +97,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
                 {
                     ImGui::BeginGroup();
 
+                    ImGui::Indent();
                     ImGui::Text(players.at(index).tracker.at(tracker_index).name.c_str());
                     if(!players.at(index).tracker.at(tracker_index).fail)
                     {
@@ -109,6 +110,8 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
                     ImGui::Text(std::to_string(players.at(index).tracker.at(tracker_index).hits).c_str());
 
                     ImGui::EndGroup();
+
+                    ImGui::Separator();
                 }
             }
 
