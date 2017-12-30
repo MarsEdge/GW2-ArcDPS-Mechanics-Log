@@ -69,16 +69,17 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
     std::lock_guard<std::mutex> lg(players_mtx);
 
     size_t players_size = players.size();
+    float column_width = ImGui::GetWindowContentRegionWidth()/5.0;
 
     ImGui::BeginGroup();
     ImGui::Text("Name");
-    ImGui::SameLine();ImGui::Indent(0.5);
+    ImGui::SameLine(column_width*1);
     ImGui::Text("Received");
-    ImGui::SameLine();ImGui::Indent(50);
+    ImGui::SameLine(column_width*2);
     ImGui::Text("Failed");
-    ImGui::SameLine();ImGui::Indent();
+    ImGui::SameLine(column_width*3);
     ImGui::Text("Downs");
-    ImGui::SameLine();ImGui::Indent();
+    ImGui::SameLine(column_width*4);
     ImGui::Text("Deaths");
     ImGui::EndGroup();
 
@@ -89,16 +90,16 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
             ImGui::BeginGroup();
             if(ImGui::CollapsingHeader(players.at(index).name.c_str()))
             {
-                ImGui::Text("Test");
+                ImGui::Text("Total");
             }
-            ImGui::SameLine();ImGui::Indent();
+            ImGui::SameLine(column_width*1);
             ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
 
-            ImGui::SameLine();ImGui::Indent(3);
+            ImGui::SameLine(column_width*2);
             ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());
-            ImGui::SameLine();ImGui::Indent();
+            ImGui::SameLine(column_width*3);
             ImGui::Text(std::to_string(players.at(index).downs).c_str());
-            ImGui::SameLine();ImGui::Indent();
+            ImGui::SameLine(column_width*4);
             ImGui::Text(std::to_string(players.at(index).deaths).c_str());
 
             ImGui::EndGroup();
