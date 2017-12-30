@@ -72,6 +72,8 @@ void Player::mechanic_receive()
 
 bool Player::is_relevant()
 {
+    return true;
+
     return downs > 0
     || deaths > 0
     || mechanics_failed > 0

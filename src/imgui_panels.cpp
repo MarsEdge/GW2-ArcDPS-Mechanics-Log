@@ -65,61 +65,46 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open);
-    ImGui::Columns(5);
 
     std::lock_guard<std::mutex> lg(players_mtx);
 
     size_t players_size = players.size();
 
+    ImGui::BeginGroup();
     ImGui::Text("Name");
-    for(uint16_t index = 0;index<players_size;index++)
-    {
-        if(players.at(index).is_relevant())
-        {
-            ImGui::Text(players.at(index).name.c_str());
-        }
-    }
-    ImGui::NextColumn();
-
+    ImGui::SameLine();ImGui::Indent(0.5);
     ImGui::Text("Received");
-    for(uint16_t index = 0;index<players_size;index++)
-    {
-        if(players.at(index).is_relevant())
-        {
-            ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
-        }
-    }
-    ImGui::NextColumn();
-
+    ImGui::SameLine();ImGui::Indent(50);
     ImGui::Text("Failed");
-    for(uint16_t index = 0;index<players_size;index++)
-    {
-        if(players.at(index).is_relevant())
-        {
-            ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());\
-        }
-    }
-    ImGui::NextColumn();
-
+    ImGui::SameLine();ImGui::Indent();
     ImGui::Text("Downs");
-    for(uint16_t index = 0;index<players_size;index++)
-    {
-        if(players.at(index).is_relevant())
-        {
-            ImGui::Text(std::to_string(players.at(index).downs).c_str());
-        }
-    }
-    ImGui::NextColumn();
-
+    ImGui::SameLine();ImGui::Indent();
     ImGui::Text("Deaths");
+    ImGui::EndGroup();
+
     for(uint16_t index = 0;index<players_size;index++)
     {
         if(players.at(index).is_relevant())
         {
+            ImGui::BeginGroup();
+            if(ImGui::CollapsingHeader(players.at(index).name.c_str()))
+            {
+                ImGui::Text("Test");
+            }
+            ImGui::SameLine();ImGui::Indent();
+            ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
+
+            ImGui::SameLine();ImGui::Indent(3);
+            ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());
+            ImGui::SameLine();ImGui::Indent();
+            ImGui::Text(std::to_string(players.at(index).downs).c_str());
+            ImGui::SameLine();ImGui::Indent();
             ImGui::Text(std::to_string(players.at(index).deaths).c_str());
+
+            ImGui::EndGroup();
+            ImGui::Separator();
         }
     }
-    ImGui::Columns(1);
 
     ImGui::End();
 }
