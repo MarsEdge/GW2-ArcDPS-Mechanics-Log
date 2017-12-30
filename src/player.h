@@ -22,6 +22,18 @@ struct Player
     uint64_t last_hit_time;       //time player was last hit with a mechanic
     uint16_t last_mechanic;       //skill id of last failed mechanic
 
+    struct mechanic_tracker
+    {
+        std::string name; //name of mechanic
+        uint16_t id; //skill id;
+        bool fail;
+        uint16_t hits;
+
+        mechanic_tracker(std::string new_name,uint16_t new_id,bool new_fail);
+    };
+
+    std::vector<mechanic_tracker> tracker;
+
     Player();
     Player(ag* new_player);
 
@@ -29,8 +41,7 @@ struct Player
     void dead();
     void rally();
 
-    void mechanic_fail();
-    void mechanic_receive();
+    void mechanic_receive(std::string name,uint16_t id,bool is_fail);
     bool is_relevant();     //if player is relevant for displaying
 
     uint64_t get_last_stab_time();

@@ -88,22 +88,43 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
         if(players.at(index).is_relevant())
         {
             ImGui::BeginGroup();
+
             if(ImGui::CollapsingHeader(players.at(index).name.c_str()))
             {
-                ImGui::Text("Total");
+                for(uint16_t tracker_index=0;
+                tracker_index<players.at(index).tracker.size();
+                tracker_index++)
+                {
+                    ImGui::BeginGroup();
+
+                    ImGui::Text(players.at(index).tracker.at(tracker_index).name.c_str());
+                    if(!players.at(index).tracker.at(tracker_index).fail)
+                    {
+                        ImGui::SameLine(column_width*1);
+                    }
+                    else
+                    {
+                        ImGui::SameLine(column_width*2);
+                    }
+                    ImGui::Text(std::to_string(players.at(index).tracker.at(tracker_index).hits).c_str());
+
+                    ImGui::EndGroup();
+                }
             }
-            ImGui::SameLine(column_width*1);
-            ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
 
-            ImGui::SameLine(column_width*2);
-            ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());
-            ImGui::SameLine(column_width*3);
-            ImGui::Text(std::to_string(players.at(index).downs).c_str());
-            ImGui::SameLine(column_width*4);
-            ImGui::Text(std::to_string(players.at(index).deaths).c_str());
+                ImGui::Indent();
+                ImGui::Text("Total");
+                ImGui::SameLine(column_width*1);
+                ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
 
-            ImGui::EndGroup();
-            ImGui::Separator();
+                ImGui::SameLine(column_width*2);
+                ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());
+                ImGui::SameLine(column_width*3);
+                ImGui::Text(std::to_string(players.at(index).downs).c_str());
+                ImGui::SameLine(column_width*4);
+                ImGui::Text(std::to_string(players.at(index).deaths).c_str());
+
+                ImGui::EndGroup();
         }
     }
 

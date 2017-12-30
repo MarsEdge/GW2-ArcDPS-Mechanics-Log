@@ -39,6 +39,14 @@ Player::Player(ag* new_player)
     last_mechanic=0;       //skill id of last failed mechanic
 }
 
+Player::mechanic_tracker::mechanic_tracker(std::string new_name,uint16_t new_id,bool new_fail)
+{
+    name = new_name;
+    id = new_id;
+    fail = new_fail;
+    hits = 1;
+}
+
 void Player::down()
 {
     std::lock_guard<std::mutex> lg(players_mtx);
@@ -58,22 +66,24 @@ void Player::rally()
     is_downed = false;
 }
 
-void Player::mechanic_fail()
-{
-    std::lock_guard<std::mutex> lg(players_mtx);
-    mechanics_failed++;
-}
-
-void Player::mechanic_receive()
+void Player::mechanic_receive(std::string name,uint16_t id,bool is_fail)
 {
     std::lock_guard<std::mutex> lg(players_mtx);
     mechanics_received++;
+    for(uint16_t index=0;index<tracker.size();index++)
+    {
+        if(tracker.at(index).id == id)
+        {
+            tracker.at(index).hits++;
+            return;
+        }
+    }
+    tracker.push_back(mechanic_tracker(name,id,is_fail));
+    return;
 }
 
 bool Player::is_relevant()
 {
-    return true;
-
     return downs > 0
     || deaths > 0
     || mechanics_failed > 0

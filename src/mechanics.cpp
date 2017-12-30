@@ -118,14 +118,8 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
         {
             current_player->set_last_hit_time(ev->time);
             last_hit_time = ev->time;
-            if(fail_if_hit)
-            {
-                current_player->mechanic_fail();
-            }
-            else
-            {
-                current_player->mechanic_receive();
-            }
+            current_player->mechanic_receive(name,ids[0],fail_if_hit);
+
             current_player->set_last_mechanic(ev->skillid);
 
             last_mechanic_time = ev->time;
