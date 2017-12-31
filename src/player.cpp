@@ -69,7 +69,14 @@ void Player::rally()
 void Player::mechanic_receive(std::string name,uint16_t id,bool is_fail)
 {
     std::lock_guard<std::mutex> lg(players_mtx);
-    mechanics_received++;
+    if(!is_fail)
+    {
+        mechanics_received++;
+    }
+    else
+    {
+        mechanics_failed++;
+    }
     for(uint16_t index=0;index<tracker.size();index++)
     {
         if(tracker.at(index).id == id)
