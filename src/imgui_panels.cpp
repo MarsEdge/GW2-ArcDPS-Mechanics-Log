@@ -70,6 +70,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
 
     size_t players_size = players.size();
     float column_width = ImGui::GetWindowContentRegionWidth()/5.0;
+    bool expand = false;
 
     ImGui::BeginGroup();
     ImGui::Text("Name");
@@ -90,7 +91,18 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
         {
             ImGui::BeginGroup();
 
-            if(ImGui::CollapsingHeader(players.at(index).name.c_str()))
+            expand = ImGui::CollapsingHeader(players.at(index).name.c_str());
+
+            ImGui::SameLine(column_width*1);
+            ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
+            ImGui::SameLine(column_width*2);
+            ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());
+            ImGui::SameLine(column_width*3);
+            ImGui::Text(std::to_string(players.at(index).downs).c_str());
+            ImGui::SameLine(column_width*4);
+            ImGui::Text(std::to_string(players.at(index).deaths).c_str());
+
+            if(expand)
             {
                 for(uint16_t tracker_index=0;
                 tracker_index<players.at(index).tracker.size();
@@ -115,20 +127,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
                     ImGui::Separator();
                 }
             }
-
-                ImGui::Indent();
-                ImGui::Text("Total");
-                ImGui::SameLine(column_width*1);
-                ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
-
-                ImGui::SameLine(column_width*2);
-                ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());
-                ImGui::SameLine(column_width*3);
-                ImGui::Text(std::to_string(players.at(index).downs).c_str());
-                ImGui::SameLine(column_width*4);
-                ImGui::Text(std::to_string(players.at(index).deaths).c_str());
-
-                ImGui::EndGroup();
+            ImGui::EndGroup();
         }
     }
     ImGui::EndChild();
