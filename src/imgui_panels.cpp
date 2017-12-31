@@ -83,6 +83,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
     ImGui::Text("Deaths");
     ImGui::EndGroup();
 
+    ImGui::BeginChild("scrolling");
     for(uint16_t index = 0;index<players_size;index++)
     {
         if(players.at(index).is_relevant())
@@ -130,6 +131,6 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
                 ImGui::EndGroup();
         }
     }
-
+    ImGui::EndChild();
     ImGui::End();
 }
