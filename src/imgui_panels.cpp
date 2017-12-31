@@ -90,6 +90,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
         if(players.at(index).is_relevant())
         {
             ImGui::BeginGroup();
+            ImGui::AlignFirstTextHeightToWidgets();
 
             expand = ImGui::CollapsingHeader(players.at(index).name.c_str());
 
