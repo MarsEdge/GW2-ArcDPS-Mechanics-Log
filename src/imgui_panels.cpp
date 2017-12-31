@@ -69,18 +69,18 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
     std::lock_guard<std::mutex> lg(players_mtx);
 
     size_t players_size = players.size();
-    float column_width = ImGui::GetWindowContentRegionWidth()/5.0;
+    float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
 
     ImGui::BeginGroup();
     ImGui::Text("Name");
-    ImGui::SameLine(column_width*1);
+    ImGui::SameLine(get_chart_column_loc(window_width,1));
     ImGui::Text("Received");
-    ImGui::SameLine(column_width*2);
+    ImGui::SameLine(get_chart_column_loc(window_width,2));
     ImGui::Text("Failed");
-    ImGui::SameLine(column_width*3);
+    ImGui::SameLine(get_chart_column_loc(window_width,3));
     ImGui::Text("Downs");
-    ImGui::SameLine(column_width*4);
+    ImGui::SameLine(get_chart_column_loc(window_width,4));
     ImGui::Text("Deaths");
     ImGui::EndGroup();
 
@@ -93,13 +93,13 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
 
             expand = ImGui::CollapsingHeader(players.at(index).name.c_str());
 
-            ImGui::SameLine(column_width*1);
+            ImGui::SameLine(get_chart_column_loc(window_width,1));
             ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
-            ImGui::SameLine(column_width*2);
+            ImGui::SameLine(get_chart_column_loc(window_width,2));
             ImGui::Text(std::to_string(players.at(index).mechanics_failed).c_str());
-            ImGui::SameLine(column_width*3);
+            ImGui::SameLine(get_chart_column_loc(window_width,3));
             ImGui::Text(std::to_string(players.at(index).downs).c_str());
-            ImGui::SameLine(column_width*4);
+            ImGui::SameLine(get_chart_column_loc(window_width,4));
             ImGui::Text(std::to_string(players.at(index).deaths).c_str());
 
             if(expand)
@@ -114,11 +114,11 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
                     ImGui::Text(players.at(index).tracker.at(tracker_index).name.c_str());
                     if(!players.at(index).tracker.at(tracker_index).fail)
                     {
-                        ImGui::SameLine(column_width*1);
+                        ImGui::SameLine(get_chart_column_loc(window_width,1));
                     }
                     else
                     {
-                        ImGui::SameLine(column_width*2);
+                        ImGui::SameLine(get_chart_column_loc(window_width,2));
                     }
                     ImGui::Text(std::to_string(players.at(index).tracker.at(tracker_index).hits).c_str());
 
@@ -132,4 +132,14 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
     }
     ImGui::EndChild();
     ImGui::End();
+}
+
+float get_chart_column_width(float window_width)
+{
+    return window_width/5.0*3.0/4.0;
+}
+
+float get_chart_column_loc(float window_width, uint16_t col)
+{
+     return (window_width/4.0) + col * get_chart_column_width(window_width);
 }

@@ -23,3 +23,6 @@ struct AppChart
 
     void    Draw(const char* title, std::vector<Player> players, bool* p_open);
 };
+
+float get_chart_column_width(float window_width);
+float get_chart_column_loc(float window_width, uint16_t col);
