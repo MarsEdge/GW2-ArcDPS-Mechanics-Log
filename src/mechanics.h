@@ -226,10 +226,10 @@ static struct dhuum_mark : mechanic
     dhuum_mark();
 } dhuum_mark;
 
-static struct dhuum_teleport_aoe : mechanic
+static struct dhuum_suck_aoe : mechanic
 {
-    dhuum_teleport_aoe();
-} dhuum_teleport_aoe;
+    dhuum_suck_aoe();
+} dhuum_suck_aoe;
 
 static struct nightmare_vomit : mechanic
 {

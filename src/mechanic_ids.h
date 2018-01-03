@@ -69,7 +69,7 @@
 #define MECHANIC_DHUUM_SHACKLE 47335//Soul Shackle
 #define MECHANIC_DHUUM_CRACK 48752//Cull
 #define MECHANIC_DHUUM_MARK 48760//Putrid Bomb
-#define MECHANIC_DHUUM_TELEPORT_AOE 48398//Cataclysmic Cycle
+#define MECHANIC_DHUUM_SUCK_AOE 48398//Cataclysmic Cycle
 
 #define MECHANIC_NIGHTMARE_VOMIT 37030//Toxic Sickness
 

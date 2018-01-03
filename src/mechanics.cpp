@@ -46,7 +46,7 @@ std::vector <mechanic> mechanics =
     dhuum_shackle_dst,
     dhuum_crack,
 //    dhuum_mark,
-    dhuum_teleport_aoe,
+    dhuum_suck_aoe,
     nightmare_vomit,
     mama_wirl,
     mama_knock,
@@ -397,10 +397,10 @@ dhuum_mark::dhuum_mark()
     ids.push_back(MECHANIC_DHUUM_MARK); //skill id;
 }
 
-dhuum_teleport_aoe::dhuum_teleport_aoe()
+dhuum_suck_aoe::dhuum_suck_aoe()
 {
-    name="stood in the teleport aoe"; //name of mechanic
-    ids.push_back(MECHANIC_DHUUM_TELEPORT_AOE); //skill id;
+    name="touched the center during suction"; //name of mechanic
+    ids.push_back(MECHANIC_DHUUM_SUCK_AOE); //skill id;
 }
 
 nightmare_vomit::nightmare_vomit()
