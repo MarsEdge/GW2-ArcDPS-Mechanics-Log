@@ -14,7 +14,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
-				<Option parameters="-clientport 443 -mapLoadinfo" />
+				<Option parameters="-mapLoadinfo" />
 				<Option host_application="C:/Program Files/Guild Wars 2/Gw2-64.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<Option createDefFile="1" />
@@ -29,6 +29,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
+				<Option parameters="-mapLoadinfo" />
 				<Option host_application="C:/Program Files/Guild Wars 2/Gw2-64.exe" />
 				<Option run_host_application_in_terminal="0" />
 				<Option createDefFile="1" />
