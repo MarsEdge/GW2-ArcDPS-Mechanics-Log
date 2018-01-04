@@ -24,6 +24,7 @@ std::vector <mechanic> mechanics =
     matt_shard_reflect,
     matt_bomb,
     matt_corruption,
+    matt_sacrifice,
 //    xera_half,
     xera_orb,
     xera_orb_aoe,
@@ -255,6 +256,13 @@ matt_corruption::matt_corruption()
 {
     name="got a corruption"; //name of mechanic
     ids.push_back(MECHANIC_MATT_CORRUPTION); //skill id;
+    fail_if_hit = false;
+}
+
+matt_sacrifice::matt_sacrifice()
+{
+    name="is sacrificed"; //name of mechanic
+    ids.push_back(MECHANIC_MATT_SACRIFICE); //skill id;
     fail_if_hit = false;
 }
 

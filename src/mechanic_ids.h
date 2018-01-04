@@ -33,6 +33,7 @@
 #define MECHANIC_MATT_SHARD_ABOM 34411//Shards of Rage
 #define MECHANIC_MATT_BOMB 34450//Unstable Blood Magic
 #define MECHANIC_MATT_CORRUPTION 34416//Corruption
+#define MECHANIC_MATT_SACRIFICE 34442//nameless
 
 //xera
 #define MECHANIC_XERA_HALF 34883
