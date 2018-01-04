@@ -95,4 +95,4 @@
 #define MECHANIC_ARKK_PIE_B 39001//Horizon Strike
 #define MECHANIC_ARKK_FEAR 39442//Blinding Radiance
 #define MECHANIC_ARKK_OVERHEAD_SMASH 38844//Overhead Smash
-#define MECHANIC_ARKK_BOMB 39275//Corporeal Reassignment
+#define MECHANIC_ARKK_BOMB 38880//Corporeal Reassignment
