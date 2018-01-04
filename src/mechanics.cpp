@@ -73,6 +73,7 @@ mechanic::mechanic()
     target_is_dst = true;
     fail_if_hit = true;
     is_buffremove = 0;
+    valid_if_down = false;
 }
 
 bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
@@ -114,7 +115,7 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
 
         if(current_player
            && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
-           && (!current_player->is_downed)
+           && (!current_player->is_downed || valid_if_down)
            && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
            && special_requirement(ev,src,dst,*current_player))
         {
@@ -180,6 +181,7 @@ sab_time_bomb::sab_time_bomb()
     name="got a time bomb"; //name of mechanic
     fail_if_hit = false;
     ids.push_back(MECHANIC_SAB_TIME_BOMB); //skill id;
+    valid_if_down = true;
 }
 
 sab_cannon::sab_cannon()
@@ -269,6 +271,7 @@ xera_magic::xera_magic()
     fail_if_hit = false;
     target_is_dst = false;
     frequency_global = 12000;
+    valid_if_down = true;
 }
 
 xera_orb::xera_orb()

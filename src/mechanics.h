@@ -26,6 +26,7 @@ struct mechanic
     bool is_multihit = true;
     bool target_is_dst;
     bool fail_if_hit;
+    bool valid_if_down; //mechanic counts if player is in down-state
 
     mechanic();
     bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst);
