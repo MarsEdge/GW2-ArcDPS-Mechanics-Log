@@ -111,6 +111,11 @@ static struct matt_bomb : mechanic
     matt_bomb();
 } matt_bomb;
 
+static struct matt_corruption : mechanic
+{
+    matt_corruption();
+} matt_corruption;
+
 static struct xera_half : mechanic
 {
     xera_half();

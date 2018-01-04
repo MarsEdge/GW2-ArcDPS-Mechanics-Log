@@ -23,6 +23,7 @@ std::vector <mechanic> mechanics =
     matt_hadouken,
     matt_shard_reflect,
     matt_bomb,
+    matt_corruption,
 //    xera_half,
     xera_orb,
     xera_orb_aoe,
@@ -240,6 +241,13 @@ matt_bomb::matt_bomb()
     ids.push_back(MECHANIC_MATT_BOMB); //skill id;
     fail_if_hit = false;
     frequency_player = 12000;
+}
+
+matt_corruption::matt_corruption()
+{
+    name="got a corruption"; //name of mechanic
+    ids.push_back(MECHANIC_MATT_CORRUPTION); //skill id;
+    fail_if_hit = false;
 }
 
 xera_half::xera_half()
