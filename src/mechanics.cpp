@@ -385,7 +385,7 @@ horror_scythe::horror_scythe()
 
 dhuum_golem::dhuum_golem()
 {
-    name="touched a golem"; //name of mechanic
+    name="touched a messenger"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_GOLEM); //skill id;
 }
 
