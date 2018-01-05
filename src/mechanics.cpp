@@ -366,7 +366,7 @@ horror_donut_outer::horror_donut_outer()
 
 horror_golem_aoe::horror_golem_aoe()
 {
-    name="stood in golem aoe"; //name of mechanic
+    name="stood in torment aoe"; //name of mechanic
     ids.push_back(MECHANIC_HORROR_GOLEM_AOE); //skill id;
 }
 
