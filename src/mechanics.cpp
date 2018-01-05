@@ -292,6 +292,7 @@ xera_orb_aoe::xera_orb_aoe()
 {
     name="stood in an orb aoe"; //name of mechanic
     ids.push_back(MECHANIC_XERA_ORB_AOE); //skill id;
+    frequency_player = 1000;
 }
 
 carin_teleport::carin_teleport()
