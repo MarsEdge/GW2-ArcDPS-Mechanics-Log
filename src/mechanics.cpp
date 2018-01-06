@@ -514,4 +514,5 @@ arkk_bomb::arkk_bomb()
 {
     name="blew up a bomb"; //name of mechanic
     ids.push_back(MECHANIC_ARKK_BOMB); //skill id;
+    fail_if_hit = false;
 }
