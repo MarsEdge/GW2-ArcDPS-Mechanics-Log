@@ -265,7 +265,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 
 static void ShowMechanicsLog(bool* p_open)
 {
-    static ExampleAppLog log;
+    static AppLog log;
 
     if(print_buffer.size() > 0)
     {

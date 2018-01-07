@@ -4,7 +4,7 @@
 #include "imgui.h"
 #include <string>
 
-struct ExampleAppLog
+struct AppLog
 {
     ImGuiTextBuffer     Buf;
     ImGuiTextFilter     Filter;
@@ -21,7 +21,7 @@ struct AppChart
 {
     void    Clear();
 
-    void    Draw(const char* title, std::vector<Player> players, bool* p_open);
+    void    Draw(const char* title, std::vector<Player> &players, bool* p_open);
 };
 
 float get_chart_column_width(float window_width);

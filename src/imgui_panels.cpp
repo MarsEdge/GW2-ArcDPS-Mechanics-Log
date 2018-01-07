@@ -4,14 +4,14 @@
 //  static ExampleAppLog my_log;
 //  my_log.AddLog("Hello %d world\n", 123);
 //  my_log.Draw("title");
-void    ExampleAppLog::Clear()
+void    AppLog::Clear()
 {
     Buf.clear();
     LineOffsets.clear();
     reset_all_player_stats();
 }
 
-void    ExampleAppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
+void    AppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 {
     int old_size = Buf.size();
     va_list args;
@@ -24,7 +24,7 @@ void    ExampleAppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
     ScrollToBottom = true;
 }
 
-void    ExampleAppLog::Draw(const char* title, bool* p_open = NULL)
+void    AppLog::Draw(const char* title, bool* p_open = NULL)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open);
@@ -61,7 +61,7 @@ void    ExampleAppLog::Draw(const char* title, bool* p_open = NULL)
     ImGui::End();
 }
 
-void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_open)
+void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_open)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open);
@@ -89,10 +89,9 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
     {
         if(players.at(index).is_relevant())
         {
-            ImGui::BeginGroup();
+            ImGui::PushItemWidth(window_width*0.9);
             ImGui::AlignFirstTextHeightToWidgets();
-
-            expand = ImGui::CollapsingHeader(players.at(index).name.c_str());
+            expand = ImGui::TreeNode(players.at(index).name.c_str());
 
             ImGui::SameLine(get_chart_column_loc(window_width,1));
             ImGui::Text(std::to_string(players.at(index).mechanics_received).c_str());
@@ -102,6 +101,14 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
             ImGui::Text(std::to_string(players.at(index).downs).c_str());
             ImGui::SameLine(get_chart_column_loc(window_width,4));
             ImGui::Text(std::to_string(players.at(index).deaths).c_str());
+            ImGui::PopItemWidth();
+            ImGui::SameLine(window_width*0.95);
+            if(ImGui::SmallButton("X"))
+            {
+                players.erase(players.begin()+index);
+                players_size = players.size();
+                continue;
+            }
 
             if(expand)
             {
@@ -109,8 +116,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
                 tracker_index<players.at(index).tracker.size();
                 tracker_index++)
                 {
-                    ImGui::BeginGroup();
-
+                    ImGui::PushItemWidth(window_width*0.9);
                     ImGui::Indent();
                     ImGui::Text(players.at(index).tracker.at(tracker_index).name.c_str());
                     if(!players.at(index).tracker.at(tracker_index).fail)
@@ -123,12 +129,12 @@ void    AppChart::Draw(const char* title, std::vector<Player> players, bool* p_o
                     }
                     ImGui::Text(std::to_string(players.at(index).tracker.at(tracker_index).hits).c_str());
 
-                    ImGui::EndGroup();
+                    ImGui::PopItemWidth();
 
                     ImGui::Separator();
                 }
+                ImGui::TreePop();
             }
-            ImGui::EndGroup();
         }
     }
     ImGui::EndChild();
