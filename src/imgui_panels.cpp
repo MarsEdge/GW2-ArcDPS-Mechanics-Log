@@ -27,7 +27,7 @@ void    AppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 void    AppLog::Draw(const char* title, bool* p_open = NULL)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
-    ImGui::Begin(title, p_open);
+    ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
     if (ImGui::Button("Clear")) Clear();
     ImGui::SameLine();
     bool copy = ImGui::Button("Copy");
@@ -64,7 +64,7 @@ void    AppLog::Draw(const char* title, bool* p_open = NULL)
 void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_open)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
-    ImGui::Begin(title, p_open);
+    ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
 
     std::lock_guard<std::mutex> lg(players_mtx);
 
