@@ -101,7 +101,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
             ImGui::SameLine(get_chart_column_loc(window_width,4));
             ImGui::Text(std::to_string(players.at(index).deaths).c_str());
             ImGui::PopItemWidth();
-            ImGui::SameLine(window_width*0.95);
+            ImGui::SameLine(window_width*0.90);
             if(ImGui::SmallButton("X"))
             {
                 players.erase(players.begin()+index);
