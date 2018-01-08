@@ -68,7 +68,6 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
 
     std::lock_guard<std::mutex> lg(players_mtx);
 
-    size_t players_size = players.size();
     float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
 
@@ -85,7 +84,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     ImGui::EndGroup();
 
     ImGui::BeginChild("scrolling");
-    for(uint16_t index = 0;index<players_size;index++)
+    for(uint16_t index = 0;index<players.size();index++)
     {
         if(players.at(index).is_relevant())
         {
@@ -106,7 +105,10 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
             if(ImGui::SmallButton("X"))
             {
                 players.erase(players.begin()+index);
-                players_size = players.size();
+                if(expand)
+                {
+                    ImGui::TreePop();
+                }
                 continue;
             }
 
