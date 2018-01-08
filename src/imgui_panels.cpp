@@ -136,9 +136,9 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
                     ImGui::Separator();
                 }
 
-                ImGui::Separator();
                 ImGui::TreePop();
             }
+            ImGui::Separator();
         }
     }
     ImGui::EndChild();
