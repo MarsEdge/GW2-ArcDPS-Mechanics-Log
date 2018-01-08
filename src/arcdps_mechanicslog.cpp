@@ -184,23 +184,16 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 		/* buff remove */
 		else if (ev->is_buffremove)
         {
-            if(is_player(dst))
+            current_player=get_player(dst);
+            if(current_player)
             {
                 if (ev->skillid==1122)//if it's stability
                 {
-                    current_player=get_player(dst);
-                    if(current_player)
-                    {
-                        current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
-                    }
+                    current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
                 }
                 else if (ev->skillid==5620)//vapor form manual case
                 {
-                    current_player=get_player(dst);
-                    if(current_player)
-                    {
-                        current_player->fix_double_down();
-                    }
+                    current_player->fix_double_down();
                 }
             }
 		}
@@ -208,15 +201,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 		/* buff */
 		else if (ev->buff)
         {
-            if(is_player(dst))
+            current_player=get_player(dst);
+            if(current_player)
             {
                 if (ev->skillid==1122)//if it's stability
                 {
-                    current_player=get_player(dst);
-                    if(current_player)
-                    {
-                        current_player->set_stab_time(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
-                    }
+                    current_player->set_stab_time(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
                 }
             }
 		}
