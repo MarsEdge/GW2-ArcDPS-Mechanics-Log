@@ -66,6 +66,12 @@ void Player::rally()
     is_downed = false;
 }
 
+void Player::fix_double_down()
+{
+    std::lock_guard<std::mutex> lg(players_mtx);
+    downs--;
+}
+
 void Player::mechanic_receive(std::string name,uint16_t id,bool is_fail)
 {
     std::lock_guard<std::mutex> lg(players_mtx);

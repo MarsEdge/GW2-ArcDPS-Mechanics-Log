@@ -40,6 +40,7 @@ struct Player
     void down();
     void dead();
     void rally();
+    void fix_double_down(); //manual case to fix vapor form counting as 2 downs
 
     void mechanic_receive(std::string name,uint16_t id,bool is_fail);
     bool is_relevant();     //if player is relevant for displaying

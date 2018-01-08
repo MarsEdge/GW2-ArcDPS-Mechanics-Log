@@ -194,6 +194,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
                     }
                 }
+                else if (ev->skillid==5620)//vapor form manual case
+                {
+                    current_player=get_player(dst);
+                    if(current_player)
+                    {
+                        current_player->fix_double_down();
+                    }
+                }
             }
 		}
 
