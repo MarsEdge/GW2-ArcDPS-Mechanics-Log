@@ -128,11 +128,13 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
                         ImGui::SameLine(get_chart_column_loc(window_width,2));
                     }
                     ImGui::Text(std::to_string(players.at(index).tracker.at(tracker_index).hits).c_str());
-
+                    ImGui::Unindent();
                     ImGui::PopItemWidth();
 
                     ImGui::Separator();
                 }
+
+                ImGui::Separator();
                 ImGui::TreePop();
             }
         }
