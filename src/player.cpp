@@ -5,7 +5,6 @@ std::mutex players_mtx;
 
 Player::Player()
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     name = "";
     id = 0;            //instance id
     downs = 0;              //number of times the player has downed
