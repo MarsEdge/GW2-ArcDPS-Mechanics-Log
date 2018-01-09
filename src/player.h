@@ -29,20 +29,20 @@ struct Player
         bool fail;
         uint16_t hits;
 
-        mechanic_tracker(std::string new_name,uint16_t new_id,bool new_fail);
+        mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail);
     };
 
     std::vector<mechanic_tracker> tracker;
 
     Player();
-    Player(ag* new_player);
+    Player(ag* &new_player);
 
     void down();
     void dead();
     void rally();
     void fix_double_down(); //manual case to fix vapor form counting as 2 downs
 
-    void mechanic_receive(std::string name,uint16_t id,bool is_fail);
+    void mechanic_receive(std::string &name,uint16_t &id,bool &is_fail);
     bool is_relevant();     //if player is relevant for displaying
 
     uint64_t get_last_stab_time();
@@ -59,6 +59,6 @@ extern std::mutex players_mtx;
 
 extern std::vector<Player> players;
 
-Player* get_player(ag* new_player);
-bool is_player(ag* new_player);
+Player* get_player(ag* &new_player);
+bool is_player(ag* &new_player);
 void reset_all_player_stats();

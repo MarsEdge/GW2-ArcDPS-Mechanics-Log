@@ -17,7 +17,7 @@ Player::Player()
     last_mechanic=0;       //skill id of last failed mechanic
 }
 
-Player::Player(ag* new_player)
+Player::Player(ag* &new_player)
 {
     if(new_player->name)
     {
@@ -38,7 +38,7 @@ Player::Player(ag* new_player)
     last_mechanic=0;       //skill id of last failed mechanic
 }
 
-Player::mechanic_tracker::mechanic_tracker(std::string new_name,uint16_t new_id,bool new_fail)
+Player::mechanic_tracker::mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail)
 {
     name = new_name;
     id = new_id;
@@ -48,30 +48,26 @@ Player::mechanic_tracker::mechanic_tracker(std::string new_name,uint16_t new_id,
 
 void Player::down()
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     downs++;
     is_downed = true;
 }
 
 void Player::dead()
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     deaths++;
 }
 
 void Player::rally()
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     is_downed = false;
 }
 
 void Player::fix_double_down()
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     downs--;
 }
 
-void Player::mechanic_receive(std::string name,uint16_t id,bool is_fail)
+void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
 {
     std::lock_guard<std::mutex> lg(players_mtx);
     if(!is_fail)
@@ -110,7 +106,6 @@ uint64_t Player::get_last_stab_time()
 
 void Player::set_stab_time(uint64_t new_stab_time)
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     if(last_stab_time < new_stab_time)
     {
         last_stab_time = new_stab_time;
@@ -124,7 +119,6 @@ uint64_t Player::get_last_hit_time()
 
 void Player::set_last_hit_time(uint64_t new_hit_time)
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     last_hit_time = new_hit_time;
 }
 
@@ -135,11 +129,10 @@ uint16_t Player::get_last_mechanic()
 
 void Player::set_last_mechanic(uint16_t new_mechanic)
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     last_mechanic = new_mechanic;
 }
 
-Player* get_player(ag* new_player)
+Player* get_player(ag* &new_player)
 {
     std::lock_guard<std::mutex> lg(players_mtx);
     if(!is_player(new_player))
@@ -160,7 +153,7 @@ Player* get_player(ag* new_player)
     return &players.back();
 }
 
-bool is_player(ag* new_player)
+bool is_player(ag* &new_player)
 {
     return new_player
     && new_player->prof < 10
