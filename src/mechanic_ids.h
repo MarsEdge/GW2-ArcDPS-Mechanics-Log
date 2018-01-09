@@ -94,6 +94,7 @@
 //Arkk
 #define MECHANIC_ARKK_PIE_A 39685//Horizon Strike (the id appears to be different for each phase of Arkk)
 #define MECHANIC_ARKK_PIE_B 39001//Horizon Strike
+#define MECHANIC_ARKK_PIE_C 39297//Horizon Strike (normal mode)
 #define MECHANIC_ARKK_FEAR 39442//Blinding Radiance
 #define MECHANIC_ARKK_OVERHEAD_SMASH 38844//Overhead Smash
 #define MECHANIC_ARKK_BOMB 38880//Corporeal Reassignment

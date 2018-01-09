@@ -496,6 +496,7 @@ arkk_pie::arkk_pie()
     name="stood in a pie slice"; //name of mechanic
     ids.push_back(MECHANIC_ARKK_PIE_A); //skill id;
     ids.push_back(MECHANIC_ARKK_PIE_B); //skill id;
+    ids.push_back(MECHANIC_ARKK_PIE_C); //skill id;
 }
 
 arkk_fear::arkk_fear()
