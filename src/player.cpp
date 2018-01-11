@@ -141,10 +141,13 @@ Player* get_player(ag* &new_player)
     }
     for(uint16_t index=0;index<players.size();index++)
     {
-        if(players.at(index).id == new_player->id
-           ||(new_player->name && std::string(new_player->name)==players.at(index).name)
-           )
+        if(players.at(index).id == new_player->id)
         {
+            return &players.at(index);
+        }
+        else if(new_player->name && std::string(new_player->name)==players.at(index).name)
+        {
+            players.at(index).id = new_player->id;
             return &players.at(index);
         }
     }
