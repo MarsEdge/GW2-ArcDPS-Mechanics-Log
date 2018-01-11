@@ -191,7 +191,9 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                 {
                     current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
                 }
-                else if (ev->skillid==5620)//vapor form manual case
+                else if (ev->skillid==5620//vapor form manual case
+                         || ev->skillid==10346//Illusion of Life manual case
+                         )
                 {
                     current_player->fix_double_down();
                 }
