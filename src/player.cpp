@@ -69,7 +69,6 @@ void Player::fix_double_down()
 
 void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     if(!is_fail)
     {
         mechanics_received++;
@@ -86,6 +85,7 @@ void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
             return;
         }
     }
+    std::lock_guard<std::mutex> lg(players_mtx);
     tracker.push_back(mechanic_tracker(name,id,is_fail));
     return;
 }
@@ -134,7 +134,6 @@ void Player::set_last_mechanic(uint16_t new_mechanic)
 
 Player* get_player(ag* &new_player)
 {
-    std::lock_guard<std::mutex> lg(players_mtx);
     if(!is_player(new_player))
     {
         return nullptr;
@@ -152,6 +151,7 @@ Player* get_player(ag* &new_player)
         }
     }
 
+    std::lock_guard<std::mutex> lg(players_mtx);
     players.push_back(Player(new_player));
     return &players.back();
 }
