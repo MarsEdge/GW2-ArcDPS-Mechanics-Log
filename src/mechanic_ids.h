@@ -73,6 +73,7 @@
 #define MECHANIC_DHUUM_MARK 48760//Putrid Bomb
 #define MECHANIC_DHUUM_SUCK_AOE 48398//Cataclysmic Cycle
 #define MECHANIC_DHUUM_TELEPORT_AOE 48176//Death Mark
+#define MECHANIC_DHUUM_SNATCH 47076//nameless
 
 #define MECHANIC_NIGHTMARE_VOMIT 37030//Toxic Sickness
 

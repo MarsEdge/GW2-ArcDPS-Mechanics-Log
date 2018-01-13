@@ -248,6 +248,12 @@ static struct dhuum_teleport_aoe : mechanic
     dhuum_teleport_aoe();
 } dhuum_teleport_aoe;
 
+static struct dhuum_snatch : mechanic
+{
+    dhuum_snatch();
+    bool special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player &current_player);
+} dhuum_snatch;
+
 static struct nightmare_vomit : mechanic
 {
     nightmare_vomit();

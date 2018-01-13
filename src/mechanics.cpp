@@ -50,6 +50,7 @@ std::vector <mechanic> mechanics =
 //    dhuum_mark,
     dhuum_suck_aoe,
     dhuum_teleport_aoe,
+    dhuum_snatch,
     nightmare_vomit,
     mama_wirl,
     mama_knock,
@@ -434,6 +435,18 @@ dhuum_teleport_aoe::dhuum_teleport_aoe()
 {
     name="stood in a teleport aoe"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_TELEPORT_AOE); //skill id;
+}
+
+dhuum_snatch::dhuum_snatch()
+{
+    name="was snatched"; //name of mechanic
+    ids.push_back(MECHANIC_DHUUM_SNATCH); //skill id;
+}
+
+bool dhuum_snatch::special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player &current_player)
+{
+    current_player.set_last_hit_time(ev->time);
+    return true;
 }
 
 nightmare_vomit::nightmare_vomit()
