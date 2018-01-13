@@ -1,5 +1,3 @@
-#include <stdint.h>
-#include <stdio.h>
 #include <Windows.h>
 #include <vector>
 #include <string>
