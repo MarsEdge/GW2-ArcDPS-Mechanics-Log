@@ -49,8 +49,6 @@
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
-			<Add option="-static" />
-			<Add option="-static-libgcc" />
 		</Linker>
 		<ExtraCommands>
 			<Add after='cmd /c CertUtil -hashfile &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE)&quot; MD5|find /v &quot;hash of file&quot;|find /v &quot;CertUtil&quot; &gt; &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE).md5sum&quot;' />
