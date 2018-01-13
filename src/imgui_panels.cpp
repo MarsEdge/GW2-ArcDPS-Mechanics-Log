@@ -66,8 +66,6 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
 
-    std::lock_guard<std::mutex> lg(players_mtx);
-
     float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
 
