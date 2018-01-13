@@ -159,6 +159,7 @@ Player* get_player(ag* &new_player)
 bool is_player(ag* &new_player)
 {
     return new_player
+    && new_player->prof > 0
     && new_player->prof < 10
     && new_player->name != nullptr
     && strlen(new_player->name) > 2;
