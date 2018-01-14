@@ -30,7 +30,7 @@ struct mechanic
 
     mechanic();
     bool is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst);
-    bool special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player &current_player);
+    bool special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player* &current_player);
 };
 
 static struct vg_teleport : mechanic
@@ -251,7 +251,6 @@ static struct dhuum_teleport_aoe : mechanic
 static struct dhuum_snatch : mechanic
 {
     dhuum_snatch();
-    bool special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player &current_player);
 } dhuum_snatch;
 
 static struct nightmare_vomit : mechanic

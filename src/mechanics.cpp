@@ -120,7 +120,7 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
            && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
            && (!current_player->is_downed || valid_if_down)
            && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
-           && special_requirement(ev,src,dst,*current_player))
+           && special_requirement(ev,src,dst,current_player))
         {
             current_player->set_last_hit_time(ev->time);
             last_hit_time = ev->time;
@@ -138,7 +138,7 @@ bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
     return false;
 }
 
-bool mechanic::special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player &current_player)
+bool mechanic::special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player* &current_player)
 {
     return true;
 }
@@ -441,12 +441,7 @@ dhuum_snatch::dhuum_snatch()
 {
     name="was snatched"; //name of mechanic
     ids.push_back(MECHANIC_DHUUM_SNATCH); //skill id;
-}
-
-bool dhuum_snatch::special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player &current_player)
-{
-    current_player.set_last_hit_time(ev->time);
-    return true;
+    frequency_player = 26000;
 }
 
 nightmare_vomit::nightmare_vomit()
