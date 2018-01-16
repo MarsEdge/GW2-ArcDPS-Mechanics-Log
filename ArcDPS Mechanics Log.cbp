@@ -53,7 +53,7 @@
 			<Add option="-static-libgcc" />
 		</Linker>
 		<ExtraCommands>
-			<Add after='cmd /c CertUtil -hashfile &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE)&quot; MD5|find /v &quot;hash of file&quot;|find /v &quot;CertUtil&quot; &gt; &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE).md5sum&quot;' />
+			<Add after='cmd /c CertUtil -hashfile &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE)&quot; MD5|find /v &quot;MD5 hash of&quot;|find /v &quot;CertUtil&quot; &gt; &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE).md5sum&quot;' />
 			<Add after='cmd /c copy /Y &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE)&quot; &quot;C:\Program Files\Guild Wars 2\bin64\d3d9_arcdps_mechanics.dll&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
