@@ -56,6 +56,7 @@ struct Player
 };
 
 extern std::mutex players_mtx;
+extern std::mutex tracker_mtx;
 
 extern std::vector<Player> players;
 

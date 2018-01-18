@@ -2,6 +2,7 @@
 
 std::vector<Player> players;
 std::mutex players_mtx;
+std::mutex tracker_mtx;
 
 Player::Player()
 {
@@ -85,7 +86,7 @@ void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
             return;
         }
     }
-    std::lock_guard<std::mutex> lg(players_mtx);
+    std::lock_guard<std::mutex> lg(tracker_mtx);
     tracker.push_back(mechanic_tracker(name,id,is_fail));
     return;
 }
