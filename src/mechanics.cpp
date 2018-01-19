@@ -146,7 +146,8 @@ mechanic sloth_shake = mechanic()
 
 mechanic sloth_fixate = mechanic()
 .set_name("is fixated")
-.set_ids({MECHANIC_SLOTH_FIXATE});
+.set_ids({MECHANIC_SLOTH_FIXATE})
+.set_fail_if_hit(false);
 
 mechanic matt_hadouken = mechanic()
 .set_name("was hadoukened")
@@ -171,6 +172,16 @@ mechanic matt_corruption = mechanic()
 mechanic matt_sacrifice = mechanic()
 .set_name("is sacrificed")
 .set_ids({MECHANIC_MATT_SACRIFICE})
+.set_fail_if_hit(false);
+
+mechanic kc_fixate_a = mechanic()
+.set_name("is fixate A")
+.set_ids({MECHANIC_KC_FIXATE_A})
+.set_fail_if_hit(false);
+
+mechanic kc_fixate_b = mechanic()
+.set_name("is fixate B")
+.set_ids({MECHANIC_KC_FIXATE_B})
 .set_fail_if_hit(false);
 
 mechanic xera_half = mechanic()
@@ -413,6 +424,8 @@ std::vector <mechanic> mechanics =
     matt_bomb,
     matt_corruption,
     matt_sacrifice,
+    kc_fixate_a,
+    kc_fixate_b,
 //    xera_half,
     xera_orb,
     xera_orb_aoe,

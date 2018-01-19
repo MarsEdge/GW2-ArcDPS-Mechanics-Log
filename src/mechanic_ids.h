@@ -36,6 +36,10 @@ const uint16_t MECHANIC_MATT_BOMB = 34450;//Unstable Blood Magic
 const uint16_t MECHANIC_MATT_CORRUPTION = 34416;//Corruption
 const uint16_t MECHANIC_MATT_SACRIFICE = 34442;//nameless
 
+//kc
+const uint16_t MECHANIC_KC_FIXATE_A = 34912;//Fixated
+const uint16_t MECHANIC_KC_FIXATE_B = 34925;//Fixated
+
 //xera
 const uint16_t MECHANIC_XERA_HALF = 34883;
 const uint16_t MECHANIC_XERA_ORB = 35128;//Temporal Shred
