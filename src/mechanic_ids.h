@@ -99,3 +99,19 @@
 #define MECHANIC_ARKK_FEAR 39442//Blinding Radiance
 #define MECHANIC_ARKK_OVERHEAD_SMASH 38844//Overhead Smash
 #define MECHANIC_ARKK_BOMB 38880//Corporeal Reassignment
+
+//conjures
+#define CONJURE_ICE_BOW 5567//Conjure Frost Bow
+#define CONJURE_ICE_BOW_BUFF 15790//Conjure Frost Attributes
+
+#define CONJURE_LIGHTNING_HAMMER 5624//Conjure Lightning Hammer
+#define CONJURE_LIGHTNING_HAMMER_BUFF 15791//Conjure Lightning Attributes
+
+#define CONJURE_FLAME_AXE 5540//Conjure Flame Axe
+#define CONJURE_FLAME_AXE_BUFF 15789//Conjure Flame Attributes
+
+#define CONJURE_EARTH_SHIELD 5546//Conjure Earth Shield
+#define CONJURE_EARTH_SHIELD_BUFF 15788//Conjure Earth Attributes
+
+#define CONJURE_FIRE_GS 5516//Conjure Fiery Greatsword
+#define CONJURE_FIRE_GS_BUFF 15792//Conjure Fire Attributes

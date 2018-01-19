@@ -5,6 +5,384 @@ uint64_t last_mechanic_time = 0;
 uint64_t line_break_frequency = 5000;
 bool has_logged_mechanic = false;
 
+mechanic::mechanic()
+{
+    name = "";
+    frequency_player = 2000;
+    frequency_global = 0;
+    last_hit_time = 0;
+    is_interupt = false;
+    is_multihit = true;
+    target_is_dst = true;
+    fail_if_hit = true;
+    is_buffremove = 0;
+    valid_if_down = false;
+    special_requirement = default_requirement;
+}
+
+bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst)
+{
+    uint16_t index = 0;
+    bool correct_id = false;
+    Player* current_player = nullptr;
+
+    for(index=0;index<ids.size();index++)
+    {
+        if(ev->skillid==this->ids[index])
+        {
+            correct_id = true;
+            break;
+        }
+    }
+
+    if(correct_id)//correct skill id
+    {
+        if(frequency_global != 0
+           && ev->time < last_hit_time+frequency_global-ms_per_tick)
+        {
+            return false;
+        }
+
+        if(ev->is_buffremove != is_buffremove)
+        {
+            return false;
+        }
+
+        if(target_is_dst && is_player(dst))
+        {
+            current_player=get_player(dst);
+        }
+        else if(!target_is_dst && is_player(src))
+        {
+            current_player=get_player(src);
+        }
+
+        if(current_player
+           && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
+           && (!current_player->is_downed || valid_if_down)
+           && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
+           && special_requirement(*this,ev,src,dst,current_player))
+        {
+            current_player->set_last_hit_time(ev->time);
+            last_hit_time = ev->time;
+            current_player->mechanic_receive(name,ids[0],fail_if_hit);
+
+            current_player->set_last_mechanic(ev->skillid);
+
+            last_mechanic_time = ev->time;
+            have_added_line_break = false;
+            has_logged_mechanic = true;
+
+            return true;
+        }
+    }
+    return false;
+}
+
+bool default_requirement(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+{
+    return true;
+}
+
+mechanic vg_teleport = mechanic()
+.set_name("was teleported")
+.set_ids({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN});
+
+mechanic vg_green = mechanic()
+.set_name("stood in the green circle")
+.set_ids({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D})
+.set_fail_if_hit(false);
+
+mechanic gors_slam = mechanic()
+.set_name("was slammed")
+.set_ids({MECHANIC_GORS_SLAM})
+.set_is_interupt(true);
+
+mechanic gors_egg = mechanic()
+.set_name("was egged")
+.set_ids({MECHANIC_GORS_EGG});
+
+mechanic sab_sapper_bomb = mechanic()
+.set_name("got a sapper bomb")
+.set_ids({MECHANIC_SAB_SAPPER_BOMB})
+.set_fail_if_hit(false)
+.set_valid_if_down(true);
+
+mechanic sab_time_bomb = mechanic()
+.set_name("got a time bomb")
+.set_ids({MECHANIC_SAB_TIME_BOMB})
+.set_fail_if_hit(false)
+.set_valid_if_down(true);
+
+mechanic sab_cannon = mechanic()
+.set_name("stood in cannon fire")
+.set_ids({MECHANIC_SAB_CANNON});
+
+mechanic sab_flamewall = mechanic()
+.set_name("touched the flame wall")
+.set_ids({MECHANIC_SAB_FLAMEWALL});
+
+mechanic sloth_tantrum = mechanic()
+.set_name("was hit with tantrum")
+.set_ids({MECHANIC_SLOTH_TANTRUM});
+
+mechanic sloth_bomb = mechanic()
+.set_name("got a bomb")
+.set_ids({MECHANIC_SLOTH_BOMB})
+.set_fail_if_hit(false)
+.set_frequency_player(6000);
+
+mechanic sloth_bomb_aoe = mechanic()
+.set_name("stood in a bomb aoe")
+.set_ids({MECHANIC_SLOTH_BOMB_AOE});
+
+mechanic sloth_flame = mechanic()
+.set_name("was hit by flame breath")
+.set_ids({MECHANIC_SLOTH_FLAME_BREATH});
+
+mechanic sloth_shake = mechanic()
+.set_name("was hit by shake")
+.set_ids({MECHANIC_SLOTH_SHAKE});
+
+mechanic matt_hadouken = mechanic()
+.set_name("was hadoukened")
+.set_ids({MECHANIC_MATT_HADOUKEN_HUMAN,MECHANIC_MATT_HADOUKEN_ABOM});
+
+mechanic matt_shard_reflect = mechanic()
+.set_name("reflected shards")
+.set_ids({MECHANIC_MATT_SHARD_HUMAN,MECHANIC_MATT_SHARD_ABOM})
+.set_target_is_dst(false);
+
+mechanic matt_bomb = mechanic()
+.set_name("got a bomb")
+.set_ids({MECHANIC_MATT_BOMB})
+.set_fail_if_hit(false)
+.set_frequency_player(12000);
+
+mechanic matt_corruption = mechanic()
+.set_name("got a corruption")
+.set_ids({MECHANIC_MATT_CORRUPTION})
+.set_fail_if_hit(false);
+
+mechanic matt_sacrifice = mechanic()
+.set_name("is sacrificed")
+.set_ids({MECHANIC_MATT_SACRIFICE})
+.set_fail_if_hit(false);
+
+mechanic xera_half = mechanic()
+.set_name("stood in the red half")
+.set_ids({MECHANIC_XERA_HALF});
+
+mechanic xera_magic = mechanic()
+.set_name("has magic")
+.set_ids({MECHANIC_XERA_MAGIC})
+.set_fail_if_hit(false)
+.set_target_is_dst(false)
+.set_frequency_global(12000)
+.set_valid_if_down(true);
+
+mechanic xera_orb = mechanic()
+.set_name("touched an orb")
+.set_ids({MECHANIC_XERA_ORB});
+
+
+mechanic xera_orb_aoe = mechanic()
+.set_name("stood in an orb aoe")
+.set_ids({MECHANIC_XERA_ORB_AOE})
+.set_frequency_player(1000);
+
+mechanic carin_teleport = mechanic()
+.set_name("was teleported")
+.set_ids({MECHANIC_CARIN_TELEPORT});
+
+mechanic carin_shard_reflect = mechanic()
+.set_name("reflected shards")
+.set_ids({MECHANIC_CARIN_SHARD})
+.set_target_is_dst(false);
+
+mechanic carin_green = mechanic()
+.set_name("missed a green circle")
+.set_ids({MECHANIC_CARIN_GREEN})
+.set_is_interupt(true);
+
+mechanic sam_shockwave = mechanic()
+.set_name("was hit by shockwave")
+.set_ids({MECHANIC_SAM_SHOCKWAVE})
+.set_is_interupt(true);
+
+mechanic sam_slap_horizontal = mechanic()
+.set_name("was horizontally slapped")
+.set_ids({MECHANIC_SAM_SLAP_HORIZONTAL})
+.set_is_interupt(true);
+
+mechanic sam_slap_vertical = mechanic()
+.set_name("was vertically smacked")
+.set_ids({MECHANIC_SAM_SLAP_VERTICAL})
+.set_is_interupt(true);
+
+mechanic deimos_oil = mechanic()
+.set_name("touched an oil")
+.set_ids({MECHANIC_DEIMOS_OIL})
+.set_frequency_global(8000);
+
+mechanic deimos_smash = mechanic()
+.set_name("was hit by smash")
+.set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL})
+.set_is_interupt(true);
+
+mechanic horror_donut_inner = mechanic()
+.set_name("stood in inner donut")
+.set_ids({MECHANIC_HORROR_DONUT_INNER});
+
+mechanic horror_donut_outer = mechanic()
+.set_name("stood in outer donut")
+.set_ids({MECHANIC_HORROR_DONUT_OUTER});
+
+mechanic horror_golem_aoe = mechanic()
+.set_name("stood in torment aoe")
+.set_ids({MECHANIC_HORROR_GOLEM_AOE});
+
+mechanic horror_pie = mechanic()
+.set_name("stood in pie slice")
+.set_ids({MECHANIC_HORROR_PIE_4_A,MECHANIC_HORROR_PIE_4_B});
+
+mechanic horror_scythe = mechanic()
+.set_name("touched a scythe")
+.set_ids({MECHANIC_HORROR_SCYTHE});
+
+mechanic dhuum_golem = mechanic()
+.set_name("touched a messenger")
+.set_ids({MECHANIC_DHUUM_GOLEM});
+
+mechanic dhuum_shackle_src = mechanic()
+.set_name("is shackled")
+.set_ids({MECHANIC_DHUUM_SHACKLE})
+.set_fail_if_hit(false)
+.set_target_is_dst(false);
+
+mechanic dhuum_shackle_dst = mechanic()
+.set_name("is shackled")
+.set_ids({MECHANIC_DHUUM_SHACKLE})
+.set_fail_if_hit(false);
+
+mechanic dhuum_affliction = mechanic()
+.set_name("has affliction")
+.set_ids({MECHANIC_DHUUM_AFFLICTION})
+.set_frequency_player(13000 + ms_per_tick)
+.set_fail_if_hit(false);
+
+mechanic dhuum_crack = mechanic()
+.set_name("stood in a crack")
+.set_ids({MECHANIC_DHUUM_CRACK});
+
+mechanic dhuum_mark = mechanic()
+.set_name("stood in a mark")
+.set_ids({MECHANIC_DHUUM_MARK});
+
+mechanic dhuum_suck_aoe = mechanic()
+.set_name("touched the center during suction")
+.set_ids({MECHANIC_DHUUM_SUCK_AOE});
+
+mechanic dhuum_teleport_aoe = mechanic()
+.set_name("stood in a teleport aoe")
+.set_ids({MECHANIC_DHUUM_TELEPORT_AOE});
+
+mechanic dhuum_snatch = mechanic()
+.set_name("was snatched")
+.set_ids({MECHANIC_DHUUM_SNATCH})
+.set_frequency_player(26000);//time found as 100% hp to 0 on minstrel/monk druid with regen
+
+mechanic nightmare_vomit = mechanic()
+.set_name("vomited on someone")
+.set_ids({MECHANIC_NIGHTMARE_VOMIT})
+.set_target_is_dst(false);
+
+mechanic mama_wirl = mechanic()
+.set_name("was hit by wirl")
+.set_ids({MECHANIC_MAMA_WIRL});
+
+mechanic mama_knock = mechanic()
+.set_name("was knocked")
+.set_ids({MECHANIC_MAMA_KNOCK});
+
+mechanic mama_leap = mechanic()
+.set_name("was leaped on")
+.set_ids({MECHANIC_MAMA_LEAP});
+
+mechanic mama_acid = mechanic()
+.set_name("stood in acid")
+.set_ids({MECHANIC_MAMA_ACID});
+
+mechanic mama_knight_smash = mechanic()
+.set_name("was smashed by a knight")
+.set_ids({MECHANIC_MAMA_KNIGHT_SMASH});
+
+mechanic siax_acid = mechanic()
+.set_name("stood in acid")
+.set_ids({MECHANIC_SIAX_ACID});
+
+mechanic ensolyss_lunge = mechanic()
+.set_name("was ran over")
+.set_ids({MECHANIC_ENSOLYSS_LUNGE});
+
+mechanic ensolyss_smash = mechanic()
+.set_name("was smashed")
+.set_ids({MECHANIC_ENSOLYSS_SMASH});
+
+mechanic arkk_pie = mechanic()
+.set_name("stood in a pie slice")
+.set_ids({MECHANIC_ARKK_PIE_A,MECHANIC_ARKK_PIE_B,MECHANIC_ARKK_PIE_C});
+
+mechanic arkk_fear = mechanic()
+.set_name("was feared")
+.set_ids({MECHANIC_ARKK_FEAR});
+
+mechanic arkk_overhead_smash = mechanic()
+.set_name("was smashed")
+.set_ids({MECHANIC_ARKK_OVERHEAD_SMASH});
+
+mechanic arkk_bomb = mechanic()
+.set_name("has a bomb")
+.set_ids({MECHANIC_ARKK_BOMB})
+.set_fail_if_hit(false);
+
+
+
+bool special_requirement_conjure(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+{
+    return dst->prof != 6;//not elementalist
+}
+
+mechanic conjure_ice_bow = mechanic()
+.set_name("picked up an ice bow")
+.set_ids({CONJURE_ICE_BOW_BUFF})
+.set_fail_if_hit(false)
+.set_special_requirement(special_requirement_conjure);
+
+mechanic conjure_lightning_hammer = mechanic()
+.set_name("picked up a lightning hammer")
+.set_ids({CONJURE_LIGHTNING_HAMMER_BUFF})
+.set_fail_if_hit(false)
+.set_special_requirement(special_requirement_conjure);
+
+mechanic conjure_flame_axe = mechanic()
+.set_name("picked up a flame axe")
+.set_ids({CONJURE_FLAME_AXE_BUFF})
+.set_fail_if_hit(false)
+.set_special_requirement(special_requirement_conjure);
+
+mechanic conjure_earth_shield = mechanic()
+.set_name("picked up an earth shield")
+.set_ids({CONJURE_EARTH_SHIELD_BUFF})
+.set_fail_if_hit(false)
+.set_special_requirement(special_requirement_conjure);
+
+mechanic conjure_fire_gs = mechanic()
+.set_name("picked up an FGS")
+.set_ids({CONJURE_FIRE_GS_BUFF})
+.set_fail_if_hit(false)
+.set_special_requirement(special_requirement_conjure);
+
 std::vector <mechanic> mechanics =
 {
     vg_teleport,
@@ -63,465 +441,13 @@ std::vector <mechanic> mechanics =
     arkk_pie,
 //    arkk_fear,
     arkk_overhead_smash,
-    arkk_bomb
+    arkk_bomb,
+
+#if 0//disable conjure detection due to potential toxicity
+    conjure_ice_bow,
+    conjure_lightning_hammer,
+    conjure_flame_axe,
+    conjure_earth_shield,
+    conjure_fire_gs
+#endif // 0
 };
-
-mechanic::mechanic()
-{
-    name = "";
-    frequency_player = 2000;
-    frequency_global = 0;
-    last_hit_time = 0;
-    is_interupt = false;
-    target_is_dst = true;
-    fail_if_hit = true;
-    is_buffremove = 0;
-    valid_if_down = false;
-}
-
-bool mechanic::is_valid_hit(cbtevent* &ev, ag* &src, ag* &dst)
-{
-    uint16_t index = 0;
-    bool correct_id = false;
-    Player* current_player = nullptr;
-
-    for(index=0;index<ids.size();index++)
-    {
-        if(ev->skillid==this->ids[index])
-        {
-            correct_id = true;
-            break;
-        }
-    }
-
-    if(correct_id)//correct skill id
-    {
-        if(frequency_global != 0
-           && ev->time < last_hit_time+frequency_global-ms_per_tick)
-        {
-            return false;
-        }
-
-        if(ev->is_buffremove != is_buffremove)
-        {
-            return false;
-        }
-
-        if(target_is_dst && is_player(dst))
-        {
-            current_player=get_player(dst);
-        }
-        else if(!target_is_dst && is_player(src))
-        {
-            current_player=get_player(src);
-        }
-
-        if(current_player
-           && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
-           && (!current_player->is_downed || valid_if_down)
-           && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
-           && special_requirement(ev,src,dst,current_player))
-        {
-            current_player->set_last_hit_time(ev->time);
-            last_hit_time = ev->time;
-            current_player->mechanic_receive(name,ids[0],fail_if_hit);
-
-            current_player->set_last_mechanic(ev->skillid);
-
-            last_mechanic_time = ev->time;
-            have_added_line_break = false;
-            has_logged_mechanic = true;
-
-            return true;
-        }
-    }
-    return false;
-}
-
-bool mechanic::special_requirement(cbtevent* &ev, ag* &src, ag* &dst, Player* &current_player)
-{
-    return true;
-}
-
-vg_teleport::vg_teleport()
-{
-    name="was teleported"; //name of mechanic
-    ids.push_back(MECHANIC_VG_TELEPORT_RAINBOW);
-    ids.push_back(MECHANIC_VG_TELEPORT_GREEN);
-};
-
-vg_green::vg_green()
-{
-    name="stood in the green circle"; //name of mechanic
-    ids.push_back(MECHANIC_VG_GREEN_A);
-    ids.push_back(MECHANIC_VG_GREEN_B);
-    ids.push_back(MECHANIC_VG_GREEN_C);
-    ids.push_back(MECHANIC_VG_GREEN_D);
-    fail_if_hit = false;
-}
-
-gors_slam::gors_slam()
-{
-    name="was slammed"; //name of mechanic
-    ids.push_back(MECHANIC_GORS_SLAM); //skill id;
-    is_interupt=true;
-}
-
-gors_egg::gors_egg()
-{
-    name="was egged"; //name of mechanic
-    ids.push_back(MECHANIC_GORS_EGG); //skill id;
-}
-sab_sapper_bomb::sab_sapper_bomb()
-{
-    name="got a sapper bomb"; //name of mechanic
-    fail_if_hit = false;
-    ids.push_back(MECHANIC_SAB_SAPPER_BOMB); //skill id;
-}
-
-sab_time_bomb::sab_time_bomb()
-{
-    name="got a time bomb"; //name of mechanic
-    fail_if_hit = false;
-    ids.push_back(MECHANIC_SAB_TIME_BOMB); //skill id;
-    valid_if_down = true;
-}
-
-sab_cannon::sab_cannon()
-{
-    name="stood in cannon fire"; //name of mechanic
-    ids.push_back(MECHANIC_SAB_CANNON); //skill id;
-}
-
-sab_flamewall::sab_flamewall()
-{
-    name="touched the flame wall"; //name of mechanic
-    ids.push_back(MECHANIC_SAB_FLAMEWALL); //skill id;
-}
-
-sloth_tantrum::sloth_tantrum()
-{
-    name="was hit with tantrum"; //name of mechanic
-    ids.push_back(MECHANIC_SLOTH_TANTRUM); //skill id;
-}
-
-sloth_bomb::sloth_bomb()
-{
-    name="got a bomb"; //name of mechanic
-    ids.push_back(MECHANIC_SLOTH_BOMB); //skill id;
-    fail_if_hit = false;
-    frequency_player = 6000;
-}
-
-sloth_bomb_aoe::sloth_bomb_aoe()
-{
-    name="stood in a bomb aoe"; //name of mechanic
-    ids.push_back(MECHANIC_SLOTH_BOMB_AOE); //skill id;
-}
-
-sloth_flame::sloth_flame()
-{
-    name="was hit by flame breath"; //name of mechanic
-    ids.push_back(MECHANIC_SLOTH_FLAME_BREATH); //skill id;
-}
-
-sloth_shake::sloth_shake()
-{
-    name="was hit by shake"; //name of mechanic
-    ids.push_back(MECHANIC_SLOTH_SHAKE); //skill id;
-}
-
-matt_hadouken::matt_hadouken()
-{
-    name="was hadoukened"; //name of mechanic
-    ids.push_back(MECHANIC_MATT_HADOUKEN_HUMAN); //skill id;
-    ids.push_back(MECHANIC_MATT_HADOUKEN_ABOM); //skill id;
-}
-
-matt_shard_reflect::matt_shard_reflect()
-{
-    name="reflected shards"; //name of mechanic
-    ids.push_back(MECHANIC_MATT_SHARD_HUMAN); //skill id;
-    ids.push_back(MECHANIC_MATT_SHARD_ABOM); //skill id;
-    target_is_dst = false;
-}
-
-matt_bomb::matt_bomb()
-{
-    name="got a bomb"; //name of mechanic
-    ids.push_back(MECHANIC_MATT_BOMB); //skill id;
-    fail_if_hit = false;
-    frequency_player = 12000;
-}
-
-matt_corruption::matt_corruption()
-{
-    name="got a corruption"; //name of mechanic
-    ids.push_back(MECHANIC_MATT_CORRUPTION); //skill id;
-    fail_if_hit = false;
-}
-
-matt_sacrifice::matt_sacrifice()
-{
-    name="is sacrificed"; //name of mechanic
-    ids.push_back(MECHANIC_MATT_SACRIFICE); //skill id;
-    fail_if_hit = false;
-}
-
-xera_half::xera_half()
-{
-    name="stood in the red half"; //name of mechanic
-    ids.push_back(MECHANIC_XERA_HALF); //skill id;
-}
-
-xera_magic::xera_magic()
-{
-    name="has magic"; //name of mechanic
-    ids.push_back(MECHANIC_XERA_MAGIC); //skill id;
-    fail_if_hit = false;
-    target_is_dst = false;
-    frequency_global = 12000;
-    valid_if_down = true;
-}
-
-xera_orb::xera_orb()
-{
-    name="touched an orb"; //name of mechanic
-    ids.push_back(MECHANIC_XERA_ORB); //skill id;
-}
-
-xera_orb_aoe::xera_orb_aoe()
-{
-    name="stood in an orb aoe"; //name of mechanic
-    ids.push_back(MECHANIC_XERA_ORB_AOE); //skill id;
-    frequency_player = 1000;
-}
-
-carin_teleport::carin_teleport()
-{
-    name="was teleported"; //name of mechanic
-    ids.push_back(MECHANIC_CARIN_TELEPORT); //skill id;
-}
-
-carin_shard_reflect::carin_shard_reflect()
-{
-    name="reflected shards"; //name of mechanic
-    ids.push_back(MECHANIC_CARIN_SHARD); //skill id;
-    target_is_dst = false;
-}
-
-carin_green::carin_green()
-{
-    name="missed a green circle"; //name of mechanic
-    ids.push_back(MECHANIC_CARIN_GREEN); //skill id;
-    is_interupt = true;
-}
-
-sam_shockwave::sam_shockwave()
-{
-    name="was hit by shockwave"; //name of mechanic
-    ids.push_back(MECHANIC_SAM_SHOCKWAVE); //skill id;
-    is_interupt=true;
-}
-
-sam_slap_horizontal::sam_slap_horizontal()
-{
-    name="was horizontally slapped"; //name of mechanic
-    ids.push_back(MECHANIC_SAM_SLAP_HORIZONTAL); //skill id;
-    is_interupt=true;
-}
-
-sam_slap_vertical::sam_slap_vertical()
-{
-    name="was vertically smacked"; //name of mechanic
-    ids.push_back(MECHANIC_SAM_SLAP_VERTICAL); //skill id;
-    is_interupt=true;
-}
-
-deimos_oil::deimos_oil()
-{
-    name="touched an oil"; //name of mechanic
-    ids.push_back(MECHANIC_DEIMOS_OIL); //skill id;
-    frequency_global = 8000;
-}
-
-deimos_smash::deimos_smash()
-{
-    name="was hit by smash"; //name of mechanic
-    ids.push_back(MECHANIC_DEIMOS_SMASH); //skill id;
-    ids.push_back(MECHANIC_DEIMOS_SMASH_INITIAL);
-    is_interupt=true;
-}
-
-horror_donut_inner::horror_donut_inner()
-{
-    name="stood in inner donut"; //name of mechanic
-    ids.push_back(MECHANIC_HORROR_DONUT_INNER); //skill id;
-}
-
-horror_donut_outer::horror_donut_outer()
-{
-    name="stood in outer donut"; //name of mechanic
-    ids.push_back(MECHANIC_HORROR_DONUT_OUTER); //skill id;
-}
-
-horror_golem_aoe::horror_golem_aoe()
-{
-    name="stood in torment aoe"; //name of mechanic
-    ids.push_back(MECHANIC_HORROR_GOLEM_AOE); //skill id;
-}
-
-horror_pie::horror_pie()
-{
-    name="stood in pie slice"; //name of mechanic
-    ids.push_back(MECHANIC_HORROR_PIE_4_A); //skill id;
-    ids.push_back(MECHANIC_HORROR_PIE_4_B); //skill id;
-}
-
-horror_scythe::horror_scythe()
-{
-    name="touched a scythe"; //name of mechanic
-    ids.push_back(MECHANIC_HORROR_SCYTHE); //skill id;
-}
-
-dhuum_golem::dhuum_golem()
-{
-    name="touched a messenger"; //name of mechanic
-    ids.push_back(MECHANIC_DHUUM_GOLEM); //skill id;
-}
-
-dhuum_shackle_src::dhuum_shackle_src()
-{
-    name="is shackled"; //name of mechanic
-    fail_if_hit = false;
-    ids.push_back(MECHANIC_DHUUM_SHACKLE); //skill id;
-}
-
-dhuum_shackle_dst::dhuum_shackle_dst()
-{
-    name="is shackled"; //name of mechanic
-    fail_if_hit = false;
-    ids.push_back(MECHANIC_DHUUM_SHACKLE); //skill id;
-    target_is_dst = false;
-}
-
-dhuum_affliction::dhuum_affliction()
-{
-    name="has affliction"; //name of mechanic
-    fail_if_hit = false;
-    ids.push_back(MECHANIC_DHUUM_AFFLICTION); //skill id;
-    frequency_player = 13000 + ms_per_tick;
-}
-
-dhuum_crack::dhuum_crack()
-{
-    name="stood in a crack"; //name of mechanic
-    ids.push_back(MECHANIC_DHUUM_CRACK); //skill id;
-}
-
-dhuum_mark::dhuum_mark()
-{
-    name="stood in a mark"; //name of mechanic
-    ids.push_back(MECHANIC_DHUUM_MARK); //skill id;
-}
-
-dhuum_suck_aoe::dhuum_suck_aoe()
-{
-    name="touched the center during suction"; //name of mechanic
-    ids.push_back(MECHANIC_DHUUM_SUCK_AOE); //skill id;
-}
-
-dhuum_teleport_aoe::dhuum_teleport_aoe()
-{
-    name="stood in a teleport aoe"; //name of mechanic
-    ids.push_back(MECHANIC_DHUUM_TELEPORT_AOE); //skill id;
-}
-
-dhuum_snatch::dhuum_snatch()
-{
-    name="was snatched"; //name of mechanic
-    ids.push_back(MECHANIC_DHUUM_SNATCH); //skill id;
-    frequency_player = 26000;
-}
-
-nightmare_vomit::nightmare_vomit()
-{
-    name="vomited on someone"; //name of mechanic
-    ids.push_back(MECHANIC_NIGHTMARE_VOMIT); //skill id;
-    target_is_dst = false;
-}
-
-mama_wirl::mama_wirl()
-{
-    name="was hit by wirl"; //name of mechanic
-    ids.push_back(MECHANIC_MAMA_WIRL); //skill id;
-}
-
-mama_knock::mama_knock()
-{
-    name="was knocked"; //name of mechanic
-    ids.push_back(MECHANIC_MAMA_KNOCK); //skill id;
-}
-
-mama_leap::mama_leap()
-{
-    name="was leaped on"; //name of mechanic
-    ids.push_back(MECHANIC_MAMA_LEAP); //skill id;
-}
-
-mama_acid::mama_acid()
-{
-    name="stood in acid"; //name of mechanic
-    ids.push_back(MECHANIC_MAMA_ACID); //skill id;
-}
-
-mama_knight_smash::mama_knight_smash()
-{
-    name="was smashed by a knight"; //name of mechanic
-    ids.push_back(MECHANIC_MAMA_KNIGHT_SMASH); //skill id;
-}
-
-siax_acid::siax_acid()
-{
-    name="stood in acid"; //name of mechanic
-    ids.push_back(MECHANIC_SIAX_ACID); //skill id;
-}
-
-ensolyss_lunge::ensolyss_lunge()
-{
-    name="was ran over"; //name of mechanic
-    ids.push_back(MECHANIC_ENSOLYSS_LUNGE); //skill id;
-}
-
-ensolyss_smash::ensolyss_smash()
-{
-    name="was smashed"; //name of mechanic
-    ids.push_back(MECHANIC_ENSOLYSS_SMASH); //skill id;
-}
-
-arkk_pie::arkk_pie()
-{
-    name="stood in a pie slice"; //name of mechanic
-    ids.push_back(MECHANIC_ARKK_PIE_A); //skill id;
-    ids.push_back(MECHANIC_ARKK_PIE_B); //skill id;
-    ids.push_back(MECHANIC_ARKK_PIE_C); //skill id;
-}
-
-arkk_fear::arkk_fear()
-{
-    name="was feared"; //name of mechanic
-    ids.push_back(MECHANIC_ARKK_FEAR); //skill id;
-}
-
-arkk_overhead_smash::arkk_overhead_smash()
-{
-    name="was smashed"; //name of mechanic
-    ids.push_back(MECHANIC_ARKK_OVERHEAD_SMASH); //skill id;
-}
-
-arkk_bomb::arkk_bomb()
-{
-    name="has a bomb"; //name of mechanic
-    ids.push_back(MECHANIC_ARKK_BOMB); //skill id;
-    fail_if_hit = false;
-}
