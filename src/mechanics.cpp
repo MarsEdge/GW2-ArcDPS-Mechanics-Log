@@ -234,6 +234,11 @@ mechanic sam_slap_vertical = mechanic()
 .set_ids({MECHANIC_SAM_SLAP_VERTICAL})
 .set_is_interupt(true);
 
+mechanic sam_fixate = mechanic()
+.set_name("is fixated")
+.set_ids({MECHANIC_SAM_FIXATE_SAM})
+.set_fail_if_hit(false);
+
 mechanic deimos_oil = mechanic()
 .set_name("touched an oil")
 .set_ids({MECHANIC_DEIMOS_OIL})
@@ -435,6 +440,7 @@ std::vector <mechanic> mechanics =
     sam_shockwave,
     sam_slap_horizontal,
     sam_slap_vertical,
+    sam_fixate,
     deimos_oil,
     deimos_smash,
     horror_donut_inner,
