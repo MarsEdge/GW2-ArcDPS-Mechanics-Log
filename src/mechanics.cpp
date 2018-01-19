@@ -200,7 +200,6 @@ mechanic xera_orb = mechanic()
 .set_name("touched an orb")
 .set_ids({MECHANIC_XERA_ORB});
 
-
 mechanic xera_orb_aoe = mechanic()
 .set_name("stood in an orb aoe")
 .set_ids({MECHANIC_XERA_ORB_AOE})
