@@ -7,8 +7,6 @@
 #include <mutex>
 #include "arcdps_datastructures.h"
 
-#define MAX_PLAYER_COUNT 10
-
 struct Player
 {
     std::string name;
