@@ -20,11 +20,12 @@ const uint16_t MECHANIC_SAB_CANNON = 31643;//Cannon Barrage
 const uint16_t MECHANIC_SAB_FLAMEWALL = 31332;//Firestorm
 
 //slothasor
-const uint16_t MECHANIC_SLOTH_TANTRUM = 34479;
-const uint16_t MECHANIC_SLOTH_BOMB = 34387;
-const uint16_t MECHANIC_SLOTH_BOMB_AOE = 34481;
-const uint16_t MECHANIC_SLOTH_FLAME_BREATH = 34516;
-const uint16_t MECHANIC_SLOTH_SHAKE = 34482;
+const uint16_t MECHANIC_SLOTH_TANTRUM = 34479;//Tantrum
+const uint16_t MECHANIC_SLOTH_BOMB = 34387;//Volatile Poison
+const uint16_t MECHANIC_SLOTH_BOMB_AOE = 34481;//Volatile Poison
+const uint16_t MECHANIC_SLOTH_FLAME_BREATH = 34516;//nameless
+const uint16_t MECHANIC_SLOTH_SHAKE = 34482;//nameless
+const uint16_t MECHANIC_SLOTH_FIXATE = 34508;//Fixated
 
 //matthias
 const uint16_t MECHANIC_MATT_HADOUKEN_HUMAN = 34380;
@@ -64,6 +65,7 @@ const uint16_t MECHANIC_HORROR_GOLEM_AOE = 47430;//Soul Rift
 const uint16_t MECHANIC_HORROR_PIE_4_A = 48363;//Quad Slash
 const uint16_t MECHANIC_HORROR_PIE_4_B = 47915;//Quad Slash
 const uint16_t MECHANIC_HORROR_SCYTHE = 47363;//Spinning Slash
+const uint16_t MECHANIC_HORROR_FIXATE = 47434;//Fixated
 
 //Dhuum
 const uint16_t MECHANIC_DHUUM_GOLEM = 48172; //Hateful Ephemera (flesh golem)

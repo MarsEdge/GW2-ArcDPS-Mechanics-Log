@@ -31,7 +31,7 @@ struct mechanic
     mechanic();
 
     bool is_valid_hit(cbtevent* ev, ag* src, ag* dst);
-    bool (*special_requirement)(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+    bool (*special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
     mechanic set_name(std::string const new_name) {this->name = new_name; return *this;}
     mechanic set_ids(std::initializer_list<uint16_t> const new_ids) {this->ids = std::vector<uint16_t>(new_ids); return *this;}
@@ -43,11 +43,11 @@ struct mechanic
     mechanic set_target_is_dst(bool const new_target_is_dst) {this->target_is_dst = new_target_is_dst; return *this;}
     mechanic set_fail_if_hit(bool const new_fail_if_hit) {this->fail_if_hit = new_fail_if_hit; return *this;}
     mechanic set_valid_if_down(bool const new_valid_if_down) {this->valid_if_down = new_valid_if_down; return *this;}
-    mechanic set_special_requirement(bool (*new_special_requirement)(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
+    mechanic set_special_requirement(bool (*new_special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
 };
 
-bool default_requirement(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
-bool special_requirement_conjure(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+bool default_requirement(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+bool special_requirement_conjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
 
 

@@ -79,7 +79,7 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst)
     return false;
 }
 
-bool default_requirement(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+bool default_requirement(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
     return true;
 }
@@ -143,6 +143,10 @@ mechanic sloth_flame = mechanic()
 mechanic sloth_shake = mechanic()
 .set_name("was hit by shake")
 .set_ids({MECHANIC_SLOTH_SHAKE});
+
+mechanic sloth_fixate = mechanic()
+.set_name("is fixated")
+.set_ids({MECHANIC_SLOTH_FIXATE});
 
 mechanic matt_hadouken = mechanic()
 .set_name("was hadoukened")
@@ -250,6 +254,11 @@ mechanic horror_scythe = mechanic()
 .set_name("touched a scythe")
 .set_ids({MECHANIC_HORROR_SCYTHE});
 
+mechanic horror_agro = mechanic()
+.set_name("is fixated")
+.set_ids({MECHANIC_HORROR_FIXATE})
+.set_fail_if_hit(false);
+
 mechanic dhuum_golem = mechanic()
 .set_name("touched a messenger")
 .set_ids({MECHANIC_DHUUM_GOLEM});
@@ -348,7 +357,7 @@ mechanic arkk_bomb = mechanic()
 
 
 
-bool special_requirement_conjure(mechanic current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+bool special_requirement_conjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
     return dst->prof != 6;//not elementalist
 }
@@ -398,6 +407,7 @@ std::vector <mechanic> mechanics =
     sloth_bomb_aoe,
     sloth_flame,
     sloth_shake,
+    sloth_fixate,
     matt_hadouken,
     matt_shard_reflect,
     matt_bomb,
@@ -420,6 +430,7 @@ std::vector <mechanic> mechanics =
     horror_golem_aoe,
     horror_pie,
     horror_scythe,
+    horror_agro,
     dhuum_golem,
     dhuum_affliction,
     dhuum_shackle_src,
