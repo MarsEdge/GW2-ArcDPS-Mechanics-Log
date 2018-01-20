@@ -19,6 +19,10 @@ struct AppLog
 
 struct AppChart
 {
+    Player* merge_A;//1st player to merge
+    Player* merge_B;//2nd player to merge
+    ImGuiTextFilter     Filter;
+
     void    Clear();
 
     void    Draw(const char* title, std::vector<Player> &players, bool* p_open);

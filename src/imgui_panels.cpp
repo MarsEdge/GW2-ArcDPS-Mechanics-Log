@@ -8,7 +8,6 @@ void    AppLog::Clear()
 {
     Buf.clear();
     LineOffsets.clear();
-    reset_all_player_stats();
 }
 
 void    AppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
@@ -32,7 +31,7 @@ void    AppLog::Draw(const char* title, bool* p_open = NULL)
     ImGui::SameLine();
     bool copy = ImGui::Button("Copy");
     ImGui::SameLine();
-    Filter.Draw("Filter", -100.0f);
+    Filter.Draw("Filter", -50.0f);
     ImGui::Separator();
     ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
     if (copy) ImGui::LogToClipboard();
@@ -61,6 +60,11 @@ void    AppLog::Draw(const char* title, bool* p_open = NULL)
     ImGui::End();
 }
 
+void    AppChart::Clear()
+{
+    reset_all_player_stats();
+}
+
 void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_open)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
@@ -68,6 +72,26 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
 
     float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
+    bool pop_color = false;
+    ImVec4 merge_text_col = ImVec4(100,100,100,70);
+
+    if (ImGui::Button("Clear")) Clear();
+    ImGui::SameLine();
+//    Filter.Draw("Filter", -50.0f);
+    ImGui::Separator();
+    bool merge = merge_A && merge_B && merge_A->id != merge_B->id;
+    if(merge)
+    {
+        for(uint16_t index = 0;index<merge_B->tracker.size();index++)
+        {
+            for(uint16_t index_hits = 0; index_hits<merge_B->tracker.at(index).hits;index_hits++)
+            {
+                merge_A->mechanic_receive(merge_B->tracker.at(index).name,merge_B->tracker.at(index).id,merge_B->tracker.at(index).fail);
+            }
+        }
+        merge_A->downs += merge_B->downs;
+        merge_A->deaths += merge_B->deaths;
+    }
 
     ImGui::BeginGroup();
     ImGui::Text("Name");
@@ -79,6 +103,10 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     ImGui::Text("Downs");
     ImGui::SameLine(get_chart_column_loc(window_width,4));
     ImGui::Text("Deaths");
+    ImGui::SameLine(get_chart_column_loc(window_width,5));
+    ImGui::Text("Merge");
+    ImGui::SameLine(get_chart_column_loc(window_width,6));
+    ImGui::Text("Delete");
     ImGui::EndGroup();
 
     ImGui::BeginChild("scrolling");
@@ -99,8 +127,59 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
             ImGui::SameLine(get_chart_column_loc(window_width,4));
             ImGui::Text(std::to_string(players.at(index).deaths).c_str());
             ImGui::PopItemWidth();
-            ImGui::SameLine(window_width*0.90);
-            if(ImGui::SmallButton("X"))
+            ImGui::SameLine(get_chart_column_loc(window_width,5));
+            if(merge_A
+               && merge_A->id == players.at(index).id)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Text,merge_text_col);
+                pop_color = true;
+            }
+            if(ImGui::SmallButton("To"))
+            {
+                if(merge_A
+                   && merge_A->id == players.at(index).id)
+                {
+                    merge_A = nullptr;
+                }
+                else
+                {
+                    merge_A = &players.at(index);
+                }
+            }
+            if(pop_color)
+            {
+                ImGui::PopStyleColor();
+                pop_color = false;
+            }
+            ImGui::SameLine();
+            if(merge_B
+               && merge_B->id == players.at(index).id)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Text,merge_text_col);
+                pop_color = true;
+            }
+
+            if(ImGui::SmallButton("From"))
+            {
+                if(merge_B
+                   && merge_B->id == players.at(index).id)
+                {
+                    merge_B = nullptr;
+                }
+                else
+                {
+                    merge_B = &players.at(index);
+                }
+            }
+            if(pop_color)
+            {
+                ImGui::PopStyleColor();
+                pop_color = false;
+            }
+            ImGui::SameLine(get_chart_column_loc(window_width,6));
+            if(ImGui::SmallButton("X")
+               || (merge
+                   && players.at(index).id == merge_B->id))
             {
                 players.erase(players.begin()+index);
                 if(expand)
@@ -141,14 +220,20 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     }
     ImGui::EndChild();
     ImGui::End();
+
+    if(merge || merge_A == merge_B)
+    {
+        merge_A = nullptr;
+        merge_B = nullptr;
+    }
 }
 
 float get_chart_column_width(float window_width)
 {
-    return window_width/5.0*3.0/4.0;
+    return window_width/5.0*3.0/5.0;
 }
 
 float get_chart_column_loc(float window_width, uint16_t col)
 {
-     return (window_width/4.0) + col * get_chart_column_width(window_width);
+     return (window_width/5.0) + col * get_chart_column_width(window_width);
 }
