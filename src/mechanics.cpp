@@ -293,7 +293,8 @@ mechanic dhuum_affliction = mechanic()
 .set_name("has affliction")
 .set_ids({MECHANIC_DHUUM_AFFLICTION})
 .set_frequency_player(13000 + ms_per_tick)
-.set_fail_if_hit(false);
+.set_fail_if_hit(false)
+.set_valid_if_down(true);
 
 mechanic dhuum_crack = mechanic()
 .set_name("stood in a crack")
