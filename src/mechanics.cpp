@@ -174,14 +174,9 @@ mechanic matt_sacrifice = mechanic()
 .set_ids({MECHANIC_MATT_SACRIFICE})
 .set_fail_if_hit(false);
 
-mechanic kc_fixate_a = mechanic()
+mechanic kc_fixate = mechanic()
 .set_name("is fixate")
-.set_ids({MECHANIC_KC_FIXATE_A})
-.set_fail_if_hit(false);
-
-mechanic kc_fixate_b = mechanic()
-.set_name("is fixate")
-.set_ids({MECHANIC_KC_FIXATE_B})
+.set_ids({MECHANIC_KC_FIXATE_A,MECHANIC_KC_FIXATE_B})
 .set_fail_if_hit(false);
 
 mechanic xera_half = mechanic()
@@ -442,8 +437,7 @@ std::vector <mechanic> mechanics =
     matt_bomb,
     matt_corruption,
     matt_sacrifice,
-    kc_fixate_a,
-    kc_fixate_b,
+    kc_fixate,
 //    xera_half,
     xera_orb,
     xera_orb_aoe,
