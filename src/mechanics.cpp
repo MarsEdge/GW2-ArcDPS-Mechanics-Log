@@ -315,7 +315,7 @@ mechanic dhuum_teleport_aoe = mechanic()
 mechanic dhuum_snatch = mechanic()
 .set_name("was snatched")
 .set_ids({MECHANIC_DHUUM_SNATCH})
-.set_frequency_player(26000);//time found as 100% hp to 0 on minstrel/monk druid with regen
+.set_special_requirement(special_requirement_dhuum_snatch);
 
 mechanic nightmare_vomit = mechanic()
 .set_name("vomited on someone")
@@ -376,6 +376,19 @@ mechanic arkk_bomb = mechanic()
 bool special_requirement_conjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
     return dst->prof != 6;//not elementalist
+}
+
+bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+{
+    if((current_player->get_last_hit_time() + current_mechanic.frequency_player) < ev->time)
+    {
+        current_player->set_last_hit_time(ev->time);
+        if(current_player->get_last_mechanic() != MECHANIC_DHUUM_SNATCH)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 mechanic conjure_ice_bow = mechanic()
