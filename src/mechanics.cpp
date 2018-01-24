@@ -175,12 +175,12 @@ mechanic matt_sacrifice = mechanic()
 .set_fail_if_hit(false);
 
 mechanic kc_fixate_a = mechanic()
-.set_name("is fixate A")
+.set_name("is fixate")
 .set_ids({MECHANIC_KC_FIXATE_A})
 .set_fail_if_hit(false);
 
 mechanic kc_fixate_b = mechanic()
-.set_name("is fixate B")
+.set_name("is fixate")
 .set_ids({MECHANIC_KC_FIXATE_B})
 .set_fail_if_hit(false);
 
