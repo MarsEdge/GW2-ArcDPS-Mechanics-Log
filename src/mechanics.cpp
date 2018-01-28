@@ -265,7 +265,7 @@ mechanic horror_scythe = mechanic()
 .set_ids({MECHANIC_HORROR_SCYTHE});
 
 mechanic horror_agro = mechanic()
-.set_name("is fixated")
+.set_name("took fixate")
 .set_ids({MECHANIC_HORROR_FIXATE})
 .set_fail_if_hit(false);
 
