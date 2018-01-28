@@ -175,7 +175,7 @@ mechanic matt_sacrifice = mechanic()
 .set_fail_if_hit(false);
 
 mechanic kc_fixate = mechanic()
-.set_name("is fixate")
+.set_name("is fixated")
 .set_ids({MECHANIC_KC_FIXATE_A,MECHANIC_KC_FIXATE_B})
 .set_fail_if_hit(false);
 
