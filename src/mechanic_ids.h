@@ -28,8 +28,8 @@ const uint16_t MECHANIC_SLOTH_SHAKE = 34482;//nameless
 const uint16_t MECHANIC_SLOTH_FIXATE = 34508;//Fixated
 
 //matthias
-const uint16_t MECHANIC_MATT_HADOUKEN_HUMAN = 34380;
-const uint16_t MECHANIC_MATT_HADOUKEN_ABOM = 34371;
+const uint16_t MECHANIC_MATT_HADOUKEN_HUMAN = 34380;//Oppressive Gaze
+const uint16_t MECHANIC_MATT_HADOUKEN_ABOM = 34371;//Oppressive Gaze
 const uint16_t MECHANIC_MATT_SHARD_HUMAN = 34404;//Shards of Rage
 const uint16_t MECHANIC_MATT_SHARD_ABOM = 34411;//Shards of Rage
 const uint16_t MECHANIC_MATT_BOMB = 34450;//Unstable Blood Magic
