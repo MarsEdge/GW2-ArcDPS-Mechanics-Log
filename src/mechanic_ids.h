@@ -47,7 +47,7 @@ const uint16_t MECHANIC_XERA_ORB_AOE = 34913;//Temporal Shred
 const uint16_t MECHANIC_XERA_MAGIC = 34956;//nameless
 
 //carin
-const uint16_t MECHANIC_CARIN_TELEPORT = 38113;
+const uint16_t MECHANIC_CARIN_TELEPORT = 38113;//Displacement
 const uint16_t MECHANIC_CARIN_SHARD = 38313;//Meteor Swarm
 const uint16_t MECHANIC_CARIN_GREEN = 38302;//Spatial Manipulation
 
