@@ -102,6 +102,10 @@ mechanic gors_egg = mechanic()
 .set_name("was egged")
 .set_ids({MECHANIC_GORS_EGG});
 
+mechanic gors_orb = mechanic()
+.set_name("touched an orb")
+.set_ids({MECHANIC_GORS_ORB});
+
 mechanic sab_sapper_bomb = mechanic()
 .set_name("got a sapper bomb")
 .set_ids({MECHANIC_SAB_SAPPER_BOMB})
@@ -420,6 +424,7 @@ std::vector <mechanic> mechanics =
 //    vg_green,
     gors_slam,
     gors_egg,
+    gors_orb,
     sab_sapper_bomb,
     sab_time_bomb,
     sab_cannon,

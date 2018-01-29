@@ -12,6 +12,7 @@ const uint16_t MECHANIC_VG_GREEN_D = 31750;//all 4 ids are called "Distributed M
 //gorseval
 const uint16_t MECHANIC_GORS_SLAM = 31875;//Spectral Impact
 const uint16_t MECHANIC_GORS_EGG = 31623;//Ghastly Prison
+const uint16_t MECHANIC_GORS_ORB = 31498;//Spectral Darkness
 
 //sabetha
 const uint16_t MECHANIC_SAB_SAPPER_BOMB = 31473;//Sapper Bomb
