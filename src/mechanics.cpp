@@ -187,8 +187,6 @@ mechanic xera_magic = mechanic()
 .set_name("has magic")
 .set_ids({MECHANIC_XERA_MAGIC})
 .set_fail_if_hit(false)
-.set_target_is_dst(false)
-.set_frequency_global(12000)
 .set_valid_if_down(true);
 
 mechanic xera_orb = mechanic()
