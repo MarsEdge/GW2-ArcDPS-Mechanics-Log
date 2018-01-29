@@ -10,8 +10,8 @@ const uint16_t MECHANIC_VG_GREEN_C = 31529;//it appears to be a separate id for 
 const uint16_t MECHANIC_VG_GREEN_D = 31750;//all 4 ids are called "Distributed Magic"
 
 //gorseval
-const uint16_t MECHANIC_GORS_SLAM = 31875;
-const uint16_t MECHANIC_GORS_EGG = 31623;
+const uint16_t MECHANIC_GORS_SLAM = 31875;//Spectral Impact
+const uint16_t MECHANIC_GORS_EGG = 31623;//Ghastly Prison
 
 //sabetha
 const uint16_t MECHANIC_SAB_SAPPER_BOMB = 31473;//Sapper Bomb
