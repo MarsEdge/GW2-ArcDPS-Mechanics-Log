@@ -161,8 +161,7 @@ mechanic matt_shard_reflect = mechanic()
 mechanic matt_bomb = mechanic()
 .set_name("got a bomb")
 .set_ids({MECHANIC_MATT_BOMB})
-.set_fail_if_hit(false)
-.set_frequency_player(12000);
+.set_fail_if_hit(false);
 
 mechanic matt_corruption = mechanic()
 .set_name("got a corruption")
