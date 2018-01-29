@@ -49,7 +49,12 @@ const uint16_t MECHANIC_XERA_MAGIC = 34956;//nameless
 //carin
 const uint16_t MECHANIC_CARIN_TELEPORT = 38113;//Displacement
 const uint16_t MECHANIC_CARIN_SHARD = 38313;//Meteor Swarm
-const uint16_t MECHANIC_CARIN_GREEN = 38302;//Spatial Manipulation
+const uint16_t MECHANIC_CARIN_GREEN_A = 37611;//Spatial Manipulation, 1 id per pattern of greens
+const uint16_t MECHANIC_CARIN_GREEN_B = 37629;//Spatial Manipulation
+const uint16_t MECHANIC_CARIN_GREEN_C = 37642;//Spatial Manipulation
+const uint16_t MECHANIC_CARIN_GREEN_D = 37673;//Spatial Manipulation
+const uint16_t MECHANIC_CARIN_GREEN_E = 38074;//Spatial Manipulation
+const uint16_t MECHANIC_CARIN_GREEN_F = 38302;//Spatial Manipulation
 
 //sam
 const uint16_t MECHANIC_SAM_SHOCKWAVE = 37996;

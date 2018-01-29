@@ -209,7 +209,7 @@ mechanic carin_shard_reflect = mechanic()
 
 mechanic carin_green = mechanic()
 .set_name("missed a green circle")
-.set_ids({MECHANIC_CARIN_GREEN})
+.set_ids({MECHANIC_CARIN_GREEN_A,MECHANIC_CARIN_GREEN_B,MECHANIC_CARIN_GREEN_C,MECHANIC_CARIN_GREEN_D,MECHANIC_CARIN_GREEN_E,MECHANIC_CARIN_GREEN_F})
 .set_is_interupt(true);
 
 mechanic sam_shockwave = mechanic()
