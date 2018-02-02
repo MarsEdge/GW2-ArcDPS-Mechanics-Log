@@ -302,7 +302,7 @@ mechanic dhuum_mark = mechanic()
 .set_ids({MECHANIC_DHUUM_MARK});
 
 mechanic dhuum_suck_aoe = mechanic()
-.set_name("touched the center during suction")
+.set_name("touched the center")
 .set_ids({MECHANIC_DHUUM_SUCK_AOE});
 
 mechanic dhuum_teleport_aoe = mechanic()
