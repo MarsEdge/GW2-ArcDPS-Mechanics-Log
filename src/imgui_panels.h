@@ -26,13 +26,14 @@ struct AppChart
     Player* merge_A;//1st player to merge
     Player* merge_B;//2nd player to merge
     ImGuiTextFilter     Filter;
+    uint16_t last_export_total;
 
     void    Clear();
 
     void    Draw(const char* title, std::vector<Player> &players, bool* p_open);
 
     std::string to_string(std::vector<Player> &players);
-    void    write_to_disk(std::string text);
+    void    write_to_disk(std::vector<Player> &players);
 };
 
 float get_chart_column_width(float window_width);

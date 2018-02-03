@@ -79,7 +79,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     ImGui::SameLine();
 //  Filter.Draw("Filter", -50.0f);
 //  ImGui::SameLine();
-    if (ImGui::Button("Export")) write_to_disk(to_string(players));
+    if (ImGui::Button("Export")) write_to_disk(players);
     ImGui::SameLine();
     if (ImGui::Button("Copy")) ImGui::LogToClipboard();
     ImGui::Separator();
@@ -258,8 +258,16 @@ std::string AppChart::to_string(std::vector<Player> &players)
     return output;
 }
 
-void AppChart::write_to_disk(std::string text)
+void AppChart::write_to_disk(std::vector<Player> &players)
 {
+    uint16_t new_export_total = get_mechanics_total(players);
+    if(last_export_total == new_export_total)
+    {
+        return;
+    }
+
+    std::string text = to_string(players);
+
     CHAR my_documents[MAX_PATH];
     HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
     std::string path = "";
@@ -281,8 +289,10 @@ void AppChart::write_to_disk(std::string text)
 
         CreateDirectory(path.c_str(), NULL);
 
-        std::ofstream out(path+"\\"+std::string(time_str)+".csv");
+        std::ofstream out(path+"\\"+std::string(time_str)+"-"+std::to_string(new_export_total)+".csv");
         out << text;
         out.close();
+
+        last_export_total = new_export_total;
     }
 }

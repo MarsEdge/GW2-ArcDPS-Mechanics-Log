@@ -55,6 +55,7 @@ struct Player
     void set_last_mechanic(uint16_t new_mechanic);
 
     std::string to_string();
+    uint16_t get_mechanics_total();//returns the number of total mechanics the player had
 };
 
 extern std::mutex players_mtx;
@@ -65,3 +66,4 @@ extern std::vector<Player> players;
 Player* get_player(ag* &new_player);
 bool is_player(ag* &new_player);
 void reset_all_player_stats();
+uint16_t get_mechanics_total(std::vector<Player> &players);

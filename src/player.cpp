@@ -159,6 +159,17 @@ std::string Player::to_string()
     return output;
 }
 
+uint16_t Player::get_mechanics_total()
+{
+    uint16_t result = 1 + downs + deaths;
+
+    for(uint16_t index=0;index<tracker.size();index++)
+    {
+        result += tracker.at(index).hits;
+    }
+    return result;
+}
+
 Player* get_player(ag* &new_player)
 {
     if(!is_player(new_player))
@@ -196,4 +207,18 @@ void reset_all_player_stats()
 {
     std::lock_guard<std::mutex> lg(players_mtx);
     players.clear();
+}
+
+uint16_t get_mechanics_total(std::vector<Player> &players)
+{
+    uint16_t result = 0;
+
+    for(uint16_t index=0;index<players.size();index++)
+    {
+        if(players.at(index).is_relevant())
+        {
+            result += players.at(index).get_mechanics_total();
+        }
+    }
+    return result;
 }
