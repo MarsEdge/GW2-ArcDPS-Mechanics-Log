@@ -28,6 +28,8 @@ struct Player
         uint16_t hits;
 
         mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail);
+
+        std::string to_string();
     };
 
     std::vector<mechanic_tracker> tracker;
@@ -51,6 +53,8 @@ struct Player
 
     uint16_t get_last_mechanic();
     void set_last_mechanic(uint16_t new_mechanic);
+
+    std::string to_string();
 };
 
 extern std::mutex players_mtx;

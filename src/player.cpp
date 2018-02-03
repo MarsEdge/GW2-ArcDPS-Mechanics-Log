@@ -133,6 +133,32 @@ void Player::set_last_mechanic(uint16_t new_mechanic)
     last_mechanic = new_mechanic;
 }
 
+std::string Player::mechanic_tracker::to_string()
+{
+    return name + "," +
+    (!fail ? std::to_string(hits) + "," : "," + std::to_string(hits)) +
+    "\n";
+}
+
+std::string Player::to_string()
+{
+    std::string output = "";
+
+    output += name + "," + "," +
+    std::to_string(mechanics_received) + "," +
+    std::to_string(mechanics_failed) + "," +
+    std::to_string(downs) + "," +
+    std::to_string(deaths) +
+    "\n";
+
+    for(uint16_t index=0; index<tracker.size();index++)
+    {
+        output += "," +
+        tracker.at(index).to_string();
+    }
+    return output;
+}
+
 Player* get_player(ag* &new_player)
 {
     if(!is_player(new_player))

@@ -3,6 +3,10 @@
 #include "player.h"
 #include "imgui.h"
 #include <string>
+#include <fstream>
+#include <windows.h>
+#include <shlobj.h>
+#include <ctime>
 
 struct AppLog
 {
@@ -26,6 +30,9 @@ struct AppChart
     void    Clear();
 
     void    Draw(const char* title, std::vector<Player> &players, bool* p_open);
+
+    std::string to_string(std::vector<Player> &players);
+    void    write_to_disk(std::string text);
 };
 
 float get_chart_column_width(float window_width);

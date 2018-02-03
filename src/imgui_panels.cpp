@@ -77,7 +77,11 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
 
     if (ImGui::Button("Clear")) Clear();
     ImGui::SameLine();
-//    Filter.Draw("Filter", -50.0f);
+//  Filter.Draw("Filter", -50.0f);
+//  ImGui::SameLine();
+    if (ImGui::Button("Export")) write_to_disk(to_string(players));
+    ImGui::SameLine();
+    if (ImGui::Button("Copy")) ImGui::LogToClipboard();
     ImGui::Separator();
     bool merge = merge_A && merge_B && merge_A->id != merge_B->id;
     if(merge)
@@ -236,4 +240,49 @@ float get_chart_column_width(float window_width)
 float get_chart_column_loc(float window_width, uint16_t col)
 {
      return (window_width/5.0) + col * get_chart_column_width(window_width);
+}
+
+std::string AppChart::to_string(std::vector<Player> &players)
+{
+    std::string output = "";
+
+    output += "Player Name,Mechanic Name,Received,Failed,Downs,Deaths\n";
+
+    for(uint16_t index=0;index<players.size();index++)
+    {
+        if(players.at(index).is_relevant())
+        {
+            output += players.at(index).to_string();
+        }
+    }
+    return output;
+}
+
+void AppChart::write_to_disk(std::string text)
+{
+    CHAR my_documents[MAX_PATH];
+    HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+    std::string path = "";
+
+    std::time_t t = std::time(nullptr);
+    char time_str[100];
+    if (std::strftime(time_str, sizeof(time_str), "%Y%m%d-%H%M%S", std::localtime(&t)))
+    {
+        //std::cout << time_str << '\n';
+    }
+
+    if (result != S_OK)
+    {
+        //std::cout << "Error: " << result << "\n";
+    }
+    else
+    {
+        path = std::string(my_documents) + "\\Guild Wars 2\\addons\\arcdps\\arcdps.mechanics";
+
+        CreateDirectory(path.c_str(), NULL);
+
+        std::ofstream out(path+"\\"+std::string(time_str)+".csv");
+        out << text;
+        out.close();
+    }
 }
