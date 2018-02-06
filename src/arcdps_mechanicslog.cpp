@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "imgui_panels.h"
 #include "arcdps_datastructures.h"
+#include "helpers.h"
 #include "mechanics.h"
 #include "player.h"
 
@@ -27,7 +28,10 @@ uint64_t start_time = 0;
 
 std::string print_buffer = "";
 static bool show_app_log;
+static AppLog log;
+
 static bool show_app_chart;
+static AppChart chart;
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
@@ -87,6 +91,7 @@ arcdps_exports* mod_init()
 /* release mod -- return ignored */
 uintptr_t mod_release()
 {
+    chart.write_to_disk(players);
 	return 0;
 }
 
@@ -263,8 +268,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 
 static void ShowMechanicsLog(bool* p_open)
 {
-    static AppLog log;
-
     if(print_buffer.size() > 0)
     {
         log.AddLog(print_buffer.c_str());
@@ -276,8 +279,6 @@ static void ShowMechanicsLog(bool* p_open)
 
 static void ShowMechanicsChart(bool* p_open)
 {
-    static AppChart chart;
-
     if(show_app_chart) chart.Draw("MECHANICS CHART", players, p_open);
 }
 
