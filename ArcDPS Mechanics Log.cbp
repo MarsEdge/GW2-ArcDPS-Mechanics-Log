@@ -57,6 +57,10 @@
 			<Add after='cmd /c copy /Y &quot;$(PROJECT_DIR)$(TARGET_OUTPUT_FILE)&quot; &quot;C:\Program Files\Guild Wars 2\bin64\d3d9_arcdps_mechanics.dll&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
+		<Unit filename="src/arcdps_combatdemo.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="src/arcdps_datastructures.h" />
 		<Unit filename="src/arcdps_mechanicslog.cpp" />
 		<Unit filename="src/helpers.cpp" />
