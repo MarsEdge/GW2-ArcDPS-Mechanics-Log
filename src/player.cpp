@@ -80,7 +80,7 @@ void Player::rally()
 
 void Player::fix_double_down()
 {
-    downs--;
+    if(downs > 0) downs--;
 }
 
 void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
