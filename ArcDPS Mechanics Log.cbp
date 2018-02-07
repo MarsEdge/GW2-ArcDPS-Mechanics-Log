@@ -59,6 +59,8 @@
 		</ExtraCommands>
 		<Unit filename="src/arcdps_datastructures.h" />
 		<Unit filename="src/arcdps_mechanicslog.cpp" />
+		<Unit filename="src/helpers.cpp" />
+		<Unit filename="src/helpers.h" />
 		<Unit filename="src/imconfig.h" />
 		<Unit filename="src/imgui.cpp" />
 		<Unit filename="src/imgui.h" />
