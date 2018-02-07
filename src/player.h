@@ -10,6 +10,7 @@
 struct Player
 {
     std::string name;
+    std::string account;
     uintptr_t id;            //instance id
     uint16_t downs;              //number of times the player has downed
     uint16_t deaths;              //number of times the player has completely died
@@ -36,6 +37,7 @@ struct Player
 
     Player();
     Player(ag* &new_player);
+    Player(char* new_name, char* new_account, uintptr_t new_id);
 
     void down();
     void dead();
@@ -64,6 +66,7 @@ extern std::mutex tracker_mtx;
 extern std::vector<Player> players;
 
 Player* get_player(ag* &new_player);
+void add_player(char* name, char* account, uintptr_t id);
 bool is_player(ag* &new_player);
 void reset_all_player_stats();
 uint16_t get_mechanics_total(std::vector<Player> &players);

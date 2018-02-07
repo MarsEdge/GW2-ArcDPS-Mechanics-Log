@@ -123,7 +123,21 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
 	if (!ev)
     {
+        /* notify tracking change */
+		if (!src->elite)
+        {
+			/* add */
+			if (src->prof)
+            {
+                add_player(src->name,src->name,src->id);//TODO: use dst->name for account name once arc supports it
+			}
 
+			/* remove */
+			else
+            {
+
+			}
+		}
 	}
 
 	/* combat event. skillname may be null. non-null skillname will remain static until module is unloaded. refer to evtc notes for complete detail */
