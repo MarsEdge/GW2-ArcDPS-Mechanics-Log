@@ -27,11 +27,10 @@ uintptr_t mod_options();
 uint64_t start_time = 0;
 
 std::string print_buffer = "";
-static bool show_app_log;
-static AppLog log;
+bool show_app_log;
 
-static bool show_app_chart;
-static AppChart chart;
+bool show_app_chart;
+AppChart chart;
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
@@ -266,8 +265,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 	return 0;
 }
 
-static void ShowMechanicsLog(bool* p_open)
+void ShowMechanicsLog(bool* p_open)
 {
+    static AppLog log;
+
     if(print_buffer.size() > 0)
     {
         log.AddLog(print_buffer.c_str());
@@ -277,7 +278,7 @@ static void ShowMechanicsLog(bool* p_open)
     if(show_app_log) log.Draw("MECHANICS LOG", p_open);
 }
 
-static void ShowMechanicsChart(bool* p_open)
+void ShowMechanicsChart(bool* p_open)
 {
     if(show_app_chart) chart.Draw("MECHANICS CHART", players, p_open);
 }
