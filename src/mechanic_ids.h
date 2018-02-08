@@ -45,7 +45,7 @@ const uint16_t MECHANIC_KC_FIXATE_B = 34925;//Fixated
 const uint16_t MECHANIC_XERA_HALF = 34883;
 const uint16_t MECHANIC_XERA_ORB = 35128;//Temporal Shred
 const uint16_t MECHANIC_XERA_ORB_AOE = 34913;//Temporal Shred
-const uint16_t MECHANIC_XERA_MAGIC = 34956;//nameless
+const uint16_t MECHANIC_XERA_MAGIC = 35000;//Intervention
 
 //carin
 const uint16_t MECHANIC_CARIN_TELEPORT = 38113;//Displacement
