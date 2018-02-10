@@ -5,7 +5,7 @@
 
 #include "arcdps_datastructures.h"
 #include "player.h"
-#include "mechanic_ids.h"
+#include "skill_ids.h"
 
 extern bool have_added_line_break;
 extern uint64_t last_mechanic_time;

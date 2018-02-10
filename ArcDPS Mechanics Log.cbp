@@ -76,11 +76,11 @@
 		<Unit filename="src/imgui_internal.h" />
 		<Unit filename="src/imgui_panels.cpp" />
 		<Unit filename="src/imgui_panels.h" />
-		<Unit filename="src/mechanic_ids.h" />
 		<Unit filename="src/mechanics.cpp" />
 		<Unit filename="src/mechanics.h" />
 		<Unit filename="src/player.cpp" />
 		<Unit filename="src/player.h" />
+		<Unit filename="src/skill_ids.h" />
 		<Unit filename="src/stb_rect_pack.h" />
 		<Unit filename="src/stb_textedit.h" />
 		<Unit filename="src/stb_truetype.h" />
