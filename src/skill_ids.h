@@ -127,3 +127,8 @@ const uint16_t CONJURE_EARTH_SHIELD_BUFF = 15788;//Conjure Earth Attributes
 
 const uint16_t CONJURE_FIRE_GS = 5516;//Conjure Fiery Greatsword
 const uint16_t CONJURE_FIRE_GS_BUFF = 15792;//Conjure Fire Attributes
+
+//Buffs
+const uint16_t BUFF_STABILITY = 1122;//Stability
+const uint16_t BUFF_VAPOR_FORM = 5620;//Vapor Form
+const uint16_t BUFF_ILLUSION_OF_LIFE = 10346;//Illusion of Life

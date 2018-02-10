@@ -9,6 +9,7 @@
 #include "helpers.h"
 #include "mechanics.h"
 #include "player.h"
+#include "skill_ids.h"
 
 /* proto/globals */
 uint32_t cbtcount = 0;
@@ -204,12 +205,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             current_player=get_player(dst);
             if(current_player)
             {
-                if (ev->skillid==1122)//if it's stability
+                if (ev->skillid==BUFF_STABILITY)//if it's stability
                 {
                     current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
                 }
-                else if (ev->skillid==5620//vapor form manual case
-                         || ev->skillid==10346//Illusion of Life manual case
+                else if (ev->skillid==BUFF_VAPOR_FORM//vapor form manual case
+                         || ev->skillid==BUFF_ILLUSION_OF_LIFE//Illusion of Life manual case
                          )
                 {
                     current_player->fix_double_down();
@@ -223,7 +224,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             current_player=get_player(dst);
             if(current_player)
             {
-                if (ev->skillid==1122)//if it's stability
+                if (ev->skillid==BUFF_STABILITY)//if it's stability
                 {
                     current_player->set_stab_time(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
                 }
