@@ -6,6 +6,8 @@
 #include "arcdps_datastructures.h"
 #include "player.h"
 #include "skill_ids.h"
+#include "npc_ids.h"
+#include "helpers.h"
 
 extern bool have_added_line_break;
 extern uint64_t last_mechanic_time;
@@ -18,6 +20,7 @@ struct mechanic
 {
     std::string name; //name of mechanic
     std::vector<uint16_t> ids; //skill ids;
+    uint32_t boss_id;//required boss id, ignored if 0
     uint64_t frequency_player; //minimum time between instances of this mechanic per player(ms)
     uint64_t frequency_global; //minimum time between instances of this mechanic globally(ms)
     uint64_t last_hit_time; //time of last instance of mechanic
@@ -30,11 +33,12 @@ struct mechanic
 
     mechanic();
 
-    bool is_valid_hit(cbtevent* ev, ag* src, ag* dst);
+    bool is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs);
     bool (*special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
     mechanic set_name(std::string const new_name) {this->name = new_name; return *this;}
     mechanic set_ids(std::initializer_list<uint16_t> const new_ids) {this->ids = std::vector<uint16_t>(new_ids); return *this;}
+    mechanic set_boss_id(uint32_t const new_boss_id) {this->boss_id = new_boss_id; return *this;}
     mechanic set_frequency_player(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
     mechanic set_frequency_global(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}
     mechanic set_is_buffremove(bool const new_is_buffremove) {this->is_buffremove = new_is_buffremove; return *this;}

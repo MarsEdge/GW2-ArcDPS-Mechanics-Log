@@ -210,6 +210,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		/* statechange */
 		if (ev->is_statechange) {
 			p += _snprintf(p, 400, "is_statechange: %u\n", ev->is_statechange);
+			p += _snprintf(p, 400, "value: %d\n", ev->value);
 		}
 
 		/* activation */

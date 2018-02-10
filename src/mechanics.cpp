@@ -20,7 +20,7 @@ mechanic::mechanic()
     special_requirement = default_requirement;
 }
 
-bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst)
+bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
 {
     uint16_t index = 0;
     bool correct_id = false;
@@ -39,6 +39,12 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst)
     {
         if(frequency_global != 0
            && ev->time < last_hit_time+frequency_global-ms_per_tick)
+        {
+            return false;
+        }
+
+        if(boss_id
+           && gs->current_boss->prof != boss_id)
         {
             return false;
         }
@@ -110,7 +116,8 @@ mechanic sab_sapper_bomb = mechanic()
 .set_name("got a sapper bomb")
 .set_ids({MECHANIC_SAB_SAPPER_BOMB})
 .set_fail_if_hit(false)
-.set_valid_if_down(true);
+.set_valid_if_down(true)
+.set_boss_id(ID_sabetha);
 
 mechanic sab_time_bomb = mechanic()
 .set_name("got a time bomb")

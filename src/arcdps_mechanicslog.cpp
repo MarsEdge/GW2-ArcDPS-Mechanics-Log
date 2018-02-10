@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 #include "imgui.h"
 #include "imgui_panels.h"
@@ -10,6 +11,7 @@
 #include "mechanics.h"
 #include "player.h"
 #include "skill_ids.h"
+#include "npc_ids.h"
 
 /* proto/globals */
 uint32_t cbtcount = 0;
@@ -33,6 +35,9 @@ bool show_app_log;
 
 bool show_app_chart;
 AppChart chart;
+
+game_state game_state;
+
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
@@ -191,6 +196,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                     current_player->down();
                 }
             }
+            //if health update
+            else if(ev->is_statechange==12)
+            {
+                if(std::find(bosses.begin(), bosses.end(), src->prof) != bosses.end())
+                {
+                    game_state.current_boss = src;
+                }
+            }
 		}
 
 		/* activation */
@@ -240,7 +253,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(mechanics[index].is_valid_hit(ev, src, dst))
+                    if(mechanics[index].is_valid_hit(ev, src, dst, &game_state))
                     {
                         output += std::to_string(get_elapsed_time(ev->time)/60);
                         output += ":";
