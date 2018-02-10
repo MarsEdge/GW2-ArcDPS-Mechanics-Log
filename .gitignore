@@ -3,3 +3,5 @@
 /*.depend
 /*.layout
 /src/*.gch
+/CppCheckResults.xml
+/*.cscope_file_list
