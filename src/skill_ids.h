@@ -76,6 +76,7 @@ const uint16_t MECHANIC_HORROR_PIE_4_A = 48363;//Quad Slash
 const uint16_t MECHANIC_HORROR_PIE_4_B = 47915;//Quad Slash
 const uint16_t MECHANIC_HORROR_SCYTHE = 47363;//Spinning Slash
 const uint16_t MECHANIC_HORROR_FIXATE = 47434;//Fixated
+const uint16_t MECHANIC_HORROR_DEBUFF = 47414;//Necrosis
 
 //Dhuum
 const uint16_t MECHANIC_DHUUM_GOLEM = 48172; //Hateful Ephemera (flesh golem)

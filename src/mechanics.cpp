@@ -281,6 +281,11 @@ mechanic horror_agro = mechanic()
 .set_ids({MECHANIC_HORROR_FIXATE})
 .set_fail_if_hit(false);
 
+mechanic horror_debuff = mechanic()
+.set_name("was debuffed")
+.set_ids({MECHANIC_HORROR_DEBUFF})
+.set_fail_if_hit(false);
+
 mechanic dhuum_golem = mechanic()
 .set_name("touched a messenger")
 .set_ids({MECHANIC_DHUUM_GOLEM});
@@ -470,6 +475,7 @@ std::vector <mechanic> mechanics =
     horror_pie,
     horror_scythe,
     horror_agro,
+    horror_debuff,
     dhuum_golem,
     dhuum_affliction,
     dhuum_shackle_src,
