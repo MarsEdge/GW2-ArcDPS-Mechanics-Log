@@ -185,7 +185,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
                || (merge
                    && players.at(index).id == merge_B->id))
             {
-                players.erase(players.begin()+index);
+                players.at(index).reset_stats();
                 if(expand)
                 {
                     ImGui::TreePop();

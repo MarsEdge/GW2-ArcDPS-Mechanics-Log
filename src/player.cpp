@@ -185,6 +185,20 @@ uint16_t Player::get_mechanics_total()
     return result;
 }
 
+void Player::reset_stats()
+{
+    downs = 0;
+    deaths = 0;
+    is_downed = false;
+    mechanics_failed = 0;
+    mechanics_received = 0;
+    last_stab_time = 0;
+    last_hit_time=0;
+    last_mechanic=0;
+
+    tracker.clear();
+}
+
 Player* get_player(ag* &new_player)
 {
     if(!is_player(new_player))
@@ -239,7 +253,10 @@ bool is_player(ag* &new_player)
 void reset_all_player_stats()
 {
     std::lock_guard<std::mutex> lg(players_mtx);
-    players.clear();
+    for(uint16_t index=0;index<players.size();index++)
+    {
+        players.at(index).reset_stats();
+    }
 }
 
 uint16_t get_mechanics_total(std::vector<Player> &players)

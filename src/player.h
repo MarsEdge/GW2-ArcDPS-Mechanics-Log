@@ -58,6 +58,7 @@ struct Player
 
     std::string to_string();
     uint16_t get_mechanics_total();//returns the number of total mechanics the player had
+    void reset_stats();
 };
 
 extern std::mutex players_mtx;
