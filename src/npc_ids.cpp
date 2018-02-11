@@ -2,7 +2,7 @@
 
 std::vector<uint32_t> bosses =
 {
-    ID_vg,
+    ID_vale_guardian,
     ID_gorseval,
     ID_sabetha,
     ID_slothasor,
@@ -17,6 +17,6 @@ std::vector<uint32_t> bosses =
     ID_overseer,
     ID_samarog,
     ID_deimos,
-    ID_sh,
+    ID_soulless_horror,
     ID_dhuum
 };
