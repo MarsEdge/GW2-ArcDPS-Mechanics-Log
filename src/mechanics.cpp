@@ -44,6 +44,7 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         }
 
         if(boss_id
+           && gs->current_boss
            && gs->current_boss->prof != boss_id)
         {
             return false;

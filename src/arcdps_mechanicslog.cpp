@@ -199,7 +199,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-                if(std::find(bosses.begin(), bosses.end(), src->prof) != bosses.end())
+                if(src
+                   && std::find(bosses.begin(), bosses.end(), src->prof) != bosses.end())
                 {
                     game_state.current_boss = src;
                 }
