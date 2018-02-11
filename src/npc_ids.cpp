@@ -16,5 +16,7 @@ std::vector<uint32_t> bosses =
     ID_cairn,
     ID_overseer,
     ID_samarog,
-    ID_deimos
+    ID_deimos,
+    ID_sh,
+    ID_dhuum
 };

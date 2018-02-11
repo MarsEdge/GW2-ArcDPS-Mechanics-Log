@@ -18,5 +18,7 @@ const uint32_t ID_cairn          = 0x432A;
 const uint32_t ID_overseer       = 0x4314;
 const uint32_t ID_samarog        = 0x4324;
 const uint32_t ID_deimos         = 0x4302;
+const uint32_t ID_sh             = 0x4D37;
+const uint32_t ID_dhuum          = 0x4BFA;
 
 extern std::vector<uint32_t> bosses;
