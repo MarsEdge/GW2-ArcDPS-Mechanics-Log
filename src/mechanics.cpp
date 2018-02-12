@@ -8,6 +8,7 @@ bool has_logged_mechanic = false;
 mechanic::mechanic()
 {
     name = "";
+    boss_id = 0;
     frequency_player = 2000;
     frequency_global = 0;
     last_hit_time = 0;
