@@ -93,6 +93,7 @@ void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
     {
         mechanics_failed++;
     }
+    set_last_mechanic(id);
     for(uint16_t index=0;index<tracker.size();index++)
     {
         if(tracker.at(index).id == id)
