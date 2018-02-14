@@ -298,12 +298,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 void ShowMechanicsLog(bool* p_open)
 {
     static AppLog log;
+    std::string to_add = print_buffer.str();
 
-    if(print_buffer.str().size() > 0)
+    if(to_add.length() > 0)
     {
-        log.AddLog(print_buffer.str().c_str());
-        print_buffer.clear();
+        log.AddLog(to_add.c_str());
         print_buffer.str(std::string());
+        print_buffer.clear();
     }
 
     if(show_app_log) log.Draw("MECHANICS LOG", p_open);
