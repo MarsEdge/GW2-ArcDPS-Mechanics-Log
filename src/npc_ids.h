@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <string>
 
 const uint32_t ID_vale_guardian  = 0x3C4E;
 const uint32_t ID_gorseval       = 0x3C45;
@@ -21,4 +22,17 @@ const uint32_t ID_deimos         = 0x4302;
 const uint32_t ID_soulless_horror= 0x4D37;
 const uint32_t ID_dhuum          = 0x4BFA;
 
-extern std::vector<uint32_t> bosses;
+struct boss
+{
+    std::vector<uint32_t> ids;//npc id (from ag->prof)
+    std::string name;
+    uint64_t timer;//enrage timer
+
+    boss();
+
+    boss set_ids(std::initializer_list<uint32_t> const new_ids) {this->ids = std::vector<uint32_t>(new_ids); return *this;}
+    boss set_name(std::string const new_name) {this->name = new_name; return *this;}
+    boss set_timer(uint64_t const new_timer) {this->timer = new_timer; return *this;}
+};
+
+extern std::vector<boss> bosses;

@@ -41,6 +41,11 @@ game_state game_state;
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
+    if(game_state.current_boss
+       && game_state.boss_data.timer)
+    {
+        return (game_state.boss_data.timer-(current_time-start_time))/1000;
+    }
     return (current_time-start_time)/1000;
 }
 
@@ -199,10 +204,16 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-                if(src
-                   && std::find(bosses.begin(), bosses.end(), src->prof) != bosses.end())
+                if(src)
                 {
-                    game_state.current_boss = src;
+                    for(uint16_t index=0;index<bosses.size();index++)
+                    {
+                        if(std::find(bosses.at(index).ids.begin(), bosses.at(index).ids.end(), src->prof) != bosses.at(index).ids.end())
+                        {
+                            game_state.current_boss = src;
+                            game_state.boss_data = bosses.at(index);
+                        }
+                    }
                 }
             }
 		}
