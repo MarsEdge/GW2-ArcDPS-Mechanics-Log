@@ -28,7 +28,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
 
-uint64_t start_time = 0;
+int64_t start_time = 0;
 
 std::stringstream print_buffer;
 bool show_app_log;
@@ -44,7 +44,7 @@ inline int get_elapsed_time(uint64_t &current_time)
     if(game_state.current_boss
        && game_state.boss_data.timer)
     {
-        return (game_state.boss_data.timer-(current_time-start_time))/1000;
+        return (game_state.boss_data.timer-(static_cast<int64_t>(current_time)-start_time))/1000;
     }
     return (current_time-start_time)/1000;
 }

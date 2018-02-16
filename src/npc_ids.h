@@ -26,7 +26,7 @@ struct boss
 {
     std::vector<uint32_t> ids;//npc id (from ag->prof)
     std::string name;
-    uint64_t timer;//enrage timer
+    int64_t timer;//enrage timer
 
     boss();
 
