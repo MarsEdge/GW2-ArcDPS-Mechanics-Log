@@ -252,8 +252,7 @@ mechanic deimos_oil = mechanic()
 
 mechanic deimos_smash = mechanic()
 .set_name("was hit by smash")
-.set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL})
-.set_is_interupt(true);
+.set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL});
 
 mechanic horror_donut_inner = mechanic()
 .set_name("stood in inner donut")
