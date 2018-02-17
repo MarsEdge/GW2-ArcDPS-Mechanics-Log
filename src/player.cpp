@@ -160,7 +160,7 @@ std::string Player::to_string()
 {
     std::string output = "";
 
-    output += name + "," + "," +
+    output += name + "," + "Overall" + "," +
     std::to_string(mechanics_received) + "," +
     std::to_string(mechanics_failed) + "," +
     std::to_string(downs) + "," +
@@ -169,7 +169,7 @@ std::string Player::to_string()
 
     for(uint16_t index=0; index<tracker.size();index++)
     {
-        output += "," +
+        output += name + "," +
         tracker.at(index).to_string();
     }
     return output;
