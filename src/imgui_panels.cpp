@@ -108,8 +108,10 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     ImGui::SameLine(get_chart_column_loc(window_width,4));
     ImGui::Text("Deaths");
     ImGui::SameLine(get_chart_column_loc(window_width,5));
-    ImGui::Text("Merge");
+    ImGui::Text("Pulls");
     ImGui::SameLine(get_chart_column_loc(window_width,6));
+    ImGui::Text("Merge");
+    ImGui::SameLine(get_chart_column_loc(window_width,7));
     ImGui::Text("Delete");
     ImGui::EndGroup();
 
@@ -130,8 +132,10 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
             ImGui::Text(std::to_string(players.at(index).downs).c_str());
             ImGui::SameLine(get_chart_column_loc(window_width,4));
             ImGui::Text(std::to_string(players.at(index).deaths).c_str());
-            ImGui::PopItemWidth();
             ImGui::SameLine(get_chart_column_loc(window_width,5));
+            ImGui::Text(std::to_string(players.at(index).pulls).c_str());
+            ImGui::PopItemWidth();
+            ImGui::SameLine(get_chart_column_loc(window_width,6));
             if(merge_A
                && merge_A->id == players.at(index).id)
             {
@@ -180,7 +184,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
                 ImGui::PopStyleColor();
                 pop_color = false;
             }
-            ImGui::SameLine(get_chart_column_loc(window_width,6));
+            ImGui::SameLine(get_chart_column_loc(window_width,7));
             if(ImGui::SmallButton("X")
                || (merge
                    && players.at(index).id == merge_B->id))
@@ -234,19 +238,19 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
 
 float get_chart_column_width(float window_width)
 {
-    return window_width/5.0*3.0/5.0;
+    return window_width/6.0*3.0/5.0;
 }
 
 float get_chart_column_loc(float window_width, uint16_t col)
 {
-     return (window_width/5.0) + col * get_chart_column_width(window_width);
+     return (window_width/6.0) + col * get_chart_column_width(window_width);
 }
 
 std::string AppChart::to_string(std::vector<Player> &players)
 {
     std::string output = "";
 
-    output += "Player Name,Mechanic Name,Received,Failed,Downs,Deaths\n";
+    output += "Player Name,Mechanic Name,Received,Failed,Downs,Deaths,Pulls\n";
 
     for(uint16_t index=0;index<players.size();index++)
     {

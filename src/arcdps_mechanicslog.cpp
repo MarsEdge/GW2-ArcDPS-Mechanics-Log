@@ -147,7 +147,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 			/* remove */
 			else
             {
-
+                remove_player(src->name, src->name, src->id);//TODO: use dst->name for account name once arc supports it
 			}
 		}
 	}
@@ -212,6 +212,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         {
                             game_state.current_boss = src;
                             game_state.boss_data = bosses.at(index);
+                            add_pull();
                         }
                     }
                 }

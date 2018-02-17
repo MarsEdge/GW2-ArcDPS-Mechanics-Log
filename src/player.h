@@ -14,12 +14,14 @@ struct Player
     uintptr_t id;            //instance id
     uint16_t downs;              //number of times the player has downed
     uint16_t deaths;              //number of times the player has completely died
+    uint16_t pulls;         //number of boss pulls
     bool is_downed;     //is currently is down state
     uint16_t mechanics_failed;   //number of mechanics failed
     uint16_t mechanics_received;//number of boss mechanics received
     uint64_t last_stab_time;  //time stability is going to expire
     uint64_t last_hit_time;       //time player was last hit with a mechanic
     uint16_t last_mechanic;       //skill id of last failed mechanic
+    bool in_squad;          //currently in squad
 
     struct mechanic_tracker
     {
@@ -68,6 +70,8 @@ extern std::vector<Player> players;
 
 Player* get_player(ag* &new_player);
 void add_player(char* name, char* account, uintptr_t id);
+void remove_player(char* name, char* account, uintptr_t id);
+void add_pull();
 bool is_player(ag* &new_player);
 void reset_all_player_stats();
 uint16_t get_mechanics_total(std::vector<Player> &players);

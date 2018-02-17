@@ -16,6 +16,7 @@ Player::Player()
     last_stab_time = 0;  //time stability is going to expire
     last_hit_time=0;       //time player was last hit with a mechanic
     last_mechanic=0;       //skill id of last failed mechanic
+    in_squad = true;
 }
 
 Player::Player(ag* &new_player)
@@ -37,6 +38,7 @@ Player::Player(ag* &new_player)
     last_stab_time = 0;  //time stability is going to expire
     last_hit_time=0;       //time player was last hit with a mechanic
     last_mechanic=0;       //skill id of last failed mechanic
+    in_squad = true;
 }
 
 Player::Player(char* new_name, char* new_account, uintptr_t new_id)
@@ -52,6 +54,7 @@ Player::Player(char* new_name, char* new_account, uintptr_t new_id)
     last_stab_time = 0;  //time stability is going to expire
     last_hit_time=0;       //time player was last hit with a mechanic
     last_mechanic=0;       //skill id of last failed mechanic
+    in_squad = true;
 }
 
 Player::mechanic_tracker::mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail)
@@ -164,7 +167,8 @@ std::string Player::to_string()
     std::to_string(mechanics_received) + "," +
     std::to_string(mechanics_failed) + "," +
     std::to_string(downs) + "," +
-    std::to_string(deaths) +
+    std::to_string(deaths) + "," +
+    std::to_string(pulls) +
     "\n";
 
     for(uint16_t index=0; index<tracker.size();index++)
@@ -228,18 +232,55 @@ void add_player(char* name, char* account, uintptr_t id)
     {
         if(players.at(index).id == id)
         {
+            players.at(index).in_squad = true;
             return;
         }
         else if(name && account && std::string(account)==players.at(index).account)
         {
             players.at(index).id = id;
             players.at(index).name = name;
+            players.at(index).in_squad = true;
             return;
         }
     }
 
     std::lock_guard<std::mutex> lg(players_mtx);
     players.push_back(Player(name, account, id));
+}
+
+void remove_player(char* name, char* account, uintptr_t id)
+{
+    if(!name || !account)
+    {
+        return;
+    }
+
+    for(uint16_t index=0;index<players.size();index++)
+    {
+        if(players.at(index).id == id)
+        {
+            players.at(index).in_squad = false;
+            return;
+        }
+        else if(name && account && std::string(account)==players.at(index).account)
+        {
+            players.at(index).id = id;
+            players.at(index).name = name;
+            players.at(index).in_squad = false;
+            return;
+        }
+    }
+}
+
+void add_pull()
+{
+    for(uint16_t index=0;index<players.size();index++)
+    {
+        if(players.at(index).in_squad)
+        {
+            players.at(index).pulls++;
+        }
+    }
 }
 
 bool is_player(ag* &new_player)
