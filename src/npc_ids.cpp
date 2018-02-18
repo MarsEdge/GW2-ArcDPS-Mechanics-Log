@@ -18,7 +18,7 @@ std::vector<boss> bosses =
 
     boss().set_ids({ID_slothasor}).set_timer(7*60*1000),
 
-    boss().set_ids({ID_trio_burg,ID_trio_zane,ID_trio_narella}).set_timer(9*60*1000),//TODO: verify enrage timer
+    boss().set_ids({ID_trio_burg}).set_timer(9*60*1000),//TODO: verify enrage timer
 
     boss().set_ids({ID_matthias}).set_timer(10*60*1000),//TODO: verify enrage timer
 
