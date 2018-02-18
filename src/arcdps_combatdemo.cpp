@@ -9,7 +9,7 @@
 /* arcdps export table */
 typedef struct arcdps_exports {
 	uintptr_t size; /* arcdps internal use, ignore */
-	uintptr_t sig; /* pick a number between 0 and uint64_t max that isn't used by other modules */
+	uintptr_t sig; /* pick a non-zero number that isn't used by other modules */
 	char* out_name; /* name string */
 	char* out_build; /* build string */
 	void* wnd; /* wndproc callback, fn(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) */
@@ -177,7 +177,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 			/* add */
 			if (src->prof) {
 				p += _snprintf(p, 400, "==== cbtnotify ====\n");
-				p += _snprintf(p, 400, "agent added: %s (%llx), prof: %u, elite: %u, self: %u\n", src->name, src->id, dst->prof, dst->elite, dst->self);
+				// self flag disabled - always 1
+				p += _snprintf(p, 400, "agent added: %s:%s (%0llx), prof: %u, elite: %u, self: %u\n", src->name, dst->name, src->id, dst->prof, dst->elite, dst->self);
 			}
 
 			/* remove */
@@ -210,21 +211,21 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 		/* statechange */
 		if (ev->is_statechange) {
 			p += _snprintf(p, 400, "is_statechange: %u\n", ev->is_statechange);
-			p += _snprintf(p, 400, "value: %d\n", ev->value);
 		}
 
 		/* activation */
 		else if (ev->is_activation) {
 			p += _snprintf(p, 400, "is_activation: %u\n", ev->is_activation);
 			p += _snprintf(p, 400, "skill: %s:%u\n", skillname, ev->skillid);
-			p += _snprintf(p, 400, "ms: %d\n", ev->value);
+			p += _snprintf(p, 400, "ms_expected: %d\n", ev->value);
 		}
 
 		/* buff remove */
 		else if (ev->is_buffremove) {
 			p += _snprintf(p, 400, "is_buffremove: %u\n", ev->is_buffremove);
 			p += _snprintf(p, 400, "skill: %s:%u\n", skillname, ev->skillid);
-			p += _snprintf(p, 400, "ms: %d\n", ev->value);
+			p += _snprintf(p, 400, "ms_duration: %d\n", ev->value);
+			p += _snprintf(p, 400, "ms_intensity: %d\n", ev->buff_dmg);
 		}
 
 		/* buff */
