@@ -24,7 +24,7 @@ std::vector<boss> bosses =
 
     boss().set_ids({ID_keep_construct}).set_timer(10*60*1000),//TODO: verify enrage timer
 
-    boss().set_ids({ID_xera_part1,ID_xera_part2}).set_timer(11*60*1000),//TODO: verify enrage timer
+    boss().set_ids({ID_xera_part1}).set_timer(11*60*1000),//TODO: verify enrage timer
 
     boss().set_ids({ID_cairn}).set_timer(8*60*1000),//TODO: verify enrage timer
 
