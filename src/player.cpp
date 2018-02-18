@@ -10,6 +10,7 @@ Player::Player()
     id = 0;            //instance id
     downs = 0;              //number of times the player has downed
     deaths = 0;
+    pulls = 0;
     is_downed = false;     //is currently is down state
     mechanics_failed = 0;   //number of mechanics failed
     mechanics_received = 0;
@@ -32,6 +33,7 @@ Player::Player(ag* &new_player)
     id = new_player->id;
     downs = 0;              //number of times the player has downed
     deaths = 0;
+    pulls = 0;
     is_downed = false;     //is currently is down state
     mechanics_failed = 0;   //number of mechanics failed
     mechanics_received = 0;
@@ -48,6 +50,7 @@ Player::Player(char* new_name, char* new_account, uintptr_t new_id)
     id = new_id;
     downs = 0;              //number of times the player has downed
     deaths = 0;
+    pulls = 0;
     is_downed = false;     //is currently is down state
     mechanics_failed = 0;   //number of mechanics failed
     mechanics_received = 0;
