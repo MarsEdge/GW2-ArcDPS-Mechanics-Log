@@ -141,13 +141,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 			/* add */
 			if (src->prof)
             {
-                add_player(src->name,src->name,src->id);//TODO: use dst->name for account name once arc supports it
+                add_player(src->name,dst->name,src->id);
 			}
 
 			/* remove */
 			else
             {
-                remove_player(src->name, src->name, src->id);//TODO: use dst->name for account name once arc supports it
+                remove_player(src->name, src->name, src->id);
 			}
 		}
 	}
@@ -204,11 +204,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-                if(src)
+                for(uint16_t index=0;index<bosses.size();index++)
                 {
-                    for(uint16_t index=0;index<bosses.size();index++)
+                    if(std::find(bosses.at(index).ids.begin(), bosses.at(index).ids.end(), src->prof) != bosses.at(index).ids.end())
                     {
-                        if(std::find(bosses.at(index).ids.begin(), bosses.at(index).ids.end(), src->prof) != bosses.at(index).ids.end())
+                        if(bosses.at(index).health <= ev->dst_agent)
                         {
                             game_state.current_boss = src;
                             game_state.boss_data = bosses.at(index);

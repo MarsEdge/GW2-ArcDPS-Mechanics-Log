@@ -166,7 +166,9 @@ std::string Player::to_string()
 {
     std::string output = "";
 
-    output += name + "," + "Overall" + "," +
+    output += name + "," +
+    account + "," +
+    "Overall" + "," +
     std::to_string(mechanics_received) + "," +
     std::to_string(mechanics_failed) + "," +
     std::to_string(downs) + "," +
@@ -176,7 +178,7 @@ std::string Player::to_string()
 
     for(uint16_t index=0; index<tracker.size();index++)
     {
-        output += name + "," +
+        output += name + "," + account + "," +
         tracker.at(index).to_string();
     }
     return output;
@@ -265,10 +267,9 @@ void remove_player(char* name, char* account, uintptr_t id)
             players.at(index).in_squad = false;
             return;
         }
-        else if(name && account && std::string(account)==players.at(index).account)
+        else if(name && std::string(name)==players.at(index).name)
         {
             players.at(index).id = id;
-            players.at(index).name = name;
             players.at(index).in_squad = false;
             return;
         }

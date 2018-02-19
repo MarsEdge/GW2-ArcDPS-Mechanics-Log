@@ -250,7 +250,7 @@ std::string AppChart::to_string(std::vector<Player> &players)
 {
     std::string output = "";
 
-    output += "Player Name,Mechanic Name,Received,Failed,Downs,Deaths,Pulls\n";
+    output += "Player Name,Account Name,Mechanic Name,Received,Failed,Downs,Deaths,Pulls\n";
 
     for(uint16_t index=0;index<players.size();index++)
     {

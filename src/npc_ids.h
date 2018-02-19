@@ -27,12 +27,14 @@ struct boss
     std::vector<uint32_t> ids;//npc id (from ag->prof)
     std::string name;
     int64_t timer;//enrage timer
+    uint64_t health;
 
     boss();
 
     boss set_ids(std::initializer_list<uint32_t> const new_ids) {this->ids = std::vector<uint32_t>(new_ids); return *this;}
     boss set_name(std::string const new_name) {this->name = new_name; return *this;}
     boss set_timer(uint64_t const new_timer) {this->timer = new_timer; return *this;}
+    boss set_health(uint64_t const new_health) {this->health = new_health; return *this;}
 };
 
 extern std::vector<boss> bosses;
