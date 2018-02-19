@@ -1,7 +1,6 @@
 #include <Windows.h>
 #include <vector>
 #include <string>
-#include <sstream>
 #include <algorithm>
 
 #include "imgui.h"
@@ -30,7 +29,7 @@ uintptr_t mod_options();
 
 int64_t start_time = 0;
 
-std::stringstream print_buffer;
+std::string print_buffer = "";
 bool show_app_log;
 
 bool show_app_chart;
@@ -303,20 +302,18 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         }
 	}
 
-    print_buffer << output;
+    print_buffer +=output;
 	return 0;
 }
 
 void ShowMechanicsLog(bool* p_open)
 {
     static AppLog log;
-    std::string to_add = print_buffer.str();
 
-    if(to_add.length() > 0)
+    if(print_buffer.size() > 0)
     {
-        log.AddLog(to_add.c_str());
-        print_buffer.str(std::string());
-        print_buffer.clear();
+        log.AddLog(print_buffer.c_str());
+        print_buffer = "";
     }
 
     if(show_app_log) log.Draw("MECHANICS LOG", p_open);
