@@ -168,6 +168,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                     {
                         has_logged_mechanic = false;
                         output += "===========\n";
+                        game_state.current_boss = nullptr;
                     }
             }
 
@@ -205,9 +206,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             {
                 for(uint16_t index=0;index<bosses.size();index++)
                 {
-                    if(std::find(bosses.at(index).ids.begin(), bosses.at(index).ids.end(), src->prof) != bosses.at(index).ids.end())
+                    if(bosses.at(index).ids.at(0) == src->prof)
                     {
-                        if(bosses.at(index).health <= ev->dst_agent)
+                        if(bosses.at(index).health <= ev->dst_agent
+                           && !game_state.current_boss)
                         {
                             game_state.current_boss = src;
                             game_state.boss_data = bosses.at(index);
