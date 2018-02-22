@@ -263,7 +263,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             //if attack hits (not block/evaded/invuln/miss)
             //and it's a player, not a summon
-            if(ev->result==0 || ev->result==1 || ev->result==2 || ev->result==5 || ev->result==8)
+            if(ev->result==0 || ev->result==1 || ev->result==2 || ev->result==8)
             {
 
                 for(uint16_t index=0;index<mechanics.size();index++)
