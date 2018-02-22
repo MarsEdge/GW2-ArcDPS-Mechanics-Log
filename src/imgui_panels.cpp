@@ -95,6 +95,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
         }
         merge_A->downs += merge_B->downs;
         merge_A->deaths += merge_B->deaths;
+        merge_A->pulls += merge_B->pulls;
     }
 
     ImGui::BeginGroup();
