@@ -67,6 +67,7 @@ Player::mechanic_tracker::mechanic_tracker(std::string &new_name,uint16_t &new_i
     fail = new_fail;
     boss = new_boss;
     hits = 1;
+    pulls = 1;
 }
 
 void Player::down()
@@ -160,6 +161,8 @@ std::string Player::mechanic_tracker::to_string()
 {
     return name + "," +
     (!fail ? std::to_string(hits) + "," : "," + std::to_string(hits)) +
+    "," + "," +
+    std::to_string(pulls) +
     "\n";
 }
 

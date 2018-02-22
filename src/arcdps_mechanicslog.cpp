@@ -169,8 +169,33 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                     {
                         has_logged_mechanic = false;
                         output += "===========\n";
-                        game_state.boss_found = false;
                     }
+                }
+                else
+                {
+                    for(uint16_t index=0;index<bosses.size();index++)
+                    {
+                        if(bosses.at(index).has_id(src->prof))
+                        {
+                            if(!game_state.boss_found)
+                            {
+                                game_state.boss_found = true;
+                                game_state.boss_data = bosses.at(index);
+                                add_pull(src->prof);
+                                output += "boss found " + std::to_string(src->prof) + "\n";
+                            }
+                        }
+                    }
+                }
+            }
+
+            else if(ev->is_statechange==2)
+            {
+                if(game_state.boss_found
+                   && game_state.boss_data.has_id(src->prof))
+                {
+                    game_state.boss_found = false;
+                    output += "boss unfound\n";
                 }
             }
 
@@ -206,18 +231,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-                for(uint16_t index=0;index<bosses.size();index++)
-                {
-                    if(bosses.at(index).has_id(src->prof))
-                    {
-                        if(!game_state.boss_found)
-                        {
-                            game_state.boss_found = true;
-                            game_state.boss_data = bosses.at(index);
-                            add_pull(src->prof);
-                        }
-                    }
-                }
+
             }
 		}
 

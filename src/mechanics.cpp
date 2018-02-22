@@ -46,7 +46,7 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
 
         if(boss_id
            && gs->boss_found
-           && gs->boss_data.has_id(boss_id))
+           && !gs->boss_data.has_id(boss_id))
         {
             return false;
         }

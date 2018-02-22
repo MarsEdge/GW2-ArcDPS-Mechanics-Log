@@ -68,6 +68,7 @@ const uint32_t BOSS_DHUUM_TIMER         = 10*60*1000;
 
 const uint32_t BOSS_MAMA_ID             = 0x427D;
 const uint32_t BOSS_MAMA_ID_NORMAL      = 0x4268;
+const uint32_t BOSS_MAMA_ID_TRASH       = 0x424E;//knight at the start of the trash on CM
 const uint64_t BOSS_MAMA_HEALTH         = 5200519;
 
 const uint32_t BOSS_SIAX_ID             = 0x4284;
