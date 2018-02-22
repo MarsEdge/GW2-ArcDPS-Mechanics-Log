@@ -96,7 +96,7 @@ struct boss
 
     boss set_ids(std::initializer_list<uint32_t> const new_ids) {this->ids = std::vector<uint32_t>(new_ids); return *this;}
     boss set_name(std::string const new_name) {this->name = new_name; return *this;}
-    boss set_timer(uint64_t const new_timer) {this->timer = new_timer; return *this;}
+    boss set_timer(int64_t const new_timer) {this->timer = new_timer; return *this;}
     boss set_health(uint64_t const new_health) {this->health = new_health; return *this;}
 };
 
