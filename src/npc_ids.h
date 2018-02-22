@@ -4,23 +4,86 @@
 #include <vector>
 #include <string>
 
-const uint32_t ID_vale_guardian  = 0x3C4E;
-const uint32_t ID_gorseval       = 0x3C45;
-const uint32_t ID_sabetha        = 0x3C0F;
-const uint32_t ID_slothasor      = 0x3EFB;
-const uint32_t ID_trio_burg      = 0x3ED8;
-const uint32_t ID_trio_zane      = 0x3F09;
-const uint32_t ID_trio_narella   = 0x3EFD;
-const uint32_t ID_matthias       = 0x3EF3;
-const uint32_t ID_keep_construct = 0x3F6B;
-const uint32_t ID_xera_part1     = 0x3F76;
-const uint32_t ID_xera_part2     = 0x3F9E;
-const uint32_t ID_cairn          = 0x432A;
-const uint32_t ID_overseer       = 0x4314;
-const uint32_t ID_samarog        = 0x4324;
-const uint32_t ID_deimos         = 0x4302;
-const uint32_t ID_soulless_horror= 0x4D37;
-const uint32_t ID_dhuum          = 0x4BFA;
+const uint32_t BOSS_VG_ID               = 0x3C4E;
+const uint32_t BOSS_VG_HEALTH           = 22021440;
+const uint32_t BOSS_VG_TIMER            = 8*60*1000;
+
+const uint32_t BOSS_GORS_ID             = 0x3C45;
+const uint32_t BOSS_GORS_HEALTH         = 22021440;
+const uint32_t BOSS_GORS_TIMER          = 7*60*1000;
+
+const uint32_t BOSS_SAB_ID              = 0x3C0F;
+const uint32_t BOSS_SAB_HEALTH          = 22021440;
+const uint32_t BOSS_SAB_TIMER           = 9*60*1000;
+
+
+const uint32_t BOSS_SLOTH_ID            = 0x3EFB;
+const uint32_t BOSS_SLOTH_HEALTH        = 18973828;
+const uint32_t BOSS_SLOTH_TIMER         = 7*60*1000;
+
+const uint32_t BOSS_TRIO_BURG_ID        = 0x3ED8;
+const uint32_t BOSS_TRIO_ZANE_ID        = 0x3F09;
+const uint32_t BOSS_TRIO_NARELLA_ID     = 0x3EFD;
+const uint32_t BOSS_TRIO_TIMER          = 7*60*1000;
+
+const uint32_t BOSS_MATT_ID             = 0x3EF3;
+const uint32_t BOSS_MATT_HEALTH         = 25953840;
+const uint32_t BOSS_MATT_TIMER          = 10*60*1000;
+
+const uint32_t BOSS_KC_ID               = 0x3F6B;
+const uint32_t BOSS_KC_HEALTH           = 25953840;
+const uint32_t BOSS_KC_TIMER            = 10*60*1000;
+
+const uint32_t BOSS_XERA_ID_A           = 0x3F76;
+const uint32_t BOSS_XERA_ID_B           = 0x3F9E;
+const uint32_t BOSS_XERA_HEALTH         = 22611300;
+const uint32_t BOSS_XERA_TIMER          = 11*60*1000;
+
+
+const uint32_t BOSS_CAIRN_ID            = 0x432A;
+const uint32_t BOSS_CAIRN_HEALTH        = 19999998;
+const uint32_t BOSS_CAIRN_TIMER         = 8*60*1000;
+
+const uint32_t BOSS_MO_ID               = 0x4314;
+const uint32_t BOSS_MO_HEALTH           = 22021440;
+const uint32_t BOSS_MO_TIMER            = 6*60*1000;
+
+const uint32_t BOSS_SAM_ID              = 0x4324;
+const uint32_t BOSS_SAM_HEALTH          = 29493000;
+const uint32_t BOSS_SAM_TIMER           = 11*60*1000;
+
+const uint32_t BOSS_DEIMOS_ID           = 0x4302;
+const uint32_t BOSS_DEIMOS_HEALTH       = 50049000;
+const uint32_t BOSS_DEIMOS_TIMER        = 12*60*1000;
+
+
+const uint32_t BOSS_SH_ID               = 0x4D37;
+const uint32_t BOSS_SH_HEALTH           = 35391600;
+const uint32_t BOSS_SH_TIMER            = 8*60*1000;
+
+const uint32_t BOSS_DHUUM_ID            = 0x4BFA;
+const uint32_t BOSS_DHUUM_HEALTH        = 32000000;
+const uint32_t BOSS_DHUUM_TIMER         = 10*60*1000;
+
+
+const uint32_t BOSS_MAMA_ID             = 0x427D;
+const uint64_t BOSS_MAMA_HEALTH         = 5200519;
+
+const uint32_t BOSS_SIAX_ID             = 0x4284;
+const uint64_t BOSS_SIAX_HEALTH         = 6138797;
+
+const uint32_t BOSS_ENSOLYSS_ID         = 0x4234;
+const uint64_t BOSS_ENSOLYSS_HEALTH     = 14059890;
+
+
+const uint32_t BOSS_SKORVALD_ID       = 0x44E0;
+const uint64_t BOSS_SKORVALD_HEALTH         = 5551340;
+
+const uint32_t BOSS_ARTSARIIV_ID      = 0x461D;
+const uint64_t BOSS_ARTSARIIV_HEALTH         = 5962266;
+
+const uint32_t BOSS_ARKK_ID           = 0x455F;
+const uint64_t BOSS_ARKK_HEALTH         = 9942250;
 
 struct boss
 {
