@@ -160,9 +160,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 		/* statechange */
 		if (ev->is_statechange)
         {
-            if(ev->is_statechange==1
-                && src->self)
+            if(ev->is_statechange==1)
             {
+                if(src->self)
+                {
                     start_time = ev->time;
                     if(has_logged_mechanic)
                     {
@@ -170,6 +171,23 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         output += "===========\n";
                         game_state.current_boss = nullptr;
                     }
+                }
+                else
+                {
+                    for(uint16_t index=0;index<bosses.size();index++)
+                    {
+                        if(bosses.at(index).ids.at(0) == src->prof)
+                        {
+                            if(bosses.at(index).health <= ev->dst_agent
+                               && !game_state.current_boss)
+                            {
+                                game_state.current_boss = src;
+                                game_state.boss_data = bosses.at(index);
+                                add_pull();
+                            }
+                        }
+                    }
+                }
             }
 
             //if rally
@@ -204,19 +222,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-                for(uint16_t index=0;index<bosses.size();index++)
-                {
-                    if(bosses.at(index).ids.at(0) == src->prof)
-                    {
-                        if(bosses.at(index).health <= ev->dst_agent
-                           && !game_state.current_boss)
-                        {
-                            game_state.current_boss = src;
-                            game_state.boss_data = bosses.at(index);
-                            add_pull();
-                        }
-                    }
-                }
+
             }
 		}
 
