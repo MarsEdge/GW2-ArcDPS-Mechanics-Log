@@ -9,11 +9,11 @@ const uint32_t BOSS_VG_HEALTH           = 22021440;
 const uint32_t BOSS_VG_TIMER            = 8*60*1000;
 
 const uint32_t BOSS_GORS_ID             = 0x3C45;
-const uint32_t BOSS_GORS_HEALTH         = 22021440;
+const uint32_t BOSS_GORS_HEALTH         = 21628200;
 const uint32_t BOSS_GORS_TIMER          = 7*60*1000;
 
 const uint32_t BOSS_SAB_ID              = 0x3C0F;
-const uint32_t BOSS_SAB_HEALTH          = 22021440;
+const uint32_t BOSS_SAB_HEALTH          = 34015256;
 const uint32_t BOSS_SAB_TIMER           = 9*60*1000;
 
 
@@ -31,7 +31,7 @@ const uint32_t BOSS_MATT_HEALTH         = 25953840;
 const uint32_t BOSS_MATT_TIMER          = 10*60*1000;
 
 const uint32_t BOSS_KC_ID               = 0x3F6B;
-const uint32_t BOSS_KC_HEALTH           = 25953840;
+const uint32_t BOSS_KC_HEALTH           = 55053600;
 const uint32_t BOSS_KC_TIMER            = 10*60*1000;
 
 const uint32_t BOSS_XERA_ID_A           = 0x3F76;
@@ -76,14 +76,14 @@ const uint32_t BOSS_ENSOLYSS_ID         = 0x4234;
 const uint64_t BOSS_ENSOLYSS_HEALTH     = 14059890;
 
 
-const uint32_t BOSS_SKORVALD_ID       = 0x44E0;
-const uint64_t BOSS_SKORVALD_HEALTH         = 5551340;
+const uint32_t BOSS_SKORVALD_ID        = 0x44E0;
+const uint64_t BOSS_SKORVALD_HEALTH    = 5551340;
 
-const uint32_t BOSS_ARTSARIIV_ID      = 0x461D;
-const uint64_t BOSS_ARTSARIIV_HEALTH         = 5962266;
+const uint32_t BOSS_ARTSARIIV_ID       = 0x461D;
+const uint64_t BOSS_ARTSARIIV_HEALTH   = 5962266;
 
-const uint32_t BOSS_ARKK_ID           = 0x455F;
-const uint64_t BOSS_ARKK_HEALTH         = 9942250;
+const uint32_t BOSS_ARKK_ID            = 0x455F;
+const uint64_t BOSS_ARKK_HEALTH        = 9942250;
 
 struct boss
 {
