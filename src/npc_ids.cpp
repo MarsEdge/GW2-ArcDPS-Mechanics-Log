@@ -8,6 +8,18 @@ boss::boss()
     health = 0;
 }
 
+bool boss::has_id(uint32_t new_id)
+{
+    for(uint16_t index=0;index<ids.size();index++)
+    {
+        if(new_id == ids.at(index))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 std::vector<boss> bosses =
 {
@@ -40,7 +52,7 @@ std::vector<boss> bosses =
     boss().set_ids({BOSS_DHUUM_ID}).set_timer(BOSS_DHUUM_TIMER).set_health(BOSS_DHUUM_HEALTH),
 
 
-    boss().set_ids({BOSS_MAMA_ID}).set_health(BOSS_MAMA_HEALTH),
+    boss().set_ids({BOSS_MAMA_ID,BOSS_MAMA_ID_NORMAL}).set_health(BOSS_MAMA_HEALTH),
 
     boss().set_ids({BOSS_SIAX_ID}).set_health(BOSS_SIAX_HEALTH),
 

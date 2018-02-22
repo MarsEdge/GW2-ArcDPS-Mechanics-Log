@@ -92,6 +92,7 @@ const uint16_t MECHANIC_NIGHTMARE_VOMIT = 37030;//Toxic Sickness
 
 //MAMA
 const uint16_t MECHANIC_MAMA_WIRL = 37408;//Blastwave
+const uint16_t MECHANIC_MAMA_WIRL_NORMAL = 37103;//unnamed, wirl on normal mode
 const uint16_t MECHANIC_MAMA_KNOCK = 37391;//Tantrum
 const uint16_t MECHANIC_MAMA_LEAP = 37577;//Leap
 const uint16_t MECHANIC_MAMA_ACID = 37437;//Shoot

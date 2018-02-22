@@ -90,7 +90,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
         {
             for(uint16_t index_hits = 0; index_hits<merge_B->tracker.at(index).hits;index_hits++)
             {
-                merge_A->mechanic_receive(merge_B->tracker.at(index).name,merge_B->tracker.at(index).id,merge_B->tracker.at(index).fail);
+                merge_A->mechanic_receive(merge_B->tracker.at(index).name,merge_B->tracker.at(index).id,merge_B->tracker.at(index).fail,merge_B->tracker.at(index).boss);
             }
         }
         merge_A->downs += merge_B->downs;

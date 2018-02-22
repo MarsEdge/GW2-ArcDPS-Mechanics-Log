@@ -60,11 +60,12 @@ Player::Player(char* new_name, char* new_account, uintptr_t new_id)
     in_squad = true;
 }
 
-Player::mechanic_tracker::mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail)
+Player::mechanic_tracker::mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail, uint32_t &new_boss)
 {
     name = new_name;
     id = new_id;
     fail = new_fail;
+    boss = new_boss;
     hits = 1;
 }
 
@@ -89,7 +90,7 @@ void Player::fix_double_down()
     if(downs > 0) downs--;
 }
 
-void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
+void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail, uint32_t &boss)
 {
     if(!is_fail)
     {
@@ -109,7 +110,7 @@ void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail)
         }
     }
     std::lock_guard<std::mutex> lg(tracker_mtx);
-    tracker.push_back(mechanic_tracker(name,id,is_fail));
+    tracker.push_back(mechanic_tracker(name,id,is_fail,boss));
     return;
 }
 
@@ -276,14 +277,33 @@ void remove_player(char* name, char* account, uintptr_t id)
     }
 }
 
-void add_pull()
+void add_pull(uint32_t boss)
 {
     for(uint16_t index=0;index<players.size();index++)
     {
-        if(players.at(index).in_squad)
-        {
-            players.at(index).pulls++;
-        }
+        players.at(index).add_pull(boss);
+    }
+}
+
+void Player::add_pull(uint32_t new_boss)
+{
+    if(!in_squad)
+    {
+        return;
+    }
+
+    for(uint16_t index=0;index<tracker.size();index++)
+    {
+        tracker.at(index).add_pull(new_boss);
+    }
+    pulls++;
+}
+
+void Player::mechanic_tracker::add_pull(uint32_t new_boss)
+{
+    if(boss == new_boss)
+    {
+        pulls++;
     }
 }
 

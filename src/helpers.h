@@ -10,6 +10,6 @@ int split (const char *str, char c, char ***arr);
 
 struct game_state
 {
-    ag* current_boss;
+    bool boss_found;
     boss boss_data;
 };

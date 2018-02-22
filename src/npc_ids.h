@@ -67,6 +67,7 @@ const uint32_t BOSS_DHUUM_TIMER         = 10*60*1000;
 
 
 const uint32_t BOSS_MAMA_ID             = 0x427D;
+const uint32_t BOSS_MAMA_ID_NORMAL      = 0x4268;
 const uint64_t BOSS_MAMA_HEALTH         = 5200519;
 
 const uint32_t BOSS_SIAX_ID             = 0x4284;
@@ -93,6 +94,8 @@ struct boss
     uint64_t health;
 
     boss();
+
+    bool has_id(uint32_t new_id);
 
     boss set_ids(std::initializer_list<uint32_t> const new_ids) {this->ids = std::vector<uint32_t>(new_ids); return *this;}
     boss set_name(std::string const new_name) {this->name = new_name; return *this;}

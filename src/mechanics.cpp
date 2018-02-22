@@ -45,8 +45,8 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         }
 
         if(boss_id
-           && gs->current_boss
-           && gs->current_boss->prof != boss_id)
+           && gs->boss_found
+           && gs->boss_data.has_id(boss_id))
         {
             return false;
         }
@@ -73,7 +73,7 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         {
             current_player->set_last_hit_time(ev->time);
             last_hit_time = ev->time;
-            current_player->mechanic_receive(name,ids[0],fail_if_hit);
+            current_player->mechanic_receive(name,ids[0],fail_if_hit,boss_id);
 
             last_mechanic_time = ev->time;
             have_added_line_break = false;
@@ -212,7 +212,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("vomited on someone").set_ids({MECHANIC_NIGHTMARE_VOMIT}).set_target_is_dst(false),
 
-	mechanic().set_name("was hit by wirl").set_ids({MECHANIC_MAMA_WIRL}).set_boss_id(BOSS_MAMA_ID),
+	mechanic().set_name("was hit by wirl").set_ids({MECHANIC_MAMA_WIRL,MECHANIC_MAMA_WIRL_NORMAL}).set_boss_id(BOSS_MAMA_ID),
 
 	mechanic().set_name("was knocked").set_ids({MECHANIC_MAMA_KNOCK}).set_boss_id(BOSS_MAMA_ID),
 

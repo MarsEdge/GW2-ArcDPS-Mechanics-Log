@@ -40,7 +40,7 @@ game_state game_state;
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
-    if(game_state.current_boss
+    if(game_state.boss_found
        && game_state.boss_data.timer)
     {
         return (game_state.boss_data.timer-(static_cast<int64_t>(current_time)-start_time))/1000;
@@ -169,23 +169,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                     {
                         has_logged_mechanic = false;
                         output += "===========\n";
-                        game_state.current_boss = nullptr;
-                    }
-                }
-                else
-                {
-                    for(uint16_t index=0;index<bosses.size();index++)
-                    {
-                        if(bosses.at(index).ids.at(0) == src->prof)
-                        {
-                            if(bosses.at(index).health <= ev->dst_agent
-                               && !game_state.current_boss)
-                            {
-                                game_state.current_boss = src;
-                                game_state.boss_data = bosses.at(index);
-                                add_pull();
-                            }
-                        }
+                        game_state.boss_found = false;
                     }
                 }
             }
@@ -222,7 +206,18 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-
+                for(uint16_t index=0;index<bosses.size();index++)
+                {
+                    if(bosses.at(index).has_id(src->prof))
+                    {
+                        if(!game_state.boss_found)
+                        {
+                            game_state.boss_found = true;
+                            game_state.boss_data = bosses.at(index);
+                            add_pull(src->prof);
+                        }
+                    }
+                }
             }
 		}
 
