@@ -173,11 +173,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                 }
                 else
                 {
-                    for(uint16_t index=0;index<bosses.size();index++)
+                    if(!game_state.boss_found)
                     {
-                        if(bosses.at(index).has_id(src->prof))
+                        for(uint16_t index=0;index<bosses.size();index++)
                         {
-                            if(!game_state.boss_found)
+                            if(bosses.at(index).has_id(src->prof))
                             {
                                 game_state.boss_found = true;
                                 game_state.boss_data = bosses.at(index);
