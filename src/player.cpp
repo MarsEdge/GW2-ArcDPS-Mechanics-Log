@@ -161,7 +161,7 @@ std::string Player::mechanic_tracker::to_string()
 {
     return name + "," +
     (!fail ? std::to_string(hits) + "," : "," + std::to_string(hits)) +
-    "," + "," +
+    "," + "," + "," +
     std::to_string(pulls) +
     "\n";
 }
