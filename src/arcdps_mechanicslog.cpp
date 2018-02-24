@@ -288,13 +288,18 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                 {
                     if(mechanics[index].is_valid_hit(ev, src, dst, &game_state))
                     {
-                        output += std::to_string(get_elapsed_time(ev->time)/60);
+                        int time = get_elapsed_time(ev->time);
+                        if(time < 0)
+                        {
+                            output += "-";
+                        }
+                        output += std::to_string(abs(time/60));
                         output += ":";
-                        if(get_elapsed_time(ev->time)%60 < 10)
+                        if(abs(time)%60 < 10)
                         {
                             output += "0";
                         }
-                        output += std::to_string(get_elapsed_time(ev->time)%60);
+                        output += std::to_string(abs(time)%60);
                         output += " - ";
                         if(mechanics[index].target_is_dst)
                         {
