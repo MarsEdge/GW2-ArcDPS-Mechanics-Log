@@ -182,7 +182,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                                 game_state.boss_found = true;
                                 game_state.boss_data = bosses.at(index);
                                 add_pull(src->prof);
-                                output += "boss found " + std::to_string(src->prof) + "\n";
                             }
                         }
                     }
@@ -195,7 +194,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                    && game_state.boss_data.has_id(src->prof))
                 {
                     game_state.boss_found = false;
-                    output += "boss unfound\n";
                 }
             }
 
@@ -244,29 +242,34 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 		/* buff remove */
 		else if (ev->is_buffremove)
         {
-            current_player=get_player(dst);
-            if(current_player)
+            if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                if (ev->skillid==BUFF_STABILITY)//if it's stability
+                current_player=get_player(dst);
+                if(current_player)
                 {
                     current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
                 }
-                else if (ev->skillid==BUFF_VAPOR_FORM//vapor form manual case
-                         || ev->skillid==BUFF_ILLUSION_OF_LIFE//Illusion of Life manual case
-                         )
+            }
+            else if (ev->skillid==BUFF_VAPOR_FORM//vapor form manual case
+                     || ev->skillid==BUFF_ILLUSION_OF_LIFE//Illusion of Life manual case
+                     )
+            {
+                current_player=get_player(dst);
+                if(current_player)
                 {
                     current_player->fix_double_down();
                 }
             }
+
 		}
 
 		/* buff */
 		else if (ev->buff)
         {
-            current_player=get_player(dst);
-            if(current_player)
+            if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                if (ev->skillid==BUFF_STABILITY)//if it's stability
+                current_player=get_player(dst);
+                if(current_player)
                 {
                     current_player->set_stab_time(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
                 }
