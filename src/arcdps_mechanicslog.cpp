@@ -172,6 +172,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         output += "===========\n";
                     }
                 }
+#if 0
                 else
                 {
                     if(!game_state.boss_found)
@@ -187,15 +188,18 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         }
                     }
                 }
+#endif // 0
             }
 
             else if(ev->is_statechange==2)
             {
+#if 0
                 if(game_state.boss_found
                    && game_state.boss_data.has_id(src->prof))
                 {
                     game_state.boss_found = false;
                 }
+#endif // 0
             }
 
             //if rally
