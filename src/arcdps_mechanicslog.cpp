@@ -102,6 +102,7 @@ arcdps_exports* mod_init()
 uintptr_t mod_release()
 {
     chart.write_to_disk(players);
+    players.clear();
 	return 0;
 }
 
