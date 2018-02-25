@@ -35,15 +35,15 @@ bool show_app_log;
 bool show_app_chart;
 AppChart chart;
 
-game_state game_state;
+game_state gs;
 
 
 inline int get_elapsed_time(uint64_t &current_time)
 {
-    if(game_state.boss_found
-       && game_state.boss_data.timer)
+    if(gs.boss_found
+       && gs.boss_data.timer)
     {
-        return (game_state.boss_data.timer-(static_cast<int64_t>(current_time)-start_time))/1000;
+        return (gs.boss_data.timer-(static_cast<int64_t>(current_time)-start_time))/1000;
     }
     return (current_time-start_time)/1000;
 }
@@ -165,41 +165,34 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             {
                 if(src->self)
                 {
+					if (gs.boss_found && (ev->time-start_time)>combatapi_delay)
+					{
+						gs.boss_found = false;
+						output += "boss unfound\n";
+					}
                     start_time = ev->time;
                     if(has_logged_mechanic)
                     {
                         has_logged_mechanic = false;
                         output += "===========\n";
                     }
+					
                 }
-#if 0
                 else
                 {
-                    if(!game_state.boss_found)
-                    {
-                        for(uint16_t index=0;index<bosses.size();index++)
-                        {
-                            if(bosses.at(index).has_id(src->prof))
-                            {
-                                game_state.boss_found = true;
-                                game_state.boss_data = bosses.at(index);
-                                add_pull(src->prof);
-                            }
-                        }
-                    }
+                    
                 }
-#endif // 0
             }
 
             else if(ev->is_statechange==2)
             {
 #if 0
-                if(game_state.boss_found
-                   && game_state.boss_data.has_id(src->prof))
+                if(gs.boss_found
+                   && gs.boss_data.has_id(src->prof))
                 {
-                    game_state.boss_found = false;
+                    gs.boss_found = false;
                 }
-#endif // 0
+#endif
             }
 
             //if rally
@@ -234,7 +227,19 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-
+				if (!gs.boss_found)
+				{
+					for (uint16_t index = 0; index<bosses.size(); index++)
+					{
+						if (bosses.at(index).has_id(src->prof))
+						{
+							gs.boss_found = true;
+							gs.boss_data = bosses.at(index);
+							add_pull(src->prof);
+							output += "boss found: " + std::to_string(src->prof) + "\n";
+						}
+					}
+				}
             }
 		}
 
@@ -290,7 +295,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(mechanics[index].is_valid_hit(ev, src, dst, &game_state))
+                    if(mechanics[index].is_valid_hit(ev, src, dst, &gs))
                     {
                         int time = get_elapsed_time(ev->time);
                         if(time < 0)

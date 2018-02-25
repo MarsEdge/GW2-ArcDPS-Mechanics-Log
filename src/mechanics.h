@@ -15,6 +15,7 @@ extern uint64_t line_break_frequency;
 extern bool has_logged_mechanic;
 
 const unsigned int ms_per_tick = 40;// 1000/25
+const unsigned int combatapi_delay = 3000;
 
 struct mechanic
 {
