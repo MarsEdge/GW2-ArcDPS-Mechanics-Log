@@ -5,3 +5,5 @@
 /src/*.gch
 /CppCheckResults.xml
 /*.cscope_file_list
+/x64
+/.vs
