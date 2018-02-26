@@ -135,6 +135,19 @@ copy /Y "$(TargetPath)" "C:\Program Files\Guild Wars 2\bin64\$(TargetFileName)"<
     <ClCompile Include="src\mechanics.cpp" />
     <ClCompile Include="src\npc_ids.cpp" />
     <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\simpleini\ConvertUTF.c" />
+    <ClCompile Include="src\simpleini\snippets.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\simpleini\test1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\simpleini\testsi.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\arcdps_datastructures.h" />
@@ -146,6 +159,8 @@ copy /Y "$(TargetPath)" "C:\Program Files\Guild Wars 2\bin64\$(TargetFileName)"<
     <ClInclude Include="src\mechanics.h" />
     <ClInclude Include="src\npc_ids.h" />
     <ClInclude Include="src\player.h" />
+    <ClInclude Include="src\simpleini\ConvertUTF.h" />
+    <ClInclude Include="src\simpleini\SimpleIni.h" />
     <ClInclude Include="src\skill_ids.h" />
     <ClInclude Include="src\stb_rect_pack.h" />
     <ClInclude Include="src\stb_textedit.h" />

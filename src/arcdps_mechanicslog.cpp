@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include "simpleini\SimpleIni.h"
 
 #include "imgui.h"
 #include "imgui_panels.h"
@@ -26,6 +27,8 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
+void parse_ini();
+void write_ini();
 
 int64_t start_time = 0;
 
@@ -36,6 +39,9 @@ bool show_app_chart;
 AppChart chart;
 
 game_state gs;
+
+CSimpleIniA ini;
+bool valid_ini = false;
 
 
 inline int get_elapsed_time(uint64_t &current_time)
@@ -95,6 +101,9 @@ arcdps_exports* mod_init()
 	arc_exports.combat = mod_combat;
 	arc_exports.imgui = mod_imgui;
 	arc_exports.options = mod_options;
+
+	parse_ini();
+
 	return &arc_exports;
 }
 
@@ -103,6 +112,7 @@ uintptr_t mod_release()
 {
     chart.write_to_disk(players);
     players.clear();
+	write_ini();
 	return 0;
 }
 
@@ -374,4 +384,24 @@ uintptr_t mod_options()
     ImGui::Checkbox("MECHANICS CHART", &show_app_chart);
 
     return 0;
+}
+
+void parse_ini()
+{
+	SI_Error rc = ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
+	valid_ini = rc < 0;
+
+	const char * pszValue = ini.GetValue("log","show", "0");
+	show_app_log = std::stoi(pszValue);
+
+	pszValue = ini.GetValue("chart", "show", "0");
+	show_app_chart = std::stoi(pszValue);
+}
+
+void write_ini()
+{
+	SI_Error rc = ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
+	rc = ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());
+
+	rc = ini.SaveFile("addons\\arcdps\\arcdps_mechanics.ini");
 }
