@@ -27,6 +27,7 @@ struct AppChart
     Player* merge_B;//2nd player to merge
     ImGuiTextFilter     Filter;
     uint16_t last_export_total;
+	std::string export_path;
 
     void    Clear();
 
@@ -34,6 +35,7 @@ struct AppChart
 
     std::string to_string(std::vector<Player> &players);
     void    write_to_disk(std::vector<Player> &players);
+	std::string get_default_export_path();
 };
 
 float get_chart_column_width(float window_width);

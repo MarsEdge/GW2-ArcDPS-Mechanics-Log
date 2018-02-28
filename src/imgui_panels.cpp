@@ -273,11 +273,7 @@ void AppChart::write_to_disk(std::vector<Player> &players)
         return;
     }
 
-    std::string text = to_string(players);
-
-    CHAR my_documents[MAX_PATH];
-    HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
-    std::string path = "";
+	std::string text = to_string(players);
 
     std::time_t t = std::time(nullptr);
     char time_str[100];
@@ -286,20 +282,26 @@ void AppChart::write_to_disk(std::vector<Player> &players)
         //std::cout << time_str << '\n';
     }
 
-    if (result != S_OK)
-    {
-        //std::cout << "Error: " << result << "\n";
-    }
-    else
-    {
-        path = std::string(my_documents) + "\\Guild Wars 2\\addons\\arcdps\\arcdps.mechanics";
+    CreateDirectory(export_path.c_str(), NULL);
 
-        CreateDirectory(path.c_str(), NULL);
+    std::ofstream out(export_path+"\\"+std::string(time_str)+"-"+std::to_string(new_export_total)+".csv");
+    out << text;
+    out.close();
 
-        std::ofstream out(path+"\\"+std::string(time_str)+"-"+std::to_string(new_export_total)+".csv");
-        out << text;
-        out.close();
+    last_export_total = new_export_total;
+}
 
-        last_export_total = new_export_total;
-    }
+std::string AppChart::get_default_export_path()
+{
+	CHAR my_documents[MAX_PATH];
+	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+	if (result != S_OK)
+	{
+		//std::cout << "Error: " << result << "\n";
+	}
+	else
+	{
+		return std::string(my_documents) + "\\Guild Wars 2\\addons\\arcdps\\arcdps.mechanics";
+	}
+	return "";
 }

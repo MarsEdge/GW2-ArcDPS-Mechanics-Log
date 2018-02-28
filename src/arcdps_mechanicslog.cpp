@@ -27,6 +27,7 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
+static int change_export_path(ImGuiTextEditCallbackData *data);
 void parse_ini();
 void write_ini();
 
@@ -40,7 +41,7 @@ AppChart chart;
 
 game_state gs;
 
-CSimpleIniA ini;
+CSimpleIniA ini(true);
 bool valid_ini = false;
 
 
@@ -386,22 +387,31 @@ uintptr_t mod_options()
     return 0;
 }
 
+static int change_export_path(ImGuiTextEditCallbackData *data)
+{
+	chart.export_path = data->Buf;
+}
+
 void parse_ini()
 {
 	SI_Error rc = ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
 	valid_ini = rc < 0;
 
-	const char * pszValue = ini.GetValue("log","show", "0");
+	std::string pszValue = ini.GetValue("log","show", "0");
 	show_app_log = std::stoi(pszValue);
 
 	pszValue = ini.GetValue("chart", "show", "0");
 	show_app_chart = std::stoi(pszValue);
+
+	pszValue = ini.GetValue("chart", "export_path", chart.get_default_export_path().c_str());
+	chart.export_path = pszValue;
 }
 
 void write_ini()
 {
 	SI_Error rc = ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
 	rc = ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());
+	rc = ini.SetValue("chart", "export_path", chart.export_path.c_str());
 
 	rc = ini.SaveFile("addons\\arcdps\\arcdps_mechanics.ini");
 }
