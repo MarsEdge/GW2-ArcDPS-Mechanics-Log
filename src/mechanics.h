@@ -42,7 +42,7 @@ struct mechanic
     mechanic set_boss_id(uint32_t const new_boss_id) {this->boss_id = new_boss_id; return *this;}
     mechanic set_frequency_player(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
     mechanic set_frequency_global(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}
-    mechanic set_is_buffremove(bool const new_is_buffremove) {this->is_buffremove = new_is_buffremove; return *this;}
+    mechanic set_is_buffremove(uint8_t const new_is_buffremove) {this->is_buffremove = new_is_buffremove; return *this;}
     mechanic set_is_interupt(bool const new_is_interupt) {this->is_interupt = new_is_interupt; return *this;}
     mechanic set_is_multihit(bool const new_is_multihit) {this->is_multihit = new_is_multihit; return *this;}
     mechanic set_target_is_dst(bool const new_target_is_dst) {this->target_is_dst = new_target_is_dst; return *this;}
