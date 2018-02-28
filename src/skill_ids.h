@@ -134,3 +134,4 @@ const uint16_t CONJURE_FIRE_GS_BUFF = 15792;//Conjure Fire Attributes
 const uint16_t BUFF_STABILITY = 1122;//Stability
 const uint16_t BUFF_VAPOR_FORM = 5620;//Vapor Form
 const uint16_t BUFF_ILLUSION_OF_LIFE = 10346;//Illusion of Life
+const uint16_t BUFF_CRYSTALLINE_HEART = 37657;//Crystalline Heart, for envoy armor 2 collection
