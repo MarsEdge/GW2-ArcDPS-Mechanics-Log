@@ -6,6 +6,7 @@ boss::boss()
     name = "";
     timer = 0;
     health = 0;
+	pulls = 0;
 }
 
 bool boss::has_id(uint32_t new_id)

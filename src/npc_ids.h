@@ -93,6 +93,7 @@ struct boss
     std::string name;
     int64_t timer;//enrage timer
     uint64_t health;
+	uint16_t pulls;
 
     boss();
 

@@ -244,10 +244,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 					{
 						if (bosses.at(index).has_id(src->prof))
 						{
+							gs.boss_data.pulls = 0;
 							gs.boss_found = true;
 							gs.boss_data = bosses.at(index);
-							add_pull(src->prof);
+							add_pull(&gs.boss_data);
 							output += "boss found: " + std::to_string(src->prof) + "\n";
+							break;
 						}
 					}
 				}
@@ -332,6 +334,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         output += " ";
                         output += mechanics[index].name;
                         output += "\n";
+						break;
                     }
                 }
             }

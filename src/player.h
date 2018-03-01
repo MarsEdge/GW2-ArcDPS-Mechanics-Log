@@ -6,6 +6,7 @@
 #include <vector>
 #include <mutex>
 #include "arcdps_datastructures.h"
+#include "npc_ids.h"
 
 struct Player
 {
@@ -29,13 +30,13 @@ struct Player
         uint16_t id; //skill id;
         bool fail;
         uint16_t hits;
-        uint32_t boss; //boss id
+        boss* current_boss; //boss
         uint16_t pulls;
 
-        mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail, uint32_t &new_boss);
+        mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail, boss* new_boss);
 
         std::string to_string();
-        void add_pull(uint32_t new_boss);
+        void add_pull(boss* new_boss);
     };
 
     std::vector<mechanic_tracker> tracker;
@@ -49,7 +50,7 @@ struct Player
     void rally();
     void fix_double_down(); //manual case to fix vapor form counting as 2 downs
 
-    void mechanic_receive(std::string &name,uint16_t &id,bool &is_fail, uint32_t &boss);
+    void mechanic_receive(std::string &name,uint16_t &id,bool &is_fail, boss* boss);
     bool is_relevant();     //if player is relevant for displaying
 
     uint64_t get_last_stab_time();
@@ -64,7 +65,7 @@ struct Player
     std::string to_string();
     uint16_t get_mechanics_total();//returns the number of total mechanics the player had
     void reset_stats();
-    void add_pull(uint32_t new_boss);
+    void add_pull(boss* new_boss);
 };
 
 extern std::mutex players_mtx;
@@ -75,7 +76,7 @@ extern std::vector<Player> players;
 Player* get_player(ag* &new_player);
 void add_player(char* name, char* account, uintptr_t id);
 void remove_player(char* name, char* account, uintptr_t id);
-void add_pull(uint32_t boss);
+void add_pull(boss* boss);
 bool is_player(ag* &new_player);
 void reset_all_player_stats();
 uint16_t get_mechanics_total(std::vector<Player> &players);
