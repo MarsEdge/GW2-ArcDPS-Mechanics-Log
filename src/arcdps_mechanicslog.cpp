@@ -334,7 +334,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         output += " ";
                         output += mechanics[index].name;
                         output += "\n";
-						break;
                     }
                 }
             }
