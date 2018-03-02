@@ -120,7 +120,8 @@ bool Player::is_relevant()
     return downs > 0
     || deaths > 0
     || mechanics_failed > 0
-    || mechanics_received > 0;
+    || mechanics_received > 0
+	|| in_squad;
 
 }
 
