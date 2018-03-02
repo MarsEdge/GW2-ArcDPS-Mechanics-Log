@@ -176,18 +176,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             {
                 if(src->self)
                 {
-					if (gs.boss_found && (ev->time-start_time)>combatapi_delay)
-					{
-						gs.boss_found = false;
-						output += "boss unfound\n";
-					}
                     start_time = ev->time;
                     if(has_logged_mechanic)
                     {
                         has_logged_mechanic = false;
                         output += "===========\n";
                     }
-					
                 }
                 else
                 {
@@ -197,13 +191,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 
             else if(ev->is_statechange==2)
             {
-#if 0
-                if(gs.boss_found
-                   && gs.boss_data.has_id(src->prof))
-                {
-                    gs.boss_found = false;
-                }
-#endif
+
             }
 
             //if rally
@@ -238,21 +226,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if health update
             else if(ev->is_statechange==12)
             {
-				if (!gs.boss_found)
-				{
-					for (uint16_t index = 0; index<bosses.size(); index++)
-					{
-						if (bosses.at(index).has_id(src->prof))
-						{
-							gs.boss_data.pulls = 0;
-							gs.boss_found = true;
-							gs.boss_data = bosses.at(index);
-							add_pull(&gs.boss_data);
-							output += "boss found: " + std::to_string(src->prof) + "\n";
-							break;
-						}
-					}
-				}
+				
             }
 		}
 
