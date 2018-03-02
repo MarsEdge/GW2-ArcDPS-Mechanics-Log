@@ -17,6 +17,7 @@ mechanic::mechanic()
     target_is_dst = true;
     fail_if_hit = true;
     is_buffremove = 0;
+	overstack_value = -1;
     valid_if_down = false;
     special_requirement = default_requirement;
 }
@@ -55,6 +56,13 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         {
             return false;
         }
+
+		if (is_buffremove
+			&& overstack_value >= 0
+			&& overstack_value != ev->overstack_value)
+		{
+			return false;
+		}
 
         if(target_is_dst && is_player(dst))
         {
@@ -207,6 +215,8 @@ std::vector <mechanic> mechanics =
 	mechanic().set_name("touched the center").set_ids({MECHANIC_DHUUM_SUCK_AOE}).set_boss_id(BOSS_DHUUM_ID),
 
 	mechanic().set_name("stood in a teleport aoe").set_ids({MECHANIC_DHUUM_TELEPORT_AOE}).set_boss_id(BOSS_DHUUM_ID),
+
+	mechanic().set_name("died on green").set_ids({MECHANIC_DHUUM_GREEN_TIMER}).set_is_buffremove(3).set_overstack_value(0),
 
 	mechanic().set_name("was snatched").set_ids({MECHANIC_DHUUM_SNATCH}).set_special_requirement(special_requirement_dhuum_snatch).set_boss_id(BOSS_DHUUM_ID),
 

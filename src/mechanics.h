@@ -26,6 +26,7 @@ struct mechanic
     uint64_t frequency_global; //minimum time between instances of this mechanic globally(ms)
     uint64_t last_hit_time; //time of last instance of mechanic
     uint8_t is_buffremove;
+	int32_t overstack_value;//required overstack value
     bool is_interupt;
     bool is_multihit;
     bool target_is_dst;
@@ -43,6 +44,7 @@ struct mechanic
     mechanic set_frequency_player(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
     mechanic set_frequency_global(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}
     mechanic set_is_buffremove(uint8_t const new_is_buffremove) {this->is_buffremove = new_is_buffremove; return *this;}
+	mechanic set_overstack_value(int32_t const new_overstack_value) { this->overstack_value = new_overstack_value; return *this; }
     mechanic set_is_interupt(bool const new_is_interupt) {this->is_interupt = new_is_interupt; return *this;}
     mechanic set_is_multihit(bool const new_is_multihit) {this->is_multihit = new_is_multihit; return *this;}
     mechanic set_target_is_dst(bool const new_target_is_dst) {this->target_is_dst = new_target_is_dst; return *this;}
