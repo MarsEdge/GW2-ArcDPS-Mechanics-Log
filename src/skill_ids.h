@@ -86,7 +86,7 @@ const uint16_t MECHANIC_DHUUM_CRACK = 48752;//Cull
 const uint16_t MECHANIC_DHUUM_MARK = 48760;//Putrid Bomb
 const uint16_t MECHANIC_DHUUM_SUCK_AOE = 48398;//Cataclysmic Cycle
 const uint16_t MECHANIC_DHUUM_TELEPORT_AOE = 48176;//Death Mark
-const uint16_t MECHANIC_DHUUM_GREEN_TIMER = 47181;//Imminent Demise 
+const uint16_t MECHANIC_DHUUM_GREEN_TIMER = 48281;//Mortal Coil
 const uint16_t MECHANIC_DHUUM_SNATCH = 47076;//nameless
 
 const uint16_t MECHANIC_NIGHTMARE_VOMIT = 37030;//Toxic Sickness
