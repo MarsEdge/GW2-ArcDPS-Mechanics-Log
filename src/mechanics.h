@@ -57,6 +57,17 @@ bool default_requirement(const mechanic &current_mechanic, cbtevent* ev, ag* src
 bool special_requirement_conjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
+const uint16_t max_deimos_oils = 3;
+struct deimos_oil
+{
+	uintptr_t id = 0;
+	uint64_t last_touch_time = 0;
+};
+
+extern deimos_oil deimos_oils[max_deimos_oils];
+
+bool special_requirement_deimos_oil(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player);
+
 
 
 extern std::vector <mechanic> mechanics;

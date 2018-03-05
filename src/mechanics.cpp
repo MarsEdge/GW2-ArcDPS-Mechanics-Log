@@ -4,6 +4,7 @@ bool have_added_line_break = true;
 uint64_t last_mechanic_time = 0;
 uint64_t line_break_frequency = 5000;
 bool has_logged_mechanic = false;
+deimos_oil deimos_oils[max_deimos_oils];
 
 mechanic::mechanic()
 {
@@ -116,6 +117,46 @@ bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent
     return false;
 }
 
+bool special_requirement_deimos_oil(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+{
+	deimos_oil current_oil;
+	uint16_t oldest_index = UINT16_MAX;
+	uint16_t current_index = 0;
+
+	for (uint16_t index = 0; index < max_deimos_oils; index++)
+	{
+		if (deimos_oils[index].last_touch_time < current_oil.last_touch_time)
+		{
+			oldest_index = index;
+		}
+		if (deimos_oils[index].id == src->id)
+		{
+			current_oil = deimos_oils[index];
+			current_index = index;
+		}
+	}
+
+	if (!current_oil.id)
+	{
+		current_oil.id = src->id;
+		current_oil.last_touch_time = ev->time;
+		deimos_oils[oldest_index] = current_oil;
+		return true;
+	}
+	else
+	{
+		deimos_oils[current_index].last_touch_time = ev->time;
+		if ((ev->time - current_oil.last_touch_time) > current_mechanic.frequency_global)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
 std::vector <mechanic> mechanics =
 {
     mechanic().set_name("was teleported").set_ids({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).set_boss_id(BOSS_VG_ID),
@@ -182,7 +223,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("is fixated").set_ids({MECHANIC_SAM_FIXATE_SAM}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
 
-	mechanic().set_name("touched an oil").set_ids({MECHANIC_DEIMOS_OIL}).set_frequency_global(8000).set_boss_id(BOSS_DEIMOS_ID),
+	mechanic().set_name("touched an oil").set_ids({MECHANIC_DEIMOS_OIL}).set_boss_id(BOSS_DEIMOS_ID).set_special_requirement(special_requirement_deimos_oil),
 
 	mechanic().set_name("was hit by smash").set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).set_boss_id(BOSS_DEIMOS_ID),
 
