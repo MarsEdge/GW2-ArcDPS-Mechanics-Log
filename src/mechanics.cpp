@@ -186,6 +186,8 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("was hit by smash").set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL}).set_boss_id(BOSS_DEIMOS_ID),
 
+	mechanic().set_name("closed a tear").set_ids({MECHANIC_DEIMOS_TEAR}).set_boss_id(BOSS_DEIMOS_ID),
+
 	mechanic().set_name("stood in inner donut").set_ids({MECHANIC_HORROR_DONUT_INNER}).set_boss_id(BOSS_SH_ID),
 
 	mechanic().set_name("stood in outer donut").set_ids({MECHANIC_HORROR_DONUT_OUTER}).set_boss_id(BOSS_SH_ID),

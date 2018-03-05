@@ -67,6 +67,7 @@ const uint16_t MECHANIC_SAM_FIXATE_SAM = 37868;//Fixate: Samarog
 const uint16_t MECHANIC_DEIMOS_OIL = 37716;
 const uint16_t MECHANIC_DEIMOS_SMASH = 38208; //smash from the actual boss
 const uint16_t MECHANIC_DEIMOS_SMASH_INITIAL = 37929; //smash while killing the initial chains
+const uint16_t MECHANIC_DEIMOS_TEAR = 37733;//Tear Instability, buff from closing a tear
 
 //Soulless Horror
 const uint16_t MECHANIC_HORROR_DONUT_INNER = 47327;//Vortex Slash
