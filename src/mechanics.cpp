@@ -129,7 +129,7 @@ bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent
 bool special_requirement_deimos_oil(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
 	deimos_oil current_oil;
-	uint16_t oldest_index = UINT16_MAX;
+	uint16_t oldest_index = max_deimos_oils-1;
 	uint16_t current_index = 0;
 
 	for (uint16_t index = 0; index < max_deimos_oils; index++)
@@ -170,7 +170,7 @@ std::vector <mechanic> mechanics =
 {
     mechanic().set_name("was teleported").set_ids({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).set_boss_id(BOSS_VG_ID),
 
-//  mechanic().set_name("stood in the green circle").set_ids({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).set_fail_if_hit(false).set_boss_id(BOSS_GORS_ID),
+//  mechanic().set_name("stood in the green circle").set_ids({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).set_fail_if_hit(false).set_boss_id(BOSS_GORS_ID).set_can_invuln(false),
 
 	mechanic().set_name("was slammed").set_ids({MECHANIC_GORS_SLAM}).set_is_interupt(true).set_boss_id(BOSS_GORS_ID),
 
