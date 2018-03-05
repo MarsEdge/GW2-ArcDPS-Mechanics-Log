@@ -184,7 +184,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("touched an oil").set_ids({MECHANIC_DEIMOS_OIL}).set_frequency_global(8000).set_boss_id(BOSS_DEIMOS_ID),
 
-	mechanic().set_name("was hit by smash").set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL}).set_boss_id(BOSS_DEIMOS_ID),
+	mechanic().set_name("was hit by smash").set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).set_boss_id(BOSS_DEIMOS_ID),
 
 	mechanic().set_name("closed a tear").set_ids({MECHANIC_DEIMOS_TEAR}).set_boss_id(BOSS_DEIMOS_ID),
 

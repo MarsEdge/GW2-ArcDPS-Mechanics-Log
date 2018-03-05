@@ -67,6 +67,8 @@ const uint16_t MECHANIC_SAM_FIXATE_SAM = 37868;//Fixate: Samarog
 const uint16_t MECHANIC_DEIMOS_OIL = 37716;
 const uint16_t MECHANIC_DEIMOS_SMASH = 38208; //smash from the actual boss
 const uint16_t MECHANIC_DEIMOS_SMASH_INITIAL = 37929; //smash while killing the initial chains
+const uint16_t MECHANIC_DEIMOS_SMASH_END_A = 37980;//Demonic Shock Wave,smash during last 10%
+const uint16_t MECHANIC_DEIMOS_SMASH_END_B = 37982;//different skill id for the 2 sides of the platform
 const uint16_t MECHANIC_DEIMOS_TEAR = 37733;//Tear Instability, buff from closing a tear
 
 //Soulless Horror
