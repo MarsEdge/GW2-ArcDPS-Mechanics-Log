@@ -33,6 +33,10 @@ struct mechanic
     bool fail_if_hit;
     bool valid_if_down; //mechanic counts if player is in down-state
 
+	bool can_evade;
+	bool can_block;
+	bool can_invuln;
+
     mechanic();
 
     bool is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs);
@@ -50,6 +54,10 @@ struct mechanic
     mechanic set_target_is_dst(bool const new_target_is_dst) {this->target_is_dst = new_target_is_dst; return *this;}
     mechanic set_fail_if_hit(bool const new_fail_if_hit) {this->fail_if_hit = new_fail_if_hit; return *this;}
     mechanic set_valid_if_down(bool const new_valid_if_down) {this->valid_if_down = new_valid_if_down; return *this;}
+	mechanic set_can_evade(bool const new_can_evade) { this->can_evade = new_can_evade; return *this; }
+	mechanic set_can_block(bool const new_can_block) { this->can_block = new_can_block; return *this; }
+	mechanic set_can_invuln(bool const new_can_invuln) { this->can_invuln = new_can_invuln; return *this; }
+
     mechanic set_special_requirement(bool (*new_special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
 };
 

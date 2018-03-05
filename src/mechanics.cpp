@@ -20,6 +20,11 @@ mechanic::mechanic()
     is_buffremove = 0;
 	overstack_value = -1;
     valid_if_down = false;
+	
+	can_evade = true;
+	can_block = true;
+	can_invuln = true;
+
     special_requirement = default_requirement;
 }
 
@@ -28,6 +33,10 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
     uint16_t index = 0;
     bool correct_id = false;
     Player* current_player = nullptr;
+
+	if (can_block && ev->result == 3) return false;
+	if (can_evade && ev->result == 4) return false;
+	if (can_invuln && ev->result == 6) return false;
 
     for(index=0;index<ids.size();index++)
     {
@@ -288,6 +297,8 @@ std::vector <mechanic> mechanics =
 	mechanic().set_name("was smashed").set_ids({MECHANIC_ARKK_OVERHEAD_SMASH}).set_boss_id(BOSS_ARKK_ID),
 
 	mechanic().set_name("has a bomb").set_ids({MECHANIC_ARKK_BOMB}).set_fail_if_hit(false).set_boss_id(BOSS_ARKK_ID),//TODO Add BOSS_ARTSARIIV_ID and make boss id a vector
+
+	mechanic().set_name("didn't block the goop").set_ids({MECHANIC_ARKK_GOOP}).set_boss_id(BOSS_ARKK_ID).set_can_evade(false),
 
 #if 0//disable conjure detection due to potential toxicity
     mechanic().set_name("picked up an ice bow").set_ids({CONJURE_ICE_BOW_BUFF}).set_fail_if_hit(false).set_special_requirement(special_requirement_conjure),

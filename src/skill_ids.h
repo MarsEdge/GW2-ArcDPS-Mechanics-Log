@@ -117,6 +117,7 @@ const uint16_t MECHANIC_ARKK_PIE_C = 39297;//Horizon Strike (normal mode)
 const uint16_t MECHANIC_ARKK_FEAR = 39442;//Blinding Radiance
 const uint16_t MECHANIC_ARKK_OVERHEAD_SMASH = 38844;//Overhead Smash
 const uint16_t MECHANIC_ARKK_BOMB = 38880;//Corporeal Reassignment
+const uint16_t MECHANIC_ARKK_GOOP = 39691;//Solar Discharge,the projectile that spawns the goop
 
 //conjures
 const uint16_t CONJURE_ICE_BOW = 5567;//Conjure Frost Bow
