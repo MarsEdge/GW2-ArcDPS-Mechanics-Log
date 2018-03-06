@@ -76,6 +76,7 @@ extern deimos_oil deimos_oils[max_deimos_oils];
 
 bool special_requirement_deimos_oil(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player);
 
+bool special_requirement_on_self(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player);
 
 
 extern std::vector <mechanic> mechanics;

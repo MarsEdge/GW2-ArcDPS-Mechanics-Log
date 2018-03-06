@@ -166,6 +166,11 @@ bool special_requirement_deimos_oil(const mechanic &current_mechanic, cbtevent* 
 	}
 }
 
+bool special_requirement_on_self(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+{
+	return src && dst && src->id == dst->id;
+}
+
 std::vector <mechanic> mechanics =
 {
     mechanic().set_name("was teleported").set_ids({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).set_boss_id(BOSS_VG_ID),
@@ -212,7 +217,7 @@ std::vector <mechanic> mechanics =
 
 //  mechanic().set_name("stood in the red half").set_ids({MECHANIC_XERA_HALF}).set_boss_id(BOSS_XERA_ID_A),
 
-	mechanic().set_name("has magic").set_ids({MECHANIC_XERA_MAGIC}).set_fail_if_hit(false).set_target_is_dst(false).set_frequency_global(12000).set_valid_if_down(true).set_boss_id(BOSS_XERA_ID_A),
+	mechanic().set_name("has magic").set_ids({MECHANIC_XERA_MAGIC}).set_fail_if_hit(false).set_target_is_dst(false).set_frequency_global(12000).set_valid_if_down(true).set_boss_id(BOSS_XERA_ID_A).set_special_requirement(special_requirement_on_self),
 
 	mechanic().set_name("touched an orb").set_ids({MECHANIC_XERA_ORB}).set_boss_id(BOSS_XERA_ID_A),
 
