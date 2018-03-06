@@ -298,7 +298,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("has a bomb").set_ids({MECHANIC_ARKK_BOMB}).set_fail_if_hit(false).set_boss_id(BOSS_ARKK_ID),//TODO Add BOSS_ARTSARIIV_ID and make boss id a vector
 
-	mechanic().set_name("didn't block the goop").set_ids({MECHANIC_ARKK_GOOP}).set_boss_id(BOSS_ARKK_ID).set_can_evade(false),
+//	mechanic().set_name("didn't block the goop").set_ids({MECHANIC_ARKK_GOOP}).set_boss_id(BOSS_ARKK_ID).set_can_evade(false),
 
 #if 0//disable conjure detection due to potential toxicity
     mechanic().set_name("picked up an ice bow").set_ids({CONJURE_ICE_BOW_BUFF}).set_fail_if_hit(false).set_special_requirement(special_requirement_conjure),
