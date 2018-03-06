@@ -268,7 +268,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("stood in a teleport aoe").set_ids({MECHANIC_DHUUM_TELEPORT_AOE}).set_boss_id(BOSS_DHUUM_ID),
 
-	mechanic().set_name("died on green").set_ids({MECHANIC_DHUUM_GREEN_TIMER}).set_is_buffremove(3).set_overstack_value(0),
+//	mechanic().set_name("died on green").set_ids({MECHANIC_DHUUM_GREEN_TIMER}).set_is_buffremove(3).set_overstack_value(0),
 
 	mechanic().set_name("was snatched").set_ids({MECHANIC_DHUUM_SNATCH}).set_special_requirement(special_requirement_dhuum_snatch).set_boss_id(BOSS_DHUUM_ID),
 
