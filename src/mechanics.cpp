@@ -155,7 +155,7 @@ bool special_requirement_deimos_oil(const mechanic &current_mechanic, cbtevent* 
 	else
 	{
 		deimos_oils[current_index].last_touch_time = ev->time;
-		if ((ev->time - current_oil.last_touch_time) > current_mechanic.frequency_global)
+		if ((ev->time - current_oil.last_touch_time) > current_mechanic.frequency_player)
 		{
 			return true;
 		}
