@@ -34,6 +34,8 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
     bool correct_id = false;
     Player* current_player = nullptr;
 
+	if (!ev) return false;
+
 	if (can_block && ev->result == 3) return false;
 	if (can_evade && ev->result == 4) return false;
 	if (can_invuln && ev->result == 6) return false;
@@ -74,11 +76,11 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
 			return false;
 		}
 
-        if(target_is_dst && is_player(dst))
+        if(target_is_dst)
         {
             current_player=get_player(dst);
         }
-        else if(!target_is_dst && is_player(src))
+        else
         {
             current_player=get_player(src);
         }
