@@ -243,7 +243,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("has small green").set_ids({MECHANIC_SAM_GREEN_SMALL}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
 
-	mechanic().set_name("touched an oil").set_ids({MECHANIC_DEIMOS_OIL}).set_boss_id(BOSS_DEIMOS_ID).set_special_requirement(special_requirement_deimos_oil),
+	mechanic().set_name("touched an oil").set_ids({MECHANIC_DEIMOS_OIL}).set_frequency_player(5000).set_boss_id(BOSS_DEIMOS_ID).set_special_requirement(special_requirement_deimos_oil),
 
 	mechanic().set_name("was hit by smash").set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).set_boss_id(BOSS_DEIMOS_ID),
 
