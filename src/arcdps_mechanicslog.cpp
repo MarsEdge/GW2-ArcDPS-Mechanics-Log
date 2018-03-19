@@ -41,8 +41,15 @@ AppChart chart;
 
 game_state gs;
 
-CSimpleIniA ini(true);
-bool valid_ini = false;
+CSimpleIniA arc_ini(true);
+bool valid_arc_ini = false;
+WPARAM arc_global_mod1;
+WPARAM arc_global_mod2;
+
+CSimpleIniA mechanics_ini(true);
+bool valid_mechanics_ini = false;
+WPARAM log_key;
+WPARAM chart_key;
 
 
 inline int get_elapsed_time(uint64_t &current_time)
@@ -118,21 +125,88 @@ uintptr_t mod_release()
 }
 
 /* window callback -- return is assigned to umsg (return zero to not be processed by arcdps or game) */
-uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-#if 0
-	/* big buffer */
-	char buff[4096];
-	char* p = &buff[0];
+uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	auto io = &ImGui::GetIO();
 
-	/* common */
-	p += _snprintf(p, 400, "==== wndproc %llx ====\n", hWnd);
-	p += _snprintf(p, 400, "umsg %u, wparam %lld, lparam %lld\n", uMsg, wParam, lParam);
+	switch (uMsg)
+	{
+		case WM_KEYUP:
+		{
+			int vkey = (int)wParam;
+			io->KeysDown[vkey] = 0;
+			if (vkey == VK_CONTROL)
+			{
+				io->KeyCtrl = false;
+			}
+			else if (vkey == VK_MENU)
+			{
+				io->KeyAlt = false;
+			}
+			else if (vkey == VK_SHIFT)
+			{
+				io->KeyShift = false;
+			}
+			break;
+		}
+		case WM_KEYDOWN:
+		{
+			int vkey = (int)wParam;
+			io->KeysDown[vkey] = 1;
+			if (vkey == VK_CONTROL)
+			{
+				io->KeyCtrl = true;
+			}
+			else if (vkey == VK_MENU)
+			{
+				io->KeyAlt = true;
+			}
+			else if (vkey == VK_SHIFT)
+			{
+				io->KeyShift = true;
+			}
+			break;
+		}
+		case WM_SYSKEYUP:
+		{
+			int vkey = (int)wParam;
+			io->KeysDown[vkey] = 0;
+			if (vkey == VK_CONTROL)
+			{
+				io->KeyCtrl = false;
+			}
+			else if (vkey == VK_MENU)
+			{
+				io->KeyAlt = false;
+			}
+			else if (vkey == VK_SHIFT)
+			{
+				io->KeyShift = false;
+			}
+			break;
+		}
+		case WM_SYSKEYDOWN:
+		{
+			int vkey = (int)wParam;
+			io->KeysDown[vkey] = 1;
+			if (vkey == VK_CONTROL)
+			{
+				io->KeyCtrl = true;
+			}
+			else if (vkey == VK_MENU)
+			{
+				io->KeyAlt = true;
+			}
+			else if (vkey == VK_SHIFT)
+			{
+				io->KeyShift = true;
+			}
+			break;
+		}
+		break;
+	}
 
-	/* print */
-	DWORD written = 0;
-	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
-	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
-#endif
+
 	return uMsg;
 }
 
@@ -345,9 +419,21 @@ void ShowMechanicsChart(bool* p_open)
 
 uintptr_t mod_imgui()
 {
-    ShowMechanicsLog(&show_app_log);
+	if (ImGui::IsKeyPressed(arc_global_mod1) && ImGui::IsKeyPressed(arc_global_mod2))
+	{
+		if (ImGui::IsKeyPressed(log_key))
+		{
+			show_app_log = !show_app_log;
+		}
+		if (ImGui::IsKeyPressed(chart_key))
+		{
+			show_app_chart = !show_app_chart;
+		}
+	}
+	
+	ShowMechanicsLog(&show_app_log);
 
-    ShowMechanicsChart(&show_app_chart);
+	ShowMechanicsChart(&show_app_chart);
 
     return 0;
 }
@@ -367,24 +453,42 @@ static int change_export_path(ImGuiTextEditCallbackData *data)
 
 void parse_ini()
 {
-	SI_Error rc = ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
-	valid_ini = rc < 0;
+	SI_Error rc = arc_ini.LoadFile("addons\\arcdps\\arcdps.ini");
+	valid_arc_ini = rc < 0;
 
-	std::string pszValue = ini.GetValue("log","show", "0");
+	std::string pszValue = arc_ini.GetValue("keys", "global_mod1", "0x10");
+	arc_global_mod1 = std::stoi(pszValue,0,16);
+
+	pszValue = arc_ini.GetValue("keys", "global_mod2", "0x12");
+	arc_global_mod2 = std::stoi(pszValue,0,16);
+
+	rc = mechanics_ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
+	valid_mechanics_ini = rc < 0;
+
+	pszValue = mechanics_ini.GetValue("log","show", "0");
 	show_app_log = std::stoi(pszValue);
 
-	pszValue = ini.GetValue("chart", "show", "0");
+	pszValue = mechanics_ini.GetValue("chart", "show", "0");
 	show_app_chart = std::stoi(pszValue);
 
-	pszValue = ini.GetValue("chart", "export_path", chart.get_default_export_path().c_str());
+	pszValue = mechanics_ini.GetValue("chart", "export_path", chart.get_default_export_path().c_str());
 	chart.export_path = pszValue;
+
+	pszValue = mechanics_ini.GetValue("log", "key", "76");
+	log_key = std::stoi(pszValue);
+
+	pszValue = mechanics_ini.GetValue("chart", "key", "65");
+	chart_key = std::stoi(pszValue);
 }
 
 void write_ini()
 {
-	SI_Error rc = ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
-	rc = ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());
-	rc = ini.SetValue("chart", "export_path", chart.export_path.c_str());
+	SI_Error rc = mechanics_ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
+	rc = mechanics_ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());
+	rc = mechanics_ini.SetValue("chart", "export_path", chart.export_path.c_str());
 
-	rc = ini.SaveFile("addons\\arcdps\\arcdps_mechanics.ini");
+	rc = mechanics_ini.SetValue("log", "key", std::to_string(log_key).c_str());
+	rc = mechanics_ini.SetValue("chart", "key", std::to_string(chart_key).c_str());
+
+	rc = mechanics_ini.SaveFile("addons\\arcdps\\arcdps_mechanics.ini");
 }
