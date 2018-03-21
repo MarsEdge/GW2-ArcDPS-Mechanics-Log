@@ -351,9 +351,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if(ev->result != 5 && ev->result != 7)
             {
+				int value = 0;
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(mechanics[index].is_valid_hit(ev, src, dst, &gs))
+                    if(value = mechanics[index].is_valid_hit(ev, src, dst, &gs) && mechanics[index].verbosity >= 2)
                     {
                         int time = get_elapsed_time(ev->time);
                         if(time < 0)
@@ -378,6 +379,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                         }
                         output += " ";
                         output += mechanics[index].name;
+
+						if (value != 1)
+						{
+							output += ", value = " + std::to_string(value);
+						}
+
                         output += "\n";
                     }
                 }

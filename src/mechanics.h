@@ -37,10 +37,13 @@ struct mechanic
 	bool can_block;
 	bool can_invuln;
 
+	uint16_t verbosity;
+
     mechanic();
 
-    bool is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs);
+    float is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs);
     bool (*special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+    float (*special_value)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
     mechanic set_name(std::string const new_name) {this->name = new_name; return *this;}
     mechanic set_ids(std::initializer_list<uint16_t> const new_ids) {this->ids = std::vector<uint16_t>(new_ids); return *this;}
@@ -57,13 +60,18 @@ struct mechanic
 	mechanic set_can_evade(bool const new_can_evade) { this->can_evade = new_can_evade; return *this; }
 	mechanic set_can_block(bool const new_can_block) { this->can_block = new_can_block; return *this; }
 	mechanic set_can_invuln(bool const new_can_invuln) { this->can_invuln = new_can_invuln; return *this; }
+	mechanic set_verbosity(uint16_t const new_verbosity) { this->verbosity = new_verbosity; return *this; }
 
     mechanic set_special_requirement(bool (*new_special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
+    mechanic set_special_value(float (*new_special_value)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
 };
 
 bool default_requirement(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 bool special_requirement_conjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+
+float default_value(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+float special_value_dhuum_shackles(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
 const uint16_t max_deimos_oils = 3;
 struct deimos_oil

@@ -25,20 +25,28 @@ mechanic::mechanic()
 	can_block = true;
 	can_invuln = true;
 
+	verbosity = 2;
+
     special_requirement = default_requirement;
+	special_value = default_value;
 }
 
-bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
+float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
 {
     uint16_t index = 0;
     bool correct_id = false;
     Player* current_player = nullptr;
+	float out = 0;
 
 	if (!ev) return false;
+	if (!src) return false;
+	if (!dst) return false;
 
 	if (can_block && ev->result == 3) return false;
 	if (can_evade && ev->result == 4) return false;
 	if (can_invuln && ev->result == 6) return false;
+
+	if (verbosity == 0) return false;
 
     for(index=0;index<ids.size();index++)
     {
@@ -91,6 +99,7 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
            && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
            && special_requirement(*this,ev,src,dst,current_player))
         {
+			out = special_value(*this, ev, src, dst, current_player);
             current_player->set_last_hit_time(ev->time);
             last_hit_time = ev->time;
             current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
@@ -99,7 +108,7 @@ bool mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
             have_added_line_break = false;
             has_logged_mechanic = true;
 
-            return true;
+            return out;
         }
     }
     return false;
@@ -173,6 +182,16 @@ bool special_requirement_on_self(const mechanic &current_mechanic, cbtevent* ev,
 	return src && dst && src->id == dst->id;
 }
 
+float default_value(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+{
+	return 1;
+}
+
+float special_value_dhuum_shackles(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player)
+{
+	return 30000 - ev->value;
+}
+
 std::vector <mechanic> mechanics =
 {
     mechanic().set_name("was teleported").set_ids({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).set_boss_id(BOSS_VG_ID),
@@ -197,7 +216,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("got a bomb").set_ids({MECHANIC_SLOTH_BOMB}).set_fail_if_hit(false).set_frequency_player(6000).set_boss_id(BOSS_SLOTH_ID),
 
-	mechanic().set_name("stood in a bomb aoe").set_ids({MECHANIC_SLOTH_BOMB_AOE}).set_boss_id(BOSS_SLOTH_ID),
+	mechanic().set_name("stood in a bomb aoe").set_ids({MECHANIC_SLOTH_BOMB_AOE}).set_verbosity(1).set_boss_id(BOSS_SLOTH_ID),
 
 	mechanic().set_name("was hit by flame breath").set_ids({MECHANIC_SLOTH_FLAME_BREATH}).set_boss_id(BOSS_SLOTH_ID),
 
@@ -223,7 +242,7 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("touched an orb").set_ids({MECHANIC_XERA_ORB}).set_boss_id(BOSS_XERA_ID_A),
 
-	mechanic().set_name("stood in an orb aoe").set_ids({MECHANIC_XERA_ORB_AOE}).set_frequency_player(1000).set_boss_id(BOSS_XERA_ID_A),
+	mechanic().set_name("stood in an orb aoe").set_ids({MECHANIC_XERA_ORB_AOE}).set_frequency_player(1000).set_verbosity(1).set_boss_id(BOSS_XERA_ID_A),
 
 	mechanic().set_name("was teleported").set_ids({MECHANIC_CARIN_TELEPORT}).set_boss_id(BOSS_CAIRN_ID),
 
@@ -249,19 +268,19 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("closed a tear").set_ids({MECHANIC_DEIMOS_TEAR}).set_boss_id(BOSS_DEIMOS_ID),
 
-	mechanic().set_name("stood in inner donut").set_ids({MECHANIC_HORROR_DONUT_INNER}).set_boss_id(BOSS_SH_ID),
+	mechanic().set_name("stood in inner donut").set_ids({MECHANIC_HORROR_DONUT_INNER}).set_verbosity(1).set_boss_id(BOSS_SH_ID),
 
-	mechanic().set_name("stood in outer donut").set_ids({MECHANIC_HORROR_DONUT_OUTER}).set_boss_id(BOSS_SH_ID),
+	mechanic().set_name("stood in outer donut").set_ids({MECHANIC_HORROR_DONUT_OUTER}).set_verbosity(1).set_boss_id(BOSS_SH_ID),
 
 	mechanic().set_name("stood in torment aoe").set_ids({MECHANIC_HORROR_GOLEM_AOE}).set_boss_id(BOSS_SH_ID),
 
-	mechanic().set_name("stood in pie slice").set_ids({MECHANIC_HORROR_PIE_4_A,MECHANIC_HORROR_PIE_4_B}).set_boss_id(BOSS_SH_ID),
+	mechanic().set_name("stood in pie slice").set_ids({MECHANIC_HORROR_PIE_4_A,MECHANIC_HORROR_PIE_4_B}).set_verbosity(1).set_boss_id(BOSS_SH_ID),
 
 	mechanic().set_name("touched a scythe").set_ids({MECHANIC_HORROR_SCYTHE}).set_boss_id(BOSS_SH_ID),
 
-	mechanic().set_name("took fixate").set_ids({MECHANIC_HORROR_FIXATE}).set_fail_if_hit(false).set_boss_id(BOSS_SH_ID),
+	mechanic().set_name("took fixate").set_ids({MECHANIC_HORROR_FIXATE}).set_fail_if_hit(false).set_verbosity(1).set_boss_id(BOSS_SH_ID),
 
-	mechanic().set_name("was debuffed").set_ids({MECHANIC_HORROR_DEBUFF}).set_fail_if_hit(false).set_boss_id(BOSS_SH_ID),
+	mechanic().set_name("was debuffed").set_ids({MECHANIC_HORROR_DEBUFF}).set_fail_if_hit(false).set_verbosity(1).set_boss_id(BOSS_SH_ID),
 
 	mechanic().set_name("touched a messenger").set_ids({MECHANIC_DHUUM_GOLEM}).set_boss_id(BOSS_DHUUM_ID),
 
@@ -269,11 +288,14 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("is shackled").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_boss_id(BOSS_DHUUM_ID),
 
+	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(3).set_target_is_dst(false).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(3).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
+
 	mechanic().set_name("has affliction").set_ids({MECHANIC_DHUUM_AFFLICTION}).set_frequency_player(13000 + ms_per_tick).set_fail_if_hit(false).set_valid_if_down(true).set_boss_id(BOSS_DHUUM_ID),
 
 	mechanic().set_name("stood in a crack").set_ids({MECHANIC_DHUUM_CRACK}).set_boss_id(BOSS_DHUUM_ID),
 
-//  mechanic().set_name("stood in a mark").set_ids({MECHANIC_DHUUM_MARK}).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().set_name("stood in a mark").set_ids({MECHANIC_DHUUM_MARK}).set_verbosity(0).set_boss_id(BOSS_DHUUM_ID),
 
 	mechanic().set_name("touched the center").set_ids({MECHANIC_DHUUM_SUCK_AOE}).set_boss_id(BOSS_DHUUM_ID),
 
