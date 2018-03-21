@@ -20,7 +20,7 @@ Player::Player()
     in_squad = true;
 }
 
-Player::Player(ag* &new_player)
+Player::Player(ag* new_player)
 {
     if(new_player->name)
     {
@@ -214,7 +214,7 @@ void Player::reset_stats()
     tracker.clear();
 }
 
-Player* get_player(ag* &new_player)
+Player* get_player(ag* new_player)
 {
     if(!is_player(new_player))
     {
@@ -312,7 +312,7 @@ void Player::mechanic_tracker::add_pull(boss* new_boss)
     }
 }
 
-bool is_player(ag* &new_player)
+bool is_player(ag* new_player)
 {
     return new_player
     && new_player->prof > 0
