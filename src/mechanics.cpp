@@ -57,60 +57,60 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         }
     }
 
-    if(correct_id)//correct skill id
+	if (!correct_id) return false;
+
+    if(frequency_global != 0
+        && ev->time < last_hit_time+frequency_global-ms_per_tick)
     {
-        if(frequency_global != 0
-           && ev->time < last_hit_time+frequency_global-ms_per_tick)
-        {
-            return false;
-        }
-
-        if(boss_id
-           && gs->boss_found
-           && !gs->boss_data.has_id(boss_id))
-        {
-            return false;
-        }
-
-        if(ev->is_buffremove != is_buffremove)
-        {
-            return false;
-        }
-
-		if (is_buffremove
-			&& overstack_value >= 0
-			&& overstack_value != ev->overstack_value)
-		{
-			return false;
-		}
-
-        if(target_is_dst)
-        {
-            current_player=get_player(dst);
-        }
-        else
-        {
-            current_player=get_player(src);
-        }
-
-        if(current_player
-           && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
-           && (!current_player->is_downed || valid_if_down)
-           && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
-           && special_requirement(*this,ev,src,dst,current_player))
-        {
-			out = special_value(*this, ev, src, dst, current_player);
-            current_player->set_last_hit_time(ev->time);
-            last_hit_time = ev->time;
-            current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
-
-            last_mechanic_time = ev->time;
-            have_added_line_break = false;
-            has_logged_mechanic = true;
-
-            return out;
-        }
+        return false;
     }
+
+    if(boss_id
+        && gs->boss_found
+        && !gs->boss_data.has_id(boss_id))
+    {
+        return false;
+    }
+
+    if(ev->is_buffremove != is_buffremove)
+    {
+        return false;
+    }
+
+	if (is_buffremove
+		&& overstack_value >= 0
+		&& overstack_value != ev->overstack_value)
+	{
+		return false;
+	}
+
+    if(target_is_dst)
+    {
+        current_player=get_player(dst);
+    }
+    else
+    {
+        current_player=get_player(src);
+    }
+
+    if(current_player
+        && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
+        && (!current_player->is_downed || valid_if_down)
+        && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
+        && special_requirement(*this,ev,src,dst,current_player))
+    {
+		out = special_value(*this, ev, src, dst, current_player);
+        current_player->set_last_hit_time(ev->time);
+        last_hit_time = ev->time;
+        current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
+
+        last_mechanic_time = ev->time;
+        have_added_line_break = false;
+        has_logged_mechanic = true;
+
+        return out;
+    }
+
     return false;
 }
 
