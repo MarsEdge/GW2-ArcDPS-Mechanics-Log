@@ -426,7 +426,9 @@ void ShowMechanicsChart(bool* p_open)
 
 uintptr_t mod_imgui()
 {
-	if (ImGui::IsKeyPressed(arc_global_mod1) && ImGui::IsKeyPressed(arc_global_mod2))
+	auto io = &ImGui::GetIO();
+
+	if (io->KeysDown[arc_global_mod1] && io->KeysDown[arc_global_mod2])
 	{
 		if (ImGui::IsKeyPressed(log_key))
 		{
