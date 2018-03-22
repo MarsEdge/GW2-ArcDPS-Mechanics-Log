@@ -486,7 +486,7 @@ void parse_ini()
 	pszValue = mechanics_ini.GetValue("log", "key", "76");
 	log_key = std::stoi(pszValue);
 
-	pszValue = mechanics_ini.GetValue("chart", "key", "65");
+	pszValue = mechanics_ini.GetValue("chart", "key", "77");
 	chart_key = std::stoi(pszValue);
 }
 
