@@ -189,7 +189,7 @@ float default_value(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag*
 
 float special_value_dhuum_shackles(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player)
 {
-	return 30000 - ev->value;
+	return (30000 - ev->value)/1000;
 }
 
 std::vector <mechanic> mechanics =
