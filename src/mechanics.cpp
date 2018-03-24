@@ -104,7 +104,6 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         last_hit_time = ev->time;
         current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
 
-        last_mechanic_time = ev->time;
         have_added_line_break = false;
         has_logged_mechanic = true;
 

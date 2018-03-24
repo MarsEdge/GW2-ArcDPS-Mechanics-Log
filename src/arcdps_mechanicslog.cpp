@@ -386,6 +386,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 						}
 
                         output += "\n";
+						last_mechanic_time = ev->time;
                     }
                 }
             }
