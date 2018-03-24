@@ -14,7 +14,6 @@
 #include "npc_ids.h"
 
 /* proto/globals */
-uint32_t cbtcount = 0;
 arcdps_exports arc_exports;
 char* arcvers;
 void dll_init(HANDLE hModule);
@@ -393,7 +392,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         }
 
 		/* common */
-		cbtcount += 1;
 
 		if(!have_added_line_break
         && ev->time > (last_mechanic_time + line_break_frequency))
