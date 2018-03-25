@@ -220,10 +220,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 	if (!ev)
     {
         /* notify tracking change */
-		if (!src->elite)
+		if (src && !src->elite)
         {
 			/* add */
-			if (src->prof)
+			if (dst && src->prof)
             {
                 add_player(src->name,dst->name,src->id);
 			}
@@ -247,7 +247,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if(ev->is_statechange==1)
             {
-                if(src->self)
+                if(src && src->self)
                 {
                     start_time = ev->time;
                     if(has_logged_mechanic)

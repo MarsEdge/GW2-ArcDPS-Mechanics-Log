@@ -319,7 +319,7 @@ bool is_player(ag* new_player)
     && new_player->prof < 10
 	&& new_player->id
     && new_player->name
-    && strlen(new_player->name) > 2;
+    && std::string(new_player->name).length() > 2;
 }
 
 void reset_all_player_stats()
