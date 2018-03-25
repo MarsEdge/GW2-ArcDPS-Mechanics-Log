@@ -36,7 +36,6 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
     uint16_t index = 0;
     bool correct_id = false;
     Player* current_player = nullptr;
-	float out = 0;
 
 	if (!ev) return false;
 	if (!src) return false;
@@ -99,12 +98,11 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
         && special_requirement(*this,ev,src,dst,current_player))
     {
-		out = special_value(*this, ev, src, dst, current_player);
         current_player->set_last_hit_time(ev->time);
         last_hit_time = ev->time;
         current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
 
-        return out;
+        return special_value(*this, ev, src, dst, current_player);
     }
 
     return false;
