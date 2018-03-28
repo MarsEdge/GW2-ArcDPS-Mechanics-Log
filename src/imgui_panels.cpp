@@ -86,16 +86,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     bool merge = merge_A && merge_B && merge_A->id != merge_B->id;
     if(merge)
     {
-        for(uint16_t index = 0;index<merge_B->tracker.size();index++)
-        {
-            for(uint16_t index_hits = 0; index_hits<merge_B->tracker.at(index).hits;index_hits++)
-            {
-                merge_A->mechanic_receive(merge_B->tracker.at(index).name,merge_B->tracker.at(index).id,merge_B->tracker.at(index).fail,merge_B->tracker.at(index).current_boss);
-            }
-        }
-        merge_A->downs += merge_B->downs;
-        merge_A->deaths += merge_B->deaths;
-        merge_A->pulls += merge_B->pulls;
+		merge_A->merge(merge_B);
     }
 
     ImGui::BeginGroup();
@@ -190,7 +181,6 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
                || (merge
                    && players.at(index).id == merge_B->id))
             {
-                players.at(index).reset_stats();
                 if(expand)
                 {
                     ImGui::TreePop();

@@ -210,6 +210,7 @@ void Player::reset_stats()
     last_stab_time = 0;
     last_hit_time=0;
     last_mechanic=0;
+	in_squad = false;
 
     tracker.clear();
 }
@@ -302,6 +303,24 @@ void Player::add_pull(boss* new_boss)
         tracker.at(index).add_pull(new_boss);
     }
     pulls++;
+}
+
+void Player::merge(Player * new_player)
+{
+	if (!new_player) return;
+	if (new_player->id == id) return;
+
+	for (uint16_t index = 0; index<new_player->tracker.size(); index++)
+	{
+		for (uint16_t index_hits = 0; index_hits<new_player->tracker.at(index).hits; index_hits++)
+		{
+			mechanic_receive(new_player->tracker.at(index).name, new_player->tracker.at(index).id, new_player->tracker.at(index).fail, new_player->tracker.at(index).current_boss);
+		}
+	}
+	downs += new_player->downs;
+	deaths += new_player->deaths;
+	pulls += new_player->pulls;
+	new_player->reset_stats();
 }
 
 void Player::mechanic_tracker::add_pull(boss* new_boss)

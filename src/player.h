@@ -66,6 +66,8 @@ struct Player
     uint16_t get_mechanics_total();//returns the number of total mechanics the player had
     void reset_stats();
     void add_pull(boss* new_boss);
+
+	void merge(Player* new_player);
 };
 
 extern std::mutex players_mtx;
