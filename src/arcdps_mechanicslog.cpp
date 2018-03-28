@@ -205,6 +205,10 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 
+	if (io->KeysDown[arc_global_mod1] && io->KeysDown[arc_global_mod2])
+	{
+		if (io->KeysDown[log_key] || io->KeysDown[chart_key]) return 0;
+	}
 
 	return uMsg;
 }
