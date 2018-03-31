@@ -26,7 +26,8 @@ void    AppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
 void    AppLog::Draw(const char* title, bool* p_open = NULL)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
-    ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
+	ImGui::PushAllowKeyboardFocus(false);
     if (ImGui::Button("Clear")) Clear();
     ImGui::SameLine();
     bool copy = ImGui::Button("Copy");
@@ -57,6 +58,7 @@ void    AppLog::Draw(const char* title, bool* p_open = NULL)
         ImGui::SetScrollHere(1.0f);
     ScrollToBottom = false;
     ImGui::EndChild();
+	ImGui::PopAllowKeyboardFocus();
     ImGui::End();
 }
 
@@ -69,6 +71,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
+	ImGui::PushAllowKeyboardFocus(false);
 
     float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
@@ -220,6 +223,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
         }
     }
     ImGui::EndChild();
+	ImGui::PopAllowKeyboardFocus();
     ImGui::End();
 
     if(merge || merge_A == merge_B)
