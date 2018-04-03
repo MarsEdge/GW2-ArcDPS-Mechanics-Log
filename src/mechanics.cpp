@@ -17,7 +17,8 @@ mechanic::mechanic()
     is_multihit = true;
     target_is_dst = true;
     fail_if_hit = true;
-    is_buffremove = 0;
+	is_activation = 0;
+	is_buffremove = 0;
 	overstack_value = -1;
     valid_if_down = false;
 	
@@ -75,6 +76,11 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
     {
         return false;
     }
+
+	if (ev->is_activation != is_activation)
+	{
+		return false;
+	}
 
 	if (is_buffremove
 		&& overstack_value >= 0
