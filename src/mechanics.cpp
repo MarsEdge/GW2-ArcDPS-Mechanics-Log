@@ -304,6 +304,8 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("was snatched").set_ids({MECHANIC_DHUUM_SNATCH}).set_special_requirement(special_requirement_dhuum_snatch).set_boss_id(BOSS_DHUUM_ID),
 
+	mechanic().set_name("canceled button channel").set_ids({MECHANIC_DHUUM_BUTTON_CHANNEL}).set_is_activation(4).set_boss_id(BOSS_DHUUM_ID),
+
 	mechanic().set_name("vomited on someone").set_ids({MECHANIC_NIGHTMARE_VOMIT}).set_target_is_dst(false),
 
 	mechanic().set_name("was hit by wirl").set_ids({MECHANIC_MAMA_WIRL,MECHANIC_MAMA_WIRL_NORMAL}).set_boss_id(BOSS_MAMA_ID),
