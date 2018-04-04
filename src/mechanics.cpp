@@ -289,8 +289,8 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("is shackled").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_boss_id(BOSS_DHUUM_ID),
 
-//	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(3).set_target_is_dst(false).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
-//	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(3).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
+//	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(CBTB_MANUAL).set_target_is_dst(false).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
+//	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(CBTB_MANUAL).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
 
 	mechanic().set_name("has affliction").set_ids({MECHANIC_DHUUM_AFFLICTION}).set_frequency_player(13000 + ms_per_tick).set_fail_if_hit(false).set_valid_if_down(true).set_boss_id(BOSS_DHUUM_ID),
 
@@ -302,11 +302,11 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("stood in a teleport aoe").set_ids({MECHANIC_DHUUM_TELEPORT_AOE}).set_boss_id(BOSS_DHUUM_ID),
 
-//	mechanic().set_name("died on green").set_ids({MECHANIC_DHUUM_GREEN_TIMER}).set_is_buffremove(3).set_overstack_value(0),
+//	mechanic().set_name("died on green").set_ids({MECHANIC_DHUUM_GREEN_TIMER}).set_is_buffremove(CBTB_MANUAL).set_overstack_value(0),
 
 	mechanic().set_name("was snatched").set_ids({MECHANIC_DHUUM_SNATCH}).set_special_requirement(special_requirement_dhuum_snatch).set_boss_id(BOSS_DHUUM_ID),
 
-	mechanic().set_name("canceled button channel").set_ids({MECHANIC_DHUUM_BUTTON_CHANNEL}).set_is_activation(4).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().set_name("canceled button channel").set_ids({MECHANIC_DHUUM_BUTTON_CHANNEL}).set_is_activation(ACTV_CANCEL_CANCEL).set_boss_id(BOSS_DHUUM_ID),
 
 	mechanic().set_name("vomited on someone").set_ids({MECHANIC_NIGHTMARE_VOMIT}).set_target_is_dst(false),
 
