@@ -249,7 +249,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 		/* statechange */
 		if (ev->is_statechange)
         {
-            if(ev->is_statechange==1)
+            if(ev->is_statechange==CBTS_ENTERCOMBAT)
             {
                 if(src && src->self)
                 {
@@ -266,13 +266,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                 }
             }
 
-            else if(ev->is_statechange==2)
+            else if(ev->is_statechange==CBTS_EXITCOMBAT)
             {
 
             }
 
             //if rally
-            else if(ev->is_statechange==3)
+            else if(ev->is_statechange==CBTS_CHANGEUP)
             {
                 current_player = get_player(src);
                 if(current_player)
@@ -282,7 +282,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             }
 
             //if dead
-            else if(ev->is_statechange==4)
+            else if(ev->is_statechange==CBTS_CHANGEDEAD)
             {
                 current_player = get_player(src);
                 if(current_player)
@@ -292,7 +292,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             }
 
             //if downed
-            else if(ev->is_statechange==5)
+            else if(ev->is_statechange==CBTS_CHANGEDOWN)
             {
                 current_player = get_player(src);
                 if(current_player)
@@ -301,7 +301,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                 }
             }
             //if health update
-            else if(ev->is_statechange==12)
+            else if(ev->is_statechange==CBTS_MAXHEALTHUPDATE)
             {
 				
             }
@@ -352,7 +352,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 
         if(ev->dst_agent)
         {
-            if(ev->result != 5 && ev->result != 7)
+            if(ev->result != CBTR_INTERRUPT && ev->result != CBTR_BLIND)
             {
 				int value = 0;
                 for(uint16_t index=0;index<mechanics.size();index++)

@@ -42,9 +42,9 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
 	if (!src) return false;
 	if (!dst) return false;
 
-	if (can_block && ev->result == 3) return false;
-	if (can_evade && ev->result == 4) return false;
-	if (can_invuln && ev->result == 6) return false;
+	if (can_block && ev->result == CBTR_BLOCK) return false;
+	if (can_evade && ev->result == CBTR_EVADE) return false;
+	if (can_invuln && ev->result == CBTR_ABSORB) return false;
 
 	if (verbosity == 0) return false;
 
