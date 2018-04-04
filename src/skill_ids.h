@@ -85,6 +85,7 @@ const uint16_t MECHANIC_HORROR_DEBUFF = 47414;//Necrosis
 
 //Eater of Souls
 const uint16_t MECHANIC_EATER_PUKE = 47303;//Hungering Miasma
+const uint16_t MECHANIC_EATER_WEB = 47695;//Spinner's Web
 
 //Dhuum
 const uint16_t MECHANIC_DHUUM_GOLEM = 48172; //Hateful Ephemera (flesh golem)

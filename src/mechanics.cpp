@@ -283,6 +283,8 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("was puked on").set_ids({MECHANIC_EATER_PUKE}).set_frequency_player(3000).set_boss_id(BOSS_SOUL_EATER_ID),
 
+	mechanic().set_name("stood in web").set_ids({MECHANIC_EATER_WEB}).set_frequency_player(3000).set_boss_id(BOSS_SOUL_EATER_ID),
+
 	mechanic().set_name("touched a messenger").set_ids({MECHANIC_DHUUM_GOLEM}).set_boss_id(BOSS_DHUUM_ID),
 
 	mechanic().set_name("is shackled").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_target_is_dst(false).set_boss_id(BOSS_DHUUM_ID),
