@@ -83,6 +83,9 @@ const uint16_t MECHANIC_HORROR_SCYTHE = 47363;//Spinning Slash
 const uint16_t MECHANIC_HORROR_FIXATE = 47434;//Fixated
 const uint16_t MECHANIC_HORROR_DEBUFF = 47414;//Necrosis
 
+//Eater of Souls
+const uint16_t MECHANIC_EATER_PUKE = 47303;//Hungering Miasma
+
 //Dhuum
 const uint16_t MECHANIC_DHUUM_GOLEM = 48172; //Hateful Ephemera (flesh golem)
 const uint16_t MECHANIC_DHUUM_AFFLICTION = 47646;//Arcing Affliction
