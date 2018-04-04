@@ -50,6 +50,12 @@ std::vector<boss> bosses =
 
     boss().set_ids({BOSS_SH_ID}).set_timer(BOSS_SH_TIMER).set_health(BOSS_SH_HEALTH),
 
+	boss().set_ids({BOSS_SOUL_EATER_ID}).set_health(BOSS_SOUL_EATER_HEALTH),
+
+	boss().set_ids({BOSS_ICE_KING_ID}).set_timer(BOSS_ICE_KING_TIMER).set_health(BOSS_ICE_KING_HEALTH),
+
+	boss().set_ids({BOSS_EYE_NORTH_ID,BOSS_EYE_SOUTH_ID}).set_health(BOSS_EYE_HEALTH),
+
     boss().set_ids({BOSS_DHUUM_ID}).set_timer(BOSS_DHUUM_TIMER).set_health(BOSS_DHUUM_HEALTH),
 
 

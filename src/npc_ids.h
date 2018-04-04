@@ -61,6 +61,17 @@ const uint32_t BOSS_SH_ID               = 0x4D37;
 const uint32_t BOSS_SH_HEALTH           = 35391600;
 const uint32_t BOSS_SH_TIMER            = 8*60*1000;
 
+const uint32_t BOSS_SOUL_EATER_ID		= 0x4C50;
+const uint32_t BOSS_SOUL_EATER_HEALTH	= 1720425;
+
+const uint32_t BOSS_ICE_KING_ID			= 0x4CEB;
+const uint32_t BOSS_ICE_KING_TIMER		= (3 * 60 + 30) * 1000;
+const uint32_t BOSS_ICE_KING_HEALTH		= 9831000;
+
+const uint32_t BOSS_EYE_NORTH_ID		= 0x4CC3;//Eye of Judgement
+const uint32_t BOSS_EYE_SOUTH_ID		= 0x4D84;//Eye of Fate
+const uint32_t BOSS_EYE_HEALTH			= 2457750;
+
 const uint32_t BOSS_DHUUM_ID            = 0x4BFA;
 const uint32_t BOSS_DHUUM_HEALTH        = 32000000;
 const uint32_t BOSS_DHUUM_TIMER         = 10*60*1000;
