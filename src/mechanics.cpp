@@ -98,20 +98,21 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
         current_player=get_player(src);
     }
 
-    if(current_player
-        && (!is_multihit || ev->time >= (current_player->get_last_hit_time()+frequency_player))
-        && (!current_player->is_downed || valid_if_down)
-        && (!is_interupt || current_player->get_last_stab_time() <= ev->time)
-        && special_requirement(*this,ev,src,dst,current_player))
-    {
-        current_player->set_last_hit_time(ev->time);
-        last_hit_time = ev->time;
-        current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
+	if (!current_player) return false;
 
-        return special_value(*this, ev, src, dst, current_player);
-    }
+	if (is_multihit && ev->time < (current_player->get_last_hit_time() + frequency_player)) return false;
 
-    return false;
+	if (!valid_if_down && current_player->is_downed) return false;
+
+	if (is_interupt && current_player->get_last_stab_time() > ev->time) return false;
+
+	if (!special_requirement(*this, ev, src, dst, current_player)) return false;
+
+    current_player->set_last_hit_time(ev->time);
+    last_hit_time = ev->time;
+    current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
+
+    return special_value(*this, ev, src, dst, current_player);
 }
 
 bool default_requirement(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
