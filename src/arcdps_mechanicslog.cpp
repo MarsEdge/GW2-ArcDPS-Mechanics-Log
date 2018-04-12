@@ -202,6 +202,15 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		}
+		case WM_ACTIVATEAPP:
+		{
+			if (!wParam)
+			{
+				io->KeysDown[arc_global_mod1] = false;
+				io->KeysDown[arc_global_mod2] = false;
+			}
+			break;
+		}
 		break;
 	}
 
