@@ -98,6 +98,7 @@ const uint16_t MECHANIC_DHUUM_TELEPORT_AOE = 48176;//Death Mark
 const uint16_t MECHANIC_DHUUM_GREEN_TIMER = 48281;//Mortal Coil
 const uint16_t MECHANIC_DHUUM_SNATCH = 47076;//nameless
 const uint16_t MECHANIC_DHUUM_BUTTON_CHANNEL = 47002;//nameless
+const uint16_t MECHANIC_DHUUM_CONE = 47561;//Slash
 
 const uint16_t MECHANIC_NIGHTMARE_VOMIT = 37030;//Toxic Sickness
 

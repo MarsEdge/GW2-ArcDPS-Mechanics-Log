@@ -311,6 +311,8 @@ std::vector <mechanic> mechanics =
 
 //	mechanic().set_name("canceled button channel").set_ids({MECHANIC_DHUUM_BUTTON_CHANNEL}).set_is_activation(ACTV_CANCEL_CANCEL).set_boss_id(BOSS_DHUUM_ID),
 
+	mechanic().set_name("stood in cone").set_ids({MECHANIC_DHUUM_CONE}).set_boss_id(BOSS_DHUUM_ID),
+
 	mechanic().set_name("vomited on someone").set_ids({MECHANIC_NIGHTMARE_VOMIT}).set_target_is_dst(false),
 
 	mechanic().set_name("was hit by wirl").set_ids({MECHANIC_MAMA_WIRL,MECHANIC_MAMA_WIRL_NORMAL}).set_boss_id(BOSS_MAMA_ID),
