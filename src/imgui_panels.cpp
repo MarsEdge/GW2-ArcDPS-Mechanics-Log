@@ -67,7 +67,7 @@ void    AppChart::Clear()
     reset_all_player_stats();
 }
 
-void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_open)
+void    AppChart::Draw(const char* title, bool* p_open)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
@@ -82,7 +82,7 @@ void    AppChart::Draw(const char* title, std::vector<Player> &players, bool* p_
     ImGui::SameLine();
 //  Filter.Draw("Filter", -50.0f);
 //  ImGui::SameLine();
-    if (ImGui::Button("Export")) write_to_disk(players);
+    if (ImGui::Button("Export")) write_to_disk();
     ImGui::SameLine();
     if (ImGui::Button("Copy")) ImGui::LogToClipboard();
     ImGui::Separator();
@@ -243,7 +243,7 @@ float get_chart_column_loc(float window_width, uint16_t col)
      return (window_width/6.0) + col * get_chart_column_width(window_width);
 }
 
-std::string AppChart::to_string(std::vector<Player> &players)
+std::string AppChart::to_string()
 {
     std::string output = "";
 
@@ -259,15 +259,15 @@ std::string AppChart::to_string(std::vector<Player> &players)
     return output;
 }
 
-void AppChart::write_to_disk(std::vector<Player> &players)
+void AppChart::write_to_disk()
 {
-    uint16_t new_export_total = get_mechanics_total(players);
+    uint16_t new_export_total = get_mechanics_total();
     if(last_export_total == new_export_total)
     {
         return;
     }
 
-	std::string text = to_string(players);
+	std::string text = to_string();
 
     std::time_t t = std::time(nullptr);
     char time_str[100];

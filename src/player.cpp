@@ -67,7 +67,7 @@ Player::mechanic_tracker::mechanic_tracker(std::string &new_name,uint16_t &new_i
     fail = new_fail;
     current_boss = new_boss;
     hits = 1;
-    pulls = new_boss->pulls;
+    pulls = new_boss ? new_boss->pulls : 1;
 }
 
 void Player::down()
@@ -350,7 +350,7 @@ void reset_all_player_stats()
     }
 }
 
-uint16_t get_mechanics_total(std::vector<Player> &players)
+uint16_t get_mechanics_total()
 {
     uint16_t result = 0;
 

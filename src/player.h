@@ -81,4 +81,4 @@ void remove_player(char* name, char* account, uintptr_t id);
 void add_pull(boss* boss);
 bool is_player(ag* new_player);
 void reset_all_player_stats();
-uint16_t get_mechanics_total(std::vector<Player> &players);
+uint16_t get_mechanics_total();

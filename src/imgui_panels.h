@@ -31,10 +31,10 @@ struct AppChart
 
     void    Clear();
 
-    void    Draw(const char* title, std::vector<Player> &players, bool* p_open);
+    void    Draw(const char* title, bool* p_open);
 
-    std::string to_string(std::vector<Player> &players);
-    void    write_to_disk(std::vector<Player> &players);
+    std::string to_string();
+    void    write_to_disk();
 	std::string get_default_export_path();
 };
 

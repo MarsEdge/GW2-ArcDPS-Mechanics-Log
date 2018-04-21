@@ -117,7 +117,7 @@ arcdps_exports* mod_init()
 /* release mod -- return ignored */
 uintptr_t mod_release()
 {
-    chart.write_to_disk(players);
+    chart.write_to_disk();
     players.clear();
 	write_ini();
 	return 0;
@@ -435,7 +435,7 @@ void ShowMechanicsLog(bool* p_open)
 
 void ShowMechanicsChart(bool* p_open)
 {
-    if(show_app_chart) chart.Draw("MECHANICS CHART", players, p_open);
+    if(show_app_chart) chart.Draw("MECHANICS CHART", p_open);
 }
 
 uintptr_t mod_imgui()
