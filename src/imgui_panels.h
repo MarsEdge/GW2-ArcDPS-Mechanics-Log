@@ -18,7 +18,7 @@ struct AppLog
     void    Clear();
     void    AddLog(const char* fmt, ...) IM_PRINTFARGS(2);
 
-    void    Draw(const char* title, bool* p_open);
+    void    Draw(const char* title, bool* p_open, ImGuiWindowFlags flags);
 };
 
 struct AppChart
@@ -31,7 +31,7 @@ struct AppChart
 
     void    Clear();
 
-    void    Draw(const char* title, bool* p_open);
+    void    Draw(const char* title, bool* p_open, ImGuiWindowFlags flags, bool mods_pressed);
 
     std::string to_string();
     void    write_to_disk();

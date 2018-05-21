@@ -29,6 +29,9 @@ uintptr_t mod_options();
 static int change_export_path(ImGuiTextEditCallbackData *data);
 void parse_ini();
 void write_ini();
+bool modsPressed();
+bool canMoveWindows();
+bool canClickWindows();
 
 int64_t start_time = 0;
 
@@ -44,6 +47,8 @@ CSimpleIniA arc_ini(true);
 bool valid_arc_ini = false;
 WPARAM arc_global_mod1;
 WPARAM arc_global_mod2;
+bool arc_movelock_altui = false;
+bool arc_clicklock_altui = false;
 
 CSimpleIniA mechanics_ini(true);
 bool valid_mechanics_ini = false;
@@ -430,12 +435,14 @@ void ShowMechanicsLog(bool* p_open)
         print_buffer = "";
     }
 
-    if(show_app_log) log.Draw("MECHANICS LOG", p_open);
+    if(show_app_log) log.Draw("MECHANICS LOG", p_open, ImGuiWindowFlags_NoCollapse
+		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0) | (!canClickWindows() ? ImGuiWindowFlags_NoInputs : 0));
 }
 
 void ShowMechanicsChart(bool* p_open)
 {
-    if(show_app_chart) chart.Draw("MECHANICS CHART", p_open);
+    if(show_app_chart) chart.Draw("MECHANICS CHART", p_open, ImGuiWindowFlags_NoCollapse
+		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0) | (!canClickWindows() ? ImGuiWindowFlags_NoInputs : 0), modsPressed());
 }
 
 uintptr_t mod_imgui()
@@ -485,6 +492,12 @@ void parse_ini()
 	pszValue = arc_ini.GetValue("keys", "global_mod2", "0x12");
 	arc_global_mod2 = std::stoi(pszValue,0,16);
 
+	pszValue = arc_ini.GetValue("session", "movelock_altui", "0");
+	arc_movelock_altui = std::stoi(pszValue);
+
+	pszValue = arc_ini.GetValue("session", "clicklock_altui", "0");
+	arc_clicklock_altui = std::stoi(pszValue);
+
 	rc = mechanics_ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
 	valid_mechanics_ini = rc < 0;
 
@@ -514,4 +527,35 @@ void write_ini()
 	rc = mechanics_ini.SetValue("chart", "key", std::to_string(chart_key).c_str());
 
 	rc = mechanics_ini.SaveFile("addons\\arcdps\\arcdps_mechanics.ini");
+}
+
+bool modsPressed()
+{
+	auto io = &ImGui::GetIO();
+
+	return io->KeysDown[arc_global_mod1] && io->KeysDown[arc_global_mod2];
+}
+
+bool canMoveWindows()
+{
+	if (!arc_movelock_altui)
+	{
+		return true;
+	}
+	else
+	{
+		return modsPressed();
+	}
+}
+
+bool canClickWindows()
+{
+	if (!arc_clicklock_altui)
+	{
+		return true;
+	}
+	else
+	{
+		return modsPressed();
+	}
 }

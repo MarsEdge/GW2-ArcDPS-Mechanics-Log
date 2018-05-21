@@ -23,10 +23,10 @@ void    AppLog::AddLog(const char* fmt, ...) IM_PRINTFARGS(2)
     ScrollToBottom = true;
 }
 
-void    AppLog::Draw(const char* title, bool* p_open = NULL)
+void    AppLog::Draw(const char* title, bool* p_open = NULL, ImGuiWindowFlags flags = 0)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
-	ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin(title, p_open, flags);
 	ImGui::PushAllowKeyboardFocus(false);
     if (ImGui::Button("Clear")) Clear();
     ImGui::SameLine();
@@ -67,10 +67,10 @@ void    AppChart::Clear()
     reset_all_player_stats();
 }
 
-void    AppChart::Draw(const char* title, bool* p_open)
+void    AppChart::Draw(const char* title, bool* p_open, ImGuiWindowFlags flags, bool mods_pressed)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
-    ImGui::Begin(title, p_open, ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin(title, p_open, flags);
 	ImGui::PushAllowKeyboardFocus(false);
 
     float window_width = ImGui::GetWindowContentRegionWidth();
@@ -191,7 +191,9 @@ void    AppChart::Draw(const char* title, bool* p_open)
                 continue;
             }
 
-            if(expand)
+            if(expand
+				|| (flags & ImGuiWindowFlags_NoInputs
+					|| mods_pressed))
             {
                 for(uint16_t tracker_index=0;
                 tracker_index<players.at(index).tracker.size();
@@ -217,7 +219,7 @@ void    AppChart::Draw(const char* title, bool* p_open)
                     ImGui::Separator();
                 }
 
-                ImGui::TreePop();
+				if (expand) ImGui::TreePop();
             }
             ImGui::Separator();
         }
