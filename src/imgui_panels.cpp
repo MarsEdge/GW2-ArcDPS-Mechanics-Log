@@ -67,7 +67,7 @@ void    AppChart::Clear()
     reset_all_player_stats();
 }
 
-void    AppChart::Draw(const char* title, bool* p_open, ImGuiWindowFlags flags, bool mods_pressed)
+void    AppChart::Draw(const char* title, bool* p_open, ImGuiWindowFlags flags, bool show_all)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open, flags);
@@ -192,8 +192,7 @@ void    AppChart::Draw(const char* title, bool* p_open, ImGuiWindowFlags flags, 
             }
 
             if(expand
-				|| (flags & ImGuiWindowFlags_NoInputs
-					|| mods_pressed))
+				|| show_all)
             {
                 for(uint16_t tracker_index=0;
                 tracker_index<players.at(index).tracker.size();

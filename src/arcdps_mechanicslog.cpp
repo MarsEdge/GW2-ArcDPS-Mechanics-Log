@@ -436,13 +436,13 @@ void ShowMechanicsLog(bool* p_open)
     }
 
     if(show_app_log) log.Draw("MECHANICS LOG", p_open, ImGuiWindowFlags_NoCollapse
-		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0) | (!canClickWindows() ? ImGuiWindowFlags_NoInputs : 0));
+		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
 }
 
 void ShowMechanicsChart(bool* p_open)
 {
     if(show_app_chart) chart.Draw("MECHANICS CHART", p_open, ImGuiWindowFlags_NoCollapse
-		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0) | (!canClickWindows() ? ImGuiWindowFlags_NoInputs : 0), modsPressed());
+		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0), arc_clicklock_altui);
 }
 
 uintptr_t mod_imgui()

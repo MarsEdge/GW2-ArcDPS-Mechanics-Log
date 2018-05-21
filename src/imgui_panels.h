@@ -31,7 +31,7 @@ struct AppChart
 
     void    Clear();
 
-    void    Draw(const char* title, bool* p_open, ImGuiWindowFlags flags, bool mods_pressed);
+    void    Draw(const char* title, bool* p_open, ImGuiWindowFlags flags, bool show_all);
 
     std::string to_string();
     void    write_to_disk();
