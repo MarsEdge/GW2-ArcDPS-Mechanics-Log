@@ -333,12 +333,9 @@ void Player::mechanic_tracker::add_pull(boss* new_boss)
 
 bool is_player(ag* new_player)
 {
-    return new_player
-    && new_player->prof > 0
-    && new_player->prof < 10
-	&& new_player->id
-    && new_player->name
-    && std::string(new_player->name).length() > 2;
+	return new_player
+		&& new_player->elite != 0xffffffff
+		&& new_player->name;
 }
 
 void reset_all_player_stats()
