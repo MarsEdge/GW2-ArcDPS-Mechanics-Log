@@ -259,8 +259,8 @@ std::vector <mechanic> mechanics =
 
 	mechanic().set_name("is fixated").set_ids({MECHANIC_SAM_FIXATE_SAM}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
 
-//	mechanic().set_name("has big green").set_ids({MECHANIC_SAM_GREEN_BIG}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
-//	mechanic().set_name("has small green").set_ids({MECHANIC_SAM_GREEN_SMALL}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
+	mechanic().set_name("has big green").set_ids({MECHANIC_SAM_GREEN_BIG}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
+	mechanic().set_name("has small green").set_ids({MECHANIC_SAM_GREEN_SMALL}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
 
 	mechanic().set_name("touched an oil").set_ids({MECHANIC_DEIMOS_OIL}).set_frequency_player(5000).set_boss_id(BOSS_DEIMOS_ID).set_special_requirement(special_requirement_deimos_oil),
 

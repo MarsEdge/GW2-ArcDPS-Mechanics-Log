@@ -62,8 +62,8 @@ const uint16_t MECHANIC_SAM_SHOCKWAVE = 37996;
 const uint16_t MECHANIC_SAM_SLAP_HORIZONTAL = 38168;
 const uint16_t MECHANIC_SAM_SLAP_VERTICAL = 38305;//Bludgeon
 const uint16_t MECHANIC_SAM_FIXATE_SAM = 37868;//Fixate: Samarog
-const uint16_t MECHANIC_SAM_GREEN_BIG = 30702;//unnamed
-const uint16_t MECHANIC_SAM_GREEN_SMALL = 30739;//unnamed
+const uint16_t MECHANIC_SAM_GREEN_BIG = 37966;//unnamed
+const uint16_t MECHANIC_SAM_GREEN_SMALL = 38247;//unnamed
 
 //deimos
 const uint16_t MECHANIC_DEIMOS_OIL = 37716;
