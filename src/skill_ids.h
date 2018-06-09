@@ -50,6 +50,7 @@ const uint16_t MECHANIC_XERA_MAGIC = 35000;//Intervention
 //carin
 const uint16_t MECHANIC_CARIN_TELEPORT = 38113;//Displacement
 const uint16_t MECHANIC_CARIN_SHARD = 38313;//Meteor Swarm
+const uint16_t MECHANIC_CARIN_SWEEP = 37631;//Orbital Sweep
 const uint16_t MECHANIC_CARIN_GREEN_A = 37611;//Spatial Manipulation, 1 id per pattern of greens
 const uint16_t MECHANIC_CARIN_GREEN_B = 37629;//Spatial Manipulation
 const uint16_t MECHANIC_CARIN_GREEN_C = 37642;//Spatial Manipulation
