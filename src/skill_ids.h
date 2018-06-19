@@ -38,8 +38,8 @@ const uint16_t MECHANIC_MATT_CORRUPTION = 34416;//Corruption
 const uint16_t MECHANIC_MATT_SACRIFICE = 34442;//nameless
 
 //kc
-const uint16_t MECHANIC_KC_FIXATE_A = 34912;//Fixated
-const uint16_t MECHANIC_KC_FIXATE_B = 34925;//Fixated
+const uint16_t MECHANIC_KC_FIXATE_WEST = 34912;//Fixated
+const uint16_t MECHANIC_KC_FIXATE_EAST = 34925;//Fixated
 
 //xera
 const uint16_t MECHANIC_XERA_HALF = 34883;
