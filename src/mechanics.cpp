@@ -32,7 +32,7 @@ Mechanic::Mechanic()
 	special_value = valueDefault;
 }
 
-float Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
+int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 {
     uint16_t index = 0;
     bool correct_id = false;

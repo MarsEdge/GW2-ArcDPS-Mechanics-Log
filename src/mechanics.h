@@ -42,7 +42,7 @@ struct Mechanic
 
     Mechanic();
 
-    float isValidHit(cbtevent* ev, Player* src, Player* dst);
+	int64_t isValidHit(cbtevent* ev, Player* src, Player* dst);
     bool (*special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
     int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 
