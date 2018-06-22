@@ -2,6 +2,7 @@
 
 #include "player.h"
 #include "imgui.h"
+#include "Tracker.h"
 #include <string>
 #include <fstream>
 #include <windows.h>
@@ -29,12 +30,12 @@ struct AppChart
     uint16_t last_export_total;
 	std::string export_path;
 
-    void    clear();
+    void    clear(Tracker* tracker);
 
-    void    draw(const char* title, bool* p_open, ImGuiWindowFlags flags, bool show_all);
+    void    draw(Tracker* tracker, const char* title, bool* p_open, ImGuiWindowFlags flags, bool show_all);
 
-    std::string toString();
-    void    writeToDisk();
+    std::string toString(Tracker* tracker);
+    void    writeToDisk(Tracker* tracker);
 	std::string getDefaultExportPath();
 };
 

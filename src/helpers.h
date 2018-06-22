@@ -7,6 +7,7 @@
 #include "npc_ids.h"
 
 int split (const char *str, char c, char ***arr);
+bool isPlayer(ag* new_player);
 
 struct GameState
 {

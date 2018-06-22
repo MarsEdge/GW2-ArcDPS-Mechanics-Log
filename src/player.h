@@ -45,6 +45,9 @@ struct Player
     Player(ag* new_player);
     Player(char* new_name, char* new_account, uintptr_t new_id);
 
+	bool operator==(uintptr_t other_id);
+	bool operator==(std::string other_str);
+
     void down();
     void dead();
     void rally();
@@ -69,16 +72,3 @@ struct Player
 
 	void merge(Player* new_player);
 };
-
-extern std::mutex players_mtx;
-extern std::mutex tracker_mtx;
-
-extern std::vector<Player> players;
-
-Player* getPlayer(ag* new_player);
-void addPlayer(char* name, char* account, uintptr_t id);
-void removePlayer(char* name, char* account, uintptr_t id);
-void addPull(Boss* boss);
-bool isPlayer(ag* new_player);
-void resetAllPlayerStats();
-uint16_t getMechanicsTotal();

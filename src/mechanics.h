@@ -8,6 +8,7 @@
 #include "skill_ids.h"
 #include "npc_ids.h"
 #include "helpers.h"
+#include "Tracker.h"
 
 extern bool have_added_line_break;
 extern uint64_t last_mechanic_time;
@@ -42,7 +43,7 @@ struct mechanic
 
     mechanic();
 
-    float isValidHit(cbtevent* ev, ag* src, ag* dst, GameState* gs);
+    float isValidHit(Tracker* tracker, cbtevent* ev, ag* src, ag* dst);
     bool (*special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
     float (*special_value)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 

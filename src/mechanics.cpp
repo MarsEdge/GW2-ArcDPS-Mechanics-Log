@@ -32,7 +32,7 @@ mechanic::mechanic()
 	special_value = valueDefault;
 }
 
-float mechanic::isValidHit(cbtevent* ev, ag* src, ag* dst, GameState* gs)
+float mechanic::isValidHit(Tracker* tracker, cbtevent* ev, ag* src, ag* dst)
 {
     uint16_t index = 0;
     bool correct_id = false;
@@ -66,8 +66,8 @@ float mechanic::isValidHit(cbtevent* ev, ag* src, ag* dst, GameState* gs)
     }
 
     if(boss_id
-        && gs->boss_found
-        && !gs->boss_data.hasId(boss_id))
+        && tracker->boss_found
+        && !tracker->boss_data.hasId(boss_id))
     {
         return false;
     }
@@ -91,11 +91,11 @@ float mechanic::isValidHit(cbtevent* ev, ag* src, ag* dst, GameState* gs)
 
     if(target_is_dst)
     {
-        current_player=getPlayer(dst);
+        current_player= tracker->getPlayer(dst);
     }
     else
     {
-        current_player=getPlayer(src);
+        current_player= tracker->getPlayer(src);
     }
 
 	if (!current_player) return false;
@@ -110,7 +110,7 @@ float mechanic::isValidHit(cbtevent* ev, ag* src, ag* dst, GameState* gs)
 
     current_player->setLastHitTime(ev->time);
     last_hit_time = ev->time;
-    current_player->receiveMechanic(name,ids[0],fail_if_hit, &gs->boss_data);
+    current_player->receiveMechanic(name,ids[0],fail_if_hit, &tracker->boss_data);
 
     return special_value(*this, ev, src, dst, current_player);
 }

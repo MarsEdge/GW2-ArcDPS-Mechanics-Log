@@ -12,6 +12,7 @@
 #include "player.h"
 #include "skill_ids.h"
 #include "npc_ids.h"
+#include "Tracker.h"
 
 /* proto/globals */
 arcdps_exports arc_exports;
@@ -42,6 +43,7 @@ bool show_app_log;
 bool show_app_chart;
 AppChart chart;
 
+Tracker tracker;
 GameState gs;
 
 CSimpleIniA arc_ini(true);
@@ -123,8 +125,8 @@ arcdps_exports* mod_init()
 /* release mod -- return ignored */
 uintptr_t mod_release()
 {
-    chart.writeToDisk();
-    players.clear();
+    chart.writeToDisk(&tracker);
+	tracker.players.clear();//TODO encapsulate
 	writeIni();
 	return 0;
 }
@@ -244,13 +246,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 			/* add */
 			if (dst && src->prof)
             {
-                addPlayer(src->name,dst->name,src->id);
+                tracker.addPlayer(src->name,dst->name,src->id);
 			}
 
 			/* remove */
 			else
             {
-                removePlayer(src->name, src->name, src->id);
+				tracker.removePlayer(src->name, src->name, src->id);
 			}
 		}
 	}
@@ -289,7 +291,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if rally
             else if(ev->is_statechange==CBTS_CHANGEUP)
             {
-                current_player = getPlayer(src);
+                current_player = tracker.getPlayer(src);//TODO put these in the if
                 if(current_player)
                 {
                     current_player->rally();
@@ -299,7 +301,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if dead
             else if(ev->is_statechange==CBTS_CHANGEDEAD)
             {
-                current_player = getPlayer(src);
+                current_player = tracker.getPlayer(src);
                 if(current_player)
                 {
                     current_player->dead();
@@ -309,7 +311,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if downed
             else if(ev->is_statechange==CBTS_CHANGEDOWN)
             {
-                current_player = getPlayer(src);
+                current_player = tracker.getPlayer(src);
                 if(current_player)
                 {
                     current_player->down();
@@ -333,7 +335,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                current_player=getPlayer(dst);
+                current_player= tracker.getPlayer(dst);
                 if(current_player)
                 {
                     current_player->setStabTime(ev->time+ms_per_tick);//cut the ending time of stab early
@@ -343,7 +345,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                      || ev->skillid==BUFF_ILLUSION_OF_LIFE//Illusion of Life manual case
                      )
             {
-                current_player=getPlayer(dst);
+                current_player= tracker.getPlayer(dst);
                 if(current_player)
                 {
                     current_player->fixDoubleDown();
@@ -357,7 +359,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                current_player=getPlayer(dst);
+                current_player= tracker.getPlayer(dst);
                 if(current_player)
                 {
                     current_player->setStabTime(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
@@ -372,7 +374,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 				int value = 0;
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(value = mechanics[index].isValidHit(ev, src, dst, &gs) && mechanics[index].verbosity >= 2)//TODO: Remove magic number 2
+                    if(value = mechanics[index].isValidHit(&tracker, ev, src, dst) && mechanics[index].verbosity >= 2)//TODO: Remove magic number 2
                     {
                         int time = getElapsedTime(ev->time);
                         if(time < 0)
@@ -442,7 +444,7 @@ void ShowMechanicsLog(bool* p_open)
 
 void ShowMechanicsChart(bool* p_open)
 {
-    if(show_app_chart) chart.draw("MECHANICS CHART", p_open, ImGuiWindowFlags_NoCollapse
+    if(show_app_chart) chart.draw(&tracker, "MECHANICS CHART", p_open, ImGuiWindowFlags_NoCollapse
 		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0), arc_clicklock_altui);
 }
 

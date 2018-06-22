@@ -60,6 +60,16 @@ Player::Player(char* new_name, char* new_account, uintptr_t new_id)
     in_squad = true;
 }
 
+bool Player::operator==(uintptr_t other_id)
+{
+	return id == other_id;
+}
+
+bool Player::operator==(std::string other_str)
+{
+	return name == other_str || account == other_str;
+}
+
 Player::MechanicTracker::MechanicTracker(std::string &new_name,uint16_t &new_id,bool &new_fail, Boss* new_boss)
 {
     name = new_name;
@@ -215,82 +225,6 @@ void Player::resetStats()
     tracker.clear();
 }
 
-Player* getPlayer(ag* new_player)
-{
-    if(!isPlayer(new_player))
-    {
-        return nullptr;
-    }
-    for(uint16_t index=0;index<players.size();index++)
-    {
-        if(players.at(index).id == new_player->id)
-        {
-            return &players.at(index);
-        }
-    }
-
-    return nullptr;
-}
-
-void addPlayer(char* name, char* account, uintptr_t id)
-{
-    if(!name || !account)
-    {
-        return;
-    }
-
-    for(uint16_t index=0;index<players.size();index++)
-    {
-        if(players.at(index).id == id)
-        {
-            players.at(index).in_squad = true;
-            return;
-        }
-        else if(name && account && std::string(account)==players.at(index).account)
-        {
-            players.at(index).id = id;
-            players.at(index).name = name;
-            players.at(index).in_squad = true;
-            return;
-        }
-    }
-
-    std::lock_guard<std::mutex> lg(players_mtx);
-    players.push_back(Player(name, account, id));
-}
-
-void removePlayer(char* name, char* account, uintptr_t id)
-{
-    if(!name || !account)
-    {
-        return;
-    }
-
-    for(uint16_t index=0;index<players.size();index++)
-    {
-        if(players.at(index).id == id)
-        {
-            players.at(index).in_squad = false;
-            return;
-        }
-        else if(name && std::string(name)==players.at(index).name)
-        {
-            players.at(index).id = id;
-            players.at(index).in_squad = false;
-            return;
-        }
-    }
-}
-
-void addPull(Boss* boss)
-{
-	boss->pulls++;
-	for(uint16_t index=0;index<players.size();index++)
-    {
-        players.at(index).addPull(boss);
-    }
-}
-
 void Player::addPull(Boss* new_boss)
 {
     if(!in_squad)
@@ -329,34 +263,4 @@ void Player::MechanicTracker::addPull(Boss* new_boss)
     {
         pulls++;
     }
-}
-
-bool isPlayer(ag* new_player)
-{
-	return new_player
-		&& new_player->elite != 0xffffffff
-		&& new_player->name;
-}
-
-void resetAllPlayerStats()
-{
-    std::lock_guard<std::mutex> lg(players_mtx);
-    for(uint16_t index=0;index<players.size();index++)
-    {
-        players.at(index).resetStats();
-    }
-}
-
-uint16_t getMechanicsTotal()
-{
-    uint16_t result = 0;
-
-    for(uint16_t index=0;index<players.size();index++)
-    {
-        if(players.at(index).isRelevant())
-        {
-            result += players.at(index).getMechanicsTotal();
-        }
-    }
-    return result;
 }

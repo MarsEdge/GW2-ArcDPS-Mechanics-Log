@@ -75,3 +75,10 @@ int split (char *str, char c, char ***arr)
 
     return count;
 }
+
+bool isPlayer(ag* new_player)
+{
+	return new_player
+		&& new_player->elite != 0xffffffff
+		&& new_player->name;
+}
