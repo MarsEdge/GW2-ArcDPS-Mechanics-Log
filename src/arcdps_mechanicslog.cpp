@@ -26,9 +26,10 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
-static int change_export_path(ImGuiTextEditCallbackData *data);
-void parse_ini();
-void write_ini();
+static int changeExportPath(ImGuiTextEditCallbackData *data);
+int getElapsedTime(uint64_t &current_time);
+void parseIni();
+void writeIni();
 bool modsPressed();
 bool canMoveWindows();
 bool canClickWindows();
@@ -41,7 +42,7 @@ bool show_app_log;
 bool show_app_chart;
 AppChart chart;
 
-game_state gs;
+GameState gs;
 
 CSimpleIniA arc_ini(true);
 bool valid_arc_ini = false;
@@ -56,7 +57,7 @@ WPARAM log_key;
 WPARAM chart_key;
 
 
-inline int get_elapsed_time(uint64_t &current_time)
+inline int getElapsedTime(uint64_t &current_time)
 {
     if(gs.boss_found
        && gs.boss_data.timer)
@@ -114,7 +115,7 @@ arcdps_exports* mod_init()
 	arc_exports.imgui = mod_imgui;
 	arc_exports.options = mod_options;
 
-	parse_ini();
+	parseIni();
 
 	return &arc_exports;
 }
@@ -122,9 +123,9 @@ arcdps_exports* mod_init()
 /* release mod -- return ignored */
 uintptr_t mod_release()
 {
-    chart.write_to_disk();
+    chart.writeToDisk();
     players.clear();
-	write_ini();
+	writeIni();
 	return 0;
 }
 
@@ -243,13 +244,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 			/* add */
 			if (dst && src->prof)
             {
-                add_player(src->name,dst->name,src->id);
+                addPlayer(src->name,dst->name,src->id);
 			}
 
 			/* remove */
 			else
             {
-                remove_player(src->name, src->name, src->id);
+                removePlayer(src->name, src->name, src->id);
 			}
 		}
 	}
@@ -288,7 +289,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if rally
             else if(ev->is_statechange==CBTS_CHANGEUP)
             {
-                current_player = get_player(src);
+                current_player = getPlayer(src);
                 if(current_player)
                 {
                     current_player->rally();
@@ -298,7 +299,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if dead
             else if(ev->is_statechange==CBTS_CHANGEDEAD)
             {
-                current_player = get_player(src);
+                current_player = getPlayer(src);
                 if(current_player)
                 {
                     current_player->dead();
@@ -308,7 +309,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if downed
             else if(ev->is_statechange==CBTS_CHANGEDOWN)
             {
-                current_player = get_player(src);
+                current_player = getPlayer(src);
                 if(current_player)
                 {
                     current_player->down();
@@ -332,20 +333,20 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                current_player=get_player(dst);
+                current_player=getPlayer(dst);
                 if(current_player)
                 {
-                    current_player->set_stab_time(ev->time+ms_per_tick);//cut the ending time of stab early
+                    current_player->setStabTime(ev->time+ms_per_tick);//cut the ending time of stab early
                 }
             }
             else if (ev->skillid==BUFF_VAPOR_FORM//vapor form manual case
                      || ev->skillid==BUFF_ILLUSION_OF_LIFE//Illusion of Life manual case
                      )
             {
-                current_player=get_player(dst);
+                current_player=getPlayer(dst);
                 if(current_player)
                 {
-                    current_player->fix_double_down();
+                    current_player->fixDoubleDown();
                 }
             }
 
@@ -356,10 +357,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                current_player=get_player(dst);
+                current_player=getPlayer(dst);
                 if(current_player)
                 {
-                    current_player->set_stab_time(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
+                    current_player->setStabTime(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
                 }
             }
 		}
@@ -371,9 +372,9 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 				int value = 0;
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(value = mechanics[index].is_valid_hit(ev, src, dst, &gs) && mechanics[index].verbosity >= 2)
+                    if(value = mechanics[index].isValidHit(ev, src, dst, &gs) && mechanics[index].verbosity >= 2)
                     {
-                        int time = get_elapsed_time(ev->time);
+                        int time = getElapsedTime(ev->time);
                         if(time < 0)
                         {
                             output += "-";
@@ -431,17 +432,17 @@ void ShowMechanicsLog(bool* p_open)
 
     if(print_buffer.size() > 0)
     {
-        log.AddLog(print_buffer.c_str());
+        log.addLog(print_buffer.c_str());
         print_buffer = "";
     }
 
-    if(show_app_log) log.Draw("MECHANICS LOG", p_open, ImGuiWindowFlags_NoCollapse
+    if(show_app_log) log.draw("MECHANICS LOG", p_open, ImGuiWindowFlags_NoCollapse
 		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
 }
 
 void ShowMechanicsChart(bool* p_open)
 {
-    if(show_app_chart) chart.Draw("MECHANICS CHART", p_open, ImGuiWindowFlags_NoCollapse
+    if(show_app_chart) chart.draw("MECHANICS CHART", p_open, ImGuiWindowFlags_NoCollapse
 		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0), arc_clicklock_altui);
 }
 
@@ -476,12 +477,12 @@ uintptr_t mod_options()
     return 0;
 }
 
-static int change_export_path(ImGuiTextEditCallbackData *data)
+static int changeExportPath(ImGuiTextEditCallbackData *data)
 {
 	chart.export_path = data->Buf;
 }
 
-void parse_ini()
+void parseIni()
 {
 	SI_Error rc = arc_ini.LoadFile("addons\\arcdps\\arcdps.ini");
 	valid_arc_ini = rc < 0;
@@ -507,7 +508,7 @@ void parse_ini()
 	pszValue = mechanics_ini.GetValue("chart", "show", "0");
 	show_app_chart = std::stoi(pszValue);
 
-	pszValue = mechanics_ini.GetValue("chart", "export_path", chart.get_default_export_path().c_str());
+	pszValue = mechanics_ini.GetValue("chart", "export_path", chart.getDefaultExportPath().c_str());
 	chart.export_path = pszValue;
 
 	pszValue = mechanics_ini.GetValue("log", "key", "76");
@@ -517,7 +518,7 @@ void parse_ini()
 	chart_key = std::stoi(pszValue);
 }
 
-void write_ini()
+void writeIni()
 {
 	SI_Error rc = mechanics_ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
 	rc = mechanics_ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());

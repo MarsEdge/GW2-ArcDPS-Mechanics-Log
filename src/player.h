@@ -24,22 +24,22 @@ struct Player
     uint16_t last_mechanic;       //skill id of last failed mechanic
     bool in_squad;          //currently in squad
 
-    struct mechanic_tracker
+    struct MechanicTracker
     {
         std::string name; //name of mechanic
         uint16_t id; //skill id;
         bool fail;
         uint16_t hits;
-        boss* current_boss; //boss
+        Boss* current_boss; //boss
         uint16_t pulls;
 
-        mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail, boss* new_boss);
+        MechanicTracker(std::string &new_name,uint16_t &new_id,bool &new_fail, Boss* new_boss);
 
-        std::string to_string();
-        void add_pull(boss* new_boss);
+        std::string toString();
+        void addPull(Boss* new_boss);
     };
 
-    std::vector<mechanic_tracker> tracker;
+    std::vector<MechanicTracker> tracker;
 
     Player();
     Player(ag* new_player);
@@ -48,24 +48,24 @@ struct Player
     void down();
     void dead();
     void rally();
-    void fix_double_down(); //manual case to fix vapor form counting as 2 downs
+    void fixDoubleDown(); //manual case to fix vapor form counting as 2 downs
 
-    void mechanic_receive(std::string &name,uint16_t &id,bool &is_fail, boss* boss);
-    bool is_relevant();     //if player is relevant for displaying
+    void receiveMechanic(std::string &name,uint16_t &id,bool &is_fail, Boss* boss);
+    bool isRelevant();     //if player is relevant for displaying
 
-    uint64_t get_last_stab_time();
-    void set_stab_time(uint64_t new_stab_time);
+    uint64_t getLastStabTime();
+    void setStabTime(uint64_t new_stab_time);
 
-    uint64_t get_last_hit_time();
-    void set_last_hit_time(uint64_t new_hit_time);
+    uint64_t getLastHitTime();
+    void setLastHitTime(uint64_t new_hit_time);
 
-    uint16_t get_last_mechanic();
-    void set_last_mechanic(uint16_t new_mechanic);
+    uint16_t getLastMechanic();
+    void setLastMechanic(uint16_t new_mechanic);
 
-    std::string to_string();
-    uint16_t get_mechanics_total();//returns the number of total mechanics the player had
-    void reset_stats();
-    void add_pull(boss* new_boss);
+    std::string toString();
+    uint16_t getMechanicsTotal();//returns the number of total mechanics the player had
+    void resetStats();
+    void addPull(Boss* new_boss);
 
 	void merge(Player* new_player);
 };
@@ -75,10 +75,10 @@ extern std::mutex tracker_mtx;
 
 extern std::vector<Player> players;
 
-Player* get_player(ag* new_player);
-void add_player(char* name, char* account, uintptr_t id);
-void remove_player(char* name, char* account, uintptr_t id);
-void add_pull(boss* boss);
-bool is_player(ag* new_player);
-void reset_all_player_stats();
-uint16_t get_mechanics_total();
+Player* getPlayer(ag* new_player);
+void addPlayer(char* name, char* account, uintptr_t id);
+void removePlayer(char* name, char* account, uintptr_t id);
+void addPull(Boss* boss);
+bool isPlayer(ag* new_player);
+void resetAllPlayerStats();
+uint16_t getMechanicsTotal();

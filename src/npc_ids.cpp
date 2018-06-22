@@ -1,6 +1,6 @@
 #include "npc_ids.h"
 
-boss::boss()
+Boss::Boss()
 {
     ids = std::vector<uint32_t>();
     name = "";
@@ -9,7 +9,7 @@ boss::boss()
 	pulls = 0;
 }
 
-bool boss::has_id(uint32_t new_id)
+bool Boss::hasId(uint32_t new_id)
 {
     for(uint16_t index=0;index<ids.size();index++)
     {
@@ -22,53 +22,53 @@ bool boss::has_id(uint32_t new_id)
 }
 
 
-std::vector<boss> bosses =
+std::vector<Boss> bosses =
 {
-    boss().set_ids({BOSS_VG_ID}).set_timer(BOSS_VG_TIMER).set_health(BOSS_VG_HEALTH),//TODO: move health and enrage timers to header
+    Boss().setIds({BOSS_VG_ID}).setTimer(BOSS_VG_TIMER).setHealth(BOSS_VG_HEALTH),//TODO: move health and enrage timers to header
 
-    boss().set_ids({BOSS_GORS_ID}).set_timer(BOSS_GORS_TIMER).set_health(BOSS_GORS_HEALTH),
+    Boss().setIds({BOSS_GORS_ID}).setTimer(BOSS_GORS_TIMER).setHealth(BOSS_GORS_HEALTH),
 
-    boss().set_ids({BOSS_SAB_ID}).set_timer(BOSS_SAB_TIMER).set_health(BOSS_SAB_HEALTH),
+    Boss().setIds({BOSS_SAB_ID}).setTimer(BOSS_SAB_TIMER).setHealth(BOSS_SAB_HEALTH),
 
-    boss().set_ids({BOSS_SLOTH_ID}).set_timer(BOSS_SLOTH_TIMER).set_health(BOSS_SLOTH_HEALTH),
+    Boss().setIds({BOSS_SLOTH_ID}).setTimer(BOSS_SLOTH_TIMER).setHealth(BOSS_SLOTH_HEALTH),
 
-    boss().set_ids({BOSS_TRIO_BURG_ID}).set_timer(BOSS_TRIO_TIMER),//TODO: verify enrage timer
+    Boss().setIds({BOSS_TRIO_BURG_ID}).setTimer(BOSS_TRIO_TIMER),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_MATT_ID}).set_timer(BOSS_MATT_TIMER).set_health(BOSS_MATT_HEALTH),//TODO: verify enrage timer
+    Boss().setIds({BOSS_MATT_ID}).setTimer(BOSS_MATT_TIMER).setHealth(BOSS_MATT_HEALTH),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_KC_ID}).set_timer(BOSS_KC_TIMER).set_health(BOSS_KC_HEALTH),//TODO: verify enrage timer
+    Boss().setIds({BOSS_KC_ID}).setTimer(BOSS_KC_TIMER).setHealth(BOSS_KC_HEALTH),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_XERA_ID_A}).set_timer(BOSS_XERA_TIMER).set_health(BOSS_XERA_HEALTH),//TODO: verify enrage timer
+    Boss().setIds({BOSS_XERA_ID_A}).setTimer(BOSS_XERA_TIMER).setHealth(BOSS_XERA_HEALTH),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_CAIRN_ID}).set_timer(BOSS_CAIRN_TIMER).set_health(BOSS_CAIRN_HEALTH),//TODO: verify enrage timer
+    Boss().setIds({BOSS_CAIRN_ID}).setTimer(BOSS_CAIRN_TIMER).setHealth(BOSS_CAIRN_HEALTH),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_MO_ID}).set_timer(BOSS_MO_TIMER).set_health(BOSS_MO_HEALTH),//TODO: verify enrage timer
+    Boss().setIds({BOSS_MO_ID}).setTimer(BOSS_MO_TIMER).setHealth(BOSS_MO_HEALTH),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_SAM_ID}).set_timer(BOSS_SAM_TIMER).set_health(BOSS_SAM_HEALTH),//TODO: verify enrage timer
+    Boss().setIds({BOSS_SAM_ID}).setTimer(BOSS_SAM_TIMER).setHealth(BOSS_SAM_HEALTH),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_DEIMOS_ID}).set_timer(BOSS_DEIMOS_TIMER).set_health(BOSS_DEIMOS_HEALTH),//TODO: verify enrage timer
+    Boss().setIds({BOSS_DEIMOS_ID}).setTimer(BOSS_DEIMOS_TIMER).setHealth(BOSS_DEIMOS_HEALTH),//TODO: verify enrage timer
 
-    boss().set_ids({BOSS_SH_ID}).set_timer(BOSS_SH_TIMER).set_health(BOSS_SH_HEALTH),
+    Boss().setIds({BOSS_SH_ID}).setTimer(BOSS_SH_TIMER).setHealth(BOSS_SH_HEALTH),
 
-	boss().set_ids({BOSS_SOUL_EATER_ID}).set_health(BOSS_SOUL_EATER_HEALTH),
+	Boss().setIds({BOSS_SOUL_EATER_ID}).setHealth(BOSS_SOUL_EATER_HEALTH),
 
-	boss().set_ids({BOSS_ICE_KING_ID}).set_timer(BOSS_ICE_KING_TIMER).set_health(BOSS_ICE_KING_HEALTH),
+	Boss().setIds({BOSS_ICE_KING_ID}).setTimer(BOSS_ICE_KING_TIMER).setHealth(BOSS_ICE_KING_HEALTH),
 
-	boss().set_ids({BOSS_EYE_NORTH_ID,BOSS_EYE_SOUTH_ID}).set_health(BOSS_EYE_HEALTH),
+	Boss().setIds({BOSS_EYE_NORTH_ID,BOSS_EYE_SOUTH_ID}).setHealth(BOSS_EYE_HEALTH),
 
-    boss().set_ids({BOSS_DHUUM_ID}).set_timer(BOSS_DHUUM_TIMER).set_health(BOSS_DHUUM_HEALTH),
-
-
-    boss().set_ids({BOSS_MAMA_ID,BOSS_MAMA_ID_NORMAL,BOSS_MAMA_ID_TRASH}).set_health(BOSS_MAMA_HEALTH),
-
-    boss().set_ids({BOSS_SIAX_ID}).set_health(BOSS_SIAX_HEALTH),
-
-    boss().set_ids({BOSS_ENSOLYSS_ID}).set_health(BOSS_ENSOLYSS_HEALTH),
+    Boss().setIds({BOSS_DHUUM_ID}).setTimer(BOSS_DHUUM_TIMER).setHealth(BOSS_DHUUM_HEALTH),
 
 
-    boss().set_ids({BOSS_SKORVALD_ID}).set_health(BOSS_SKORVALD_HEALTH),
+    Boss().setIds({BOSS_MAMA_ID,BOSS_MAMA_ID_NORMAL,BOSS_MAMA_ID_TRASH}).setHealth(BOSS_MAMA_HEALTH),
 
-    boss().set_ids({BOSS_ARTSARIIV_ID}).set_health(BOSS_ARTSARIIV_HEALTH),
+    Boss().setIds({BOSS_SIAX_ID}).setHealth(BOSS_SIAX_HEALTH),
 
-    boss().set_ids({BOSS_ARKK_ID}).set_health(BOSS_ARKK_HEALTH),
+    Boss().setIds({BOSS_ENSOLYSS_ID}).setHealth(BOSS_ENSOLYSS_HEALTH),
+
+
+    Boss().setIds({BOSS_SKORVALD_ID}).setHealth(BOSS_SKORVALD_HEALTH),
+
+    Boss().setIds({BOSS_ARTSARIIV_ID}).setHealth(BOSS_ARTSARIIV_HEALTH),
+
+    Boss().setIds({BOSS_ARKK_ID}).setHealth(BOSS_ARKK_HEALTH),
 };

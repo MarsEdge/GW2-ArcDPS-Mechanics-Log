@@ -4,7 +4,7 @@ bool have_added_line_break = true;
 uint64_t last_mechanic_time = 0;
 uint64_t line_break_frequency = 5000;
 bool has_logged_mechanic = false;
-deimos_oil deimos_oils[max_deimos_oils];
+DeimosOil deimos_oils[max_deimos_oils];
 
 mechanic::mechanic()
 {
@@ -28,11 +28,11 @@ mechanic::mechanic()
 
 	verbosity = 2;
 
-    special_requirement = default_requirement;
-	special_value = default_value;
+    special_requirement = requirementDefault;
+	special_value = valueDefault;
 }
 
-float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
+float mechanic::isValidHit(cbtevent* ev, ag* src, ag* dst, GameState* gs)
 {
     uint16_t index = 0;
     bool correct_id = false;
@@ -67,7 +67,7 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
 
     if(boss_id
         && gs->boss_found
-        && !gs->boss_data.has_id(boss_id))
+        && !gs->boss_data.hasId(boss_id))
     {
         return false;
     }
@@ -91,46 +91,46 @@ float mechanic::is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs)
 
     if(target_is_dst)
     {
-        current_player=get_player(dst);
+        current_player=getPlayer(dst);
     }
     else
     {
-        current_player=get_player(src);
+        current_player=getPlayer(src);
     }
 
 	if (!current_player) return false;
 
-	if (is_multihit && ev->time < (current_player->get_last_hit_time() + frequency_player)) return false;
+	if (is_multihit && ev->time < (current_player->getLastHitTime() + frequency_player)) return false;
 
 	if (!valid_if_down && current_player->is_downed) return false;
 
-	if (is_interupt && current_player->get_last_stab_time() > ev->time) return false;
+	if (is_interupt && current_player->getLastStabTime() > ev->time) return false;
 
 	if (!special_requirement(*this, ev, src, dst, current_player)) return false;
 
-    current_player->set_last_hit_time(ev->time);
+    current_player->setLastHitTime(ev->time);
     last_hit_time = ev->time;
-    current_player->mechanic_receive(name,ids[0],fail_if_hit, &gs->boss_data);
+    current_player->receiveMechanic(name,ids[0],fail_if_hit, &gs->boss_data);
 
     return special_value(*this, ev, src, dst, current_player);
 }
 
-bool default_requirement(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+bool requirementDefault(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
     return true;
 }
 
-bool special_requirement_conjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+bool requirementConjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
     return dst->prof != 6;//not elementalist
 }
 
-bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+bool requirementDhuumSnatch(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
-    if((current_player->get_last_hit_time() + current_mechanic.frequency_player) < ev->time)
+    if((current_player->getLastHitTime() + current_mechanic.frequency_player) < ev->time)
     {
-        current_player->set_last_hit_time(ev->time);
-        if(current_player->get_last_mechanic() != MECHANIC_DHUUM_SNATCH)
+        current_player->setLastHitTime(ev->time);
+        if(current_player->getLastMechanic() != MECHANIC_DHUUM_SNATCH)
         {
             return true;
         }
@@ -138,9 +138,9 @@ bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent
     return false;
 }
 
-bool special_requirement_deimos_oil(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+bool requirementDeimosOil(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
-	deimos_oil current_oil;
+	DeimosOil current_oil;
 	uint16_t oldest_index = max_deimos_oils-1;
 	uint16_t current_index = 0;
 
@@ -178,181 +178,181 @@ bool special_requirement_deimos_oil(const mechanic &current_mechanic, cbtevent* 
 	}
 }
 
-bool special_requirement_on_self(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+bool requirementOnSelf(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
 	return src && dst && src->id == dst->id;
 }
 
-float default_value(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
+float valueDefault(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)
 {
 	return 1;
 }
 
-float special_value_dhuum_shackles(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player)
+float valueDhuumShackles(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player)
 {
 	return (30000 - ev->value)/1000;
 }
 
 std::vector <mechanic> mechanics =
 {
-    mechanic().set_name("was teleported").set_ids({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).set_boss_id(BOSS_VG_ID),
+    mechanic().setName("was teleported").setIds({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).setBossId(BOSS_VG_ID),
 
-//  mechanic().set_name("stood in the green circle").set_ids({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).set_fail_if_hit(false).set_boss_id(BOSS_GORS_ID).set_can_invuln(false),
+//  mechanic().setName("stood in the green circle").setIds({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).setFailIfHit(false).setBossId(BOSS_GORS_ID).setCanInvuln(false),
 
-	mechanic().set_name("was slammed").set_ids({MECHANIC_GORS_SLAM}).set_is_interupt(true).set_boss_id(BOSS_GORS_ID),
+	mechanic().setName("was slammed").setIds({MECHANIC_GORS_SLAM}).setIsInterupt(true).setBossId(BOSS_GORS_ID),
 
-	mechanic().set_name("was egged").set_ids({MECHANIC_GORS_EGG}).set_boss_id(BOSS_GORS_ID),
+	mechanic().setName("was egged").setIds({MECHANIC_GORS_EGG}).setBossId(BOSS_GORS_ID),
 
-	mechanic().set_name("touched an orb").set_ids({MECHANIC_GORS_ORB}).set_boss_id(BOSS_GORS_ID),
+	mechanic().setName("touched an orb").setIds({MECHANIC_GORS_ORB}).setBossId(BOSS_GORS_ID),
 
-	mechanic().set_name("got a sapper bomb").set_ids({MECHANIC_SAB_SAPPER_BOMB}).set_fail_if_hit(false).set_valid_if_down(true).set_boss_id(BOSS_SAB_ID),
+	mechanic().setName("got a sapper bomb").setIds({MECHANIC_SAB_SAPPER_BOMB}).setFailIfHit(false).setValidIfDown(true).setBossId(BOSS_SAB_ID),
 
-	mechanic().set_name("got a time bomb").set_ids({MECHANIC_SAB_TIME_BOMB}).set_fail_if_hit(false).set_valid_if_down(true).set_boss_id(BOSS_SAB_ID),
+	mechanic().setName("got a time bomb").setIds({MECHANIC_SAB_TIME_BOMB}).setFailIfHit(false).setValidIfDown(true).setBossId(BOSS_SAB_ID),
 
-	mechanic().set_name("stood in cannon fire").set_ids({MECHANIC_SAB_CANNON}).set_boss_id(BOSS_SAB_ID),
+	mechanic().setName("stood in cannon fire").setIds({MECHANIC_SAB_CANNON}).setBossId(BOSS_SAB_ID),
 
-	mechanic().set_name("touched the flame wall").set_ids({MECHANIC_SAB_FLAMEWALL}).set_boss_id(BOSS_SAB_ID),
+	mechanic().setName("touched the flame wall").setIds({MECHANIC_SAB_FLAMEWALL}).setBossId(BOSS_SAB_ID),
 
-	mechanic().set_name("was hit with tantrum").set_ids({MECHANIC_SLOTH_TANTRUM}).set_boss_id(BOSS_SLOTH_ID),
+	mechanic().setName("was hit with tantrum").setIds({MECHANIC_SLOTH_TANTRUM}).setBossId(BOSS_SLOTH_ID),
 
-	mechanic().set_name("got a bomb").set_ids({MECHANIC_SLOTH_BOMB}).set_fail_if_hit(false).set_frequency_player(6000).set_boss_id(BOSS_SLOTH_ID),
+	mechanic().setName("got a bomb").setIds({MECHANIC_SLOTH_BOMB}).setFailIfHit(false).setFrequencyPlayer(6000).setBossId(BOSS_SLOTH_ID),
 
-	mechanic().set_name("stood in a bomb aoe").set_ids({MECHANIC_SLOTH_BOMB_AOE}).set_verbosity(1).set_boss_id(BOSS_SLOTH_ID),
+	mechanic().setName("stood in a bomb aoe").setIds({MECHANIC_SLOTH_BOMB_AOE}).setVerbosity(1).setBossId(BOSS_SLOTH_ID),
 
-	mechanic().set_name("was hit by flame breath").set_ids({MECHANIC_SLOTH_FLAME_BREATH}).set_boss_id(BOSS_SLOTH_ID),
+	mechanic().setName("was hit by flame breath").setIds({MECHANIC_SLOTH_FLAME_BREATH}).setBossId(BOSS_SLOTH_ID),
 
-	mechanic().set_name("was hit by shake").set_ids({MECHANIC_SLOTH_SHAKE}).set_boss_id(BOSS_SLOTH_ID),
+	mechanic().setName("was hit by shake").setIds({MECHANIC_SLOTH_SHAKE}).setBossId(BOSS_SLOTH_ID),
 
-	mechanic().set_name("is fixated").set_ids({MECHANIC_SLOTH_FIXATE}).set_fail_if_hit(false).set_boss_id(BOSS_SLOTH_ID),
+	mechanic().setName("is fixated").setIds({MECHANIC_SLOTH_FIXATE}).setFailIfHit(false).setBossId(BOSS_SLOTH_ID),
 
-	mechanic().set_name("was hadoukened").set_ids({MECHANIC_MATT_HADOUKEN_HUMAN,MECHANIC_MATT_HADOUKEN_ABOM}).set_boss_id(BOSS_MATT_ID),
+	mechanic().setName("was hadoukened").setIds({MECHANIC_MATT_HADOUKEN_HUMAN,MECHANIC_MATT_HADOUKEN_ABOM}).setBossId(BOSS_MATT_ID),
 
-	mechanic().set_name("reflected shards").set_ids({MECHANIC_MATT_SHARD_HUMAN,MECHANIC_MATT_SHARD_ABOM}).set_target_is_dst(false).set_boss_id(BOSS_MATT_ID),
+	mechanic().setName("reflected shards").setIds({MECHANIC_MATT_SHARD_HUMAN,MECHANIC_MATT_SHARD_ABOM}).setTargetIsDst(false).setBossId(BOSS_MATT_ID),
 
-	mechanic().set_name("got a bomb").set_ids({MECHANIC_MATT_BOMB}).set_fail_if_hit(false).set_frequency_player(12000).set_boss_id(BOSS_MATT_ID),
+	mechanic().setName("got a bomb").setIds({MECHANIC_MATT_BOMB}).setFailIfHit(false).setFrequencyPlayer(12000).setBossId(BOSS_MATT_ID),
 
-	mechanic().set_name("got a corruption").set_ids({MECHANIC_MATT_CORRUPTION}).set_fail_if_hit(false).set_boss_id(BOSS_MATT_ID),
+	mechanic().setName("got a corruption").setIds({MECHANIC_MATT_CORRUPTION}).setFailIfHit(false).setBossId(BOSS_MATT_ID),
 
-	mechanic().set_name("is sacrificed").set_ids({MECHANIC_MATT_SACRIFICE}).set_fail_if_hit(false).set_boss_id(BOSS_MATT_ID),
+	mechanic().setName("is sacrificed").setIds({MECHANIC_MATT_SACRIFICE}).setFailIfHit(false).setBossId(BOSS_MATT_ID),
 
-	mechanic().set_name("is east fixate").set_ids({MECHANIC_KC_FIXATE_EAST}).set_fail_if_hit(false).set_boss_id(BOSS_KC_ID),
-	mechanic().set_name("is west fixate").set_ids({MECHANIC_KC_FIXATE_WEST}).set_fail_if_hit(false).set_boss_id(BOSS_KC_ID),
+	mechanic().setName("is east fixate").setIds({MECHANIC_KC_FIXATE_EAST}).setFailIfHit(false).setBossId(BOSS_KC_ID),
+	mechanic().setName("is west fixate").setIds({MECHANIC_KC_FIXATE_WEST}).setFailIfHit(false).setBossId(BOSS_KC_ID),
 
-//  mechanic().set_name("stood in the red half").set_ids({MECHANIC_XERA_HALF}).set_boss_id(BOSS_XERA_ID_A),
+//  mechanic().setName("stood in the red half").setIds({MECHANIC_XERA_HALF}).setBossId(BOSS_XERA_ID_A),
 
-	mechanic().set_name("has magic").set_ids({MECHANIC_XERA_MAGIC}).set_fail_if_hit(false).set_target_is_dst(false).set_frequency_global(12000).set_valid_if_down(true).set_boss_id(BOSS_XERA_ID_A).set_special_requirement(special_requirement_on_self),
+	mechanic().setName("has magic").setIds({MECHANIC_XERA_MAGIC}).setFailIfHit(false).setTargetIsDst(false).setFrequencyGlobal(12000).setValidIfDown(true).setBossId(BOSS_XERA_ID_A).setSpecialRequirement(requirementOnSelf),
 
-	mechanic().set_name("touched an orb").set_ids({MECHANIC_XERA_ORB}).set_boss_id(BOSS_XERA_ID_A),
+	mechanic().setName("touched an orb").setIds({MECHANIC_XERA_ORB}).setBossId(BOSS_XERA_ID_A),
 
-	mechanic().set_name("stood in an orb aoe").set_ids({MECHANIC_XERA_ORB_AOE}).set_frequency_player(1000).set_verbosity(1).set_boss_id(BOSS_XERA_ID_A),
+	mechanic().setName("stood in an orb aoe").setIds({MECHANIC_XERA_ORB_AOE}).setFrequencyPlayer(1000).setVerbosity(1).setBossId(BOSS_XERA_ID_A),
 
-	mechanic().set_name("was teleported").set_ids({MECHANIC_CARIN_TELEPORT}).set_boss_id(BOSS_CAIRN_ID),
+	mechanic().setName("was teleported").setIds({MECHANIC_CARIN_TELEPORT}).setBossId(BOSS_CAIRN_ID),
 
-	mechanic().set_name("was slapped").set_ids({MECHANIC_CARIN_SWEEP}).set_boss_id(BOSS_CAIRN_ID),
+	mechanic().setName("was slapped").setIds({MECHANIC_CARIN_SWEEP}).setBossId(BOSS_CAIRN_ID),
 
-//  mechanic().set_name("reflected shards").set_ids({MECHANIC_CARIN_SHARD}).set_target_is_dst(false).set_boss_id(BOSS_CAIRN_ID),
+//  mechanic().setName("reflected shards").setIds({MECHANIC_CARIN_SHARD}).setTargetIsDst(false).setBossId(BOSS_CAIRN_ID),
 
-	mechanic().set_name("missed a green circle").set_ids({MECHANIC_CARIN_GREEN_A,MECHANIC_CARIN_GREEN_B,MECHANIC_CARIN_GREEN_C,MECHANIC_CARIN_GREEN_D,MECHANIC_CARIN_GREEN_E,MECHANIC_CARIN_GREEN_F}).set_is_interupt(true).set_boss_id(BOSS_CAIRN_ID),
+	mechanic().setName("missed a green circle").setIds({MECHANIC_CARIN_GREEN_A,MECHANIC_CARIN_GREEN_B,MECHANIC_CARIN_GREEN_C,MECHANIC_CARIN_GREEN_D,MECHANIC_CARIN_GREEN_E,MECHANIC_CARIN_GREEN_F}).setIsInterupt(true).setBossId(BOSS_CAIRN_ID),
 
-	mechanic().set_name("was hit by shockwave").set_ids({MECHANIC_SAM_SHOCKWAVE}).set_is_interupt(true).set_boss_id(BOSS_SAM_ID),
+	mechanic().setName("was hit by shockwave").setIds({MECHANIC_SAM_SHOCKWAVE}).setIsInterupt(true).setBossId(BOSS_SAM_ID),
 
-	mechanic().set_name("was horizontally slapped").set_ids({MECHANIC_SAM_SLAP_HORIZONTAL}).set_is_interupt(true).set_boss_id(BOSS_SAM_ID),
+	mechanic().setName("was horizontally slapped").setIds({MECHANIC_SAM_SLAP_HORIZONTAL}).setIsInterupt(true).setBossId(BOSS_SAM_ID),
 
-	mechanic().set_name("was vertically smacked").set_ids({MECHANIC_SAM_SLAP_VERTICAL}).set_is_interupt(true).set_boss_id(BOSS_SAM_ID),
+	mechanic().setName("was vertically smacked").setIds({MECHANIC_SAM_SLAP_VERTICAL}).setIsInterupt(true).setBossId(BOSS_SAM_ID),
 
-	mechanic().set_name("is fixated").set_ids({MECHANIC_SAM_FIXATE_SAM}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
+	mechanic().setName("is fixated").setIds({MECHANIC_SAM_FIXATE_SAM}).setFailIfHit(false).setBossId(BOSS_SAM_ID),
 
-	mechanic().set_name("has big green").set_ids({MECHANIC_SAM_GREEN_BIG}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
-	mechanic().set_name("has small green").set_ids({MECHANIC_SAM_GREEN_SMALL}).set_fail_if_hit(false).set_boss_id(BOSS_SAM_ID),
+	mechanic().setName("has big green").setIds({MECHANIC_SAM_GREEN_BIG}).setFailIfHit(false).setBossId(BOSS_SAM_ID),
+	mechanic().setName("has small green").setIds({MECHANIC_SAM_GREEN_SMALL}).setFailIfHit(false).setBossId(BOSS_SAM_ID),
 
-	mechanic().set_name("touched an oil").set_ids({MECHANIC_DEIMOS_OIL}).set_frequency_player(5000).set_boss_id(BOSS_DEIMOS_ID).set_special_requirement(special_requirement_deimos_oil),
+	mechanic().setName("touched an oil").setIds({MECHANIC_DEIMOS_OIL}).setFrequencyPlayer(5000).setBossId(BOSS_DEIMOS_ID).setSpecialRequirement(requirementDeimosOil),
 
-	mechanic().set_name("was hit by smash").set_ids({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).set_boss_id(BOSS_DEIMOS_ID),
+	mechanic().setName("was hit by smash").setIds({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).setBossId(BOSS_DEIMOS_ID),
 
-	mechanic().set_name("closed a tear").set_ids({MECHANIC_DEIMOS_TEAR}).set_boss_id(BOSS_DEIMOS_ID),
+	mechanic().setName("closed a tear").setIds({MECHANIC_DEIMOS_TEAR}).setBossId(BOSS_DEIMOS_ID),
 
-	mechanic().set_name("stood in inner donut").set_ids({MECHANIC_HORROR_DONUT_INNER}).set_verbosity(1).set_boss_id(BOSS_SH_ID),
+	mechanic().setName("stood in inner donut").setIds({MECHANIC_HORROR_DONUT_INNER}).setVerbosity(1).setBossId(BOSS_SH_ID),
 
-	mechanic().set_name("stood in outer donut").set_ids({MECHANIC_HORROR_DONUT_OUTER}).set_verbosity(1).set_boss_id(BOSS_SH_ID),
+	mechanic().setName("stood in outer donut").setIds({MECHANIC_HORROR_DONUT_OUTER}).setVerbosity(1).setBossId(BOSS_SH_ID),
 
-	mechanic().set_name("stood in torment aoe").set_ids({MECHANIC_HORROR_GOLEM_AOE}).set_boss_id(BOSS_SH_ID),
+	mechanic().setName("stood in torment aoe").setIds({MECHANIC_HORROR_GOLEM_AOE}).setBossId(BOSS_SH_ID),
 
-	mechanic().set_name("stood in pie slice").set_ids({MECHANIC_HORROR_PIE_4_A,MECHANIC_HORROR_PIE_4_B}).set_verbosity(1).set_boss_id(BOSS_SH_ID),
+	mechanic().setName("stood in pie slice").setIds({MECHANIC_HORROR_PIE_4_A,MECHANIC_HORROR_PIE_4_B}).setVerbosity(1).setBossId(BOSS_SH_ID),
 
-	mechanic().set_name("touched a scythe").set_ids({MECHANIC_HORROR_SCYTHE}).set_boss_id(BOSS_SH_ID),
+	mechanic().setName("touched a scythe").setIds({MECHANIC_HORROR_SCYTHE}).setBossId(BOSS_SH_ID),
 
-	mechanic().set_name("took fixate").set_ids({MECHANIC_HORROR_FIXATE}).set_fail_if_hit(false).set_verbosity(1).set_boss_id(BOSS_SH_ID),
+	mechanic().setName("took fixate").setIds({MECHANIC_HORROR_FIXATE}).setFailIfHit(false).setVerbosity(1).setBossId(BOSS_SH_ID),
 
-	mechanic().set_name("was debuffed").set_ids({MECHANIC_HORROR_DEBUFF}).set_fail_if_hit(false).set_verbosity(1).set_boss_id(BOSS_SH_ID),
+	mechanic().setName("was debuffed").setIds({MECHANIC_HORROR_DEBUFF}).setFailIfHit(false).setVerbosity(1).setBossId(BOSS_SH_ID),
 
-	mechanic().set_name("was puked on").set_ids({MECHANIC_EATER_PUKE}).set_frequency_player(3000).set_boss_id(BOSS_SOUL_EATER_ID),
+	mechanic().setName("was puked on").setIds({MECHANIC_EATER_PUKE}).setFrequencyPlayer(3000).setBossId(BOSS_SOUL_EATER_ID),
 
-	mechanic().set_name("stood in web").set_ids({MECHANIC_EATER_WEB}).set_frequency_player(3000).set_boss_id(BOSS_SOUL_EATER_ID),
+	mechanic().setName("stood in web").setIds({MECHANIC_EATER_WEB}).setFrequencyPlayer(3000).setBossId(BOSS_SOUL_EATER_ID),
 
-	mechanic().set_name("touched a messenger").set_ids({MECHANIC_DHUUM_GOLEM}).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("touched a messenger").setIds({MECHANIC_DHUUM_GOLEM}).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("is shackled").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_target_is_dst(false).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("is shackled").setIds({MECHANIC_DHUUM_SHACKLE}).setFailIfHit(false).setTargetIsDst(false).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("is shackled").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("is shackled").setIds({MECHANIC_DHUUM_SHACKLE}).setFailIfHit(false).setBossId(BOSS_DHUUM_ID),
 
-//	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(CBTB_MANUAL).set_target_is_dst(false).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
-//	mechanic().set_name("popped shackles").set_ids({MECHANIC_DHUUM_SHACKLE}).set_fail_if_hit(false).set_is_buffremove(CBTB_MANUAL).set_special_value(special_value_dhuum_shackles).set_boss_id(BOSS_DHUUM_ID),
+//	mechanic().setName("popped shackles").setIds({MECHANIC_DHUUM_SHACKLE}).setFailIfHit(false).setIsBuffremove(CBTB_MANUAL).setTargetIsDst(false).setSpecialValue(valueDhuumShackles).setBossId(BOSS_DHUUM_ID),
+//	mechanic().setName("popped shackles").setIds({MECHANIC_DHUUM_SHACKLE}).setFailIfHit(false).setIsBuffremove(CBTB_MANUAL).setSpecialValue(valueDhuumShackles).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("has affliction").set_ids({MECHANIC_DHUUM_AFFLICTION}).set_frequency_player(13000 + ms_per_tick).set_fail_if_hit(false).set_valid_if_down(true).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("has affliction").setIds({MECHANIC_DHUUM_AFFLICTION}).setFrequencyPlayer(13000 + ms_per_tick).setFailIfHit(false).setValidIfDown(true).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("stood in a crack").set_ids({MECHANIC_DHUUM_CRACK}).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("stood in a crack").setIds({MECHANIC_DHUUM_CRACK}).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("stood in a mark").set_ids({MECHANIC_DHUUM_MARK}).set_verbosity(0).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("stood in a mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(0).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("touched the center").set_ids({MECHANIC_DHUUM_SUCK_AOE}).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("touched the center").setIds({MECHANIC_DHUUM_SUCK_AOE}).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("stood in a teleport aoe").set_ids({MECHANIC_DHUUM_TELEPORT_AOE}).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("stood in a teleport aoe").setIds({MECHANIC_DHUUM_TELEPORT_AOE}).setBossId(BOSS_DHUUM_ID),
 
-//	mechanic().set_name("died on green").set_ids({MECHANIC_DHUUM_GREEN_TIMER}).set_is_buffremove(CBTB_MANUAL).set_overstack_value(0),
+//	mechanic().setName("died on green").setIds({MECHANIC_DHUUM_GREEN_TIMER}).setIsBuffremove(CBTB_MANUAL).setOverstackValue(0),
 
-	mechanic().set_name("was snatched").set_ids({MECHANIC_DHUUM_SNATCH}).set_special_requirement(special_requirement_dhuum_snatch).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("was snatched").setIds({MECHANIC_DHUUM_SNATCH}).setSpecialRequirement(requirementDhuumSnatch).setBossId(BOSS_DHUUM_ID),
 
-//	mechanic().set_name("canceled button channel").set_ids({MECHANIC_DHUUM_BUTTON_CHANNEL}).set_is_activation(ACTV_CANCEL_CANCEL).set_boss_id(BOSS_DHUUM_ID),
+//	mechanic().setName("canceled button channel").setIds({MECHANIC_DHUUM_BUTTON_CHANNEL}).setIsActivation(ACTV_CANCEL_CANCEL).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("stood in cone").set_ids({MECHANIC_DHUUM_CONE}).set_boss_id(BOSS_DHUUM_ID),
+	mechanic().setName("stood in cone").setIds({MECHANIC_DHUUM_CONE}).setBossId(BOSS_DHUUM_ID),
 
-	mechanic().set_name("vomited on someone").set_ids({MECHANIC_NIGHTMARE_VOMIT}).set_target_is_dst(false),
+	mechanic().setName("vomited on someone").setIds({MECHANIC_NIGHTMARE_VOMIT}).setTargetIsDst(false),
 
-	mechanic().set_name("was hit by wirl").set_ids({MECHANIC_MAMA_WIRL,MECHANIC_MAMA_WIRL_NORMAL}).set_boss_id(BOSS_MAMA_ID),
+	mechanic().setName("was hit by wirl").setIds({MECHANIC_MAMA_WIRL,MECHANIC_MAMA_WIRL_NORMAL}).setBossId(BOSS_MAMA_ID),
 
-	mechanic().set_name("was knocked").set_ids({MECHANIC_MAMA_KNOCK}).set_boss_id(BOSS_MAMA_ID),
+	mechanic().setName("was knocked").setIds({MECHANIC_MAMA_KNOCK}).setBossId(BOSS_MAMA_ID),
 
-	mechanic().set_name("was leaped on").set_ids({MECHANIC_MAMA_LEAP}).set_boss_id(BOSS_MAMA_ID),
+	mechanic().setName("was leaped on").setIds({MECHANIC_MAMA_LEAP}).setBossId(BOSS_MAMA_ID),
 
-	mechanic().set_name("stood in acid").set_ids({MECHANIC_MAMA_ACID}).set_boss_id(BOSS_MAMA_ID),
+	mechanic().setName("stood in acid").setIds({MECHANIC_MAMA_ACID}).setBossId(BOSS_MAMA_ID),
 
-	mechanic().set_name("was smashed by a knight").set_ids({MECHANIC_MAMA_KNIGHT_SMASH}).set_boss_id(BOSS_MAMA_ID),
+	mechanic().setName("was smashed by a knight").setIds({MECHANIC_MAMA_KNIGHT_SMASH}).setBossId(BOSS_MAMA_ID),
 
-	mechanic().set_name("stood in acid").set_ids({MECHANIC_SIAX_ACID}).set_boss_id(BOSS_SIAX_ID),
+	mechanic().setName("stood in acid").setIds({MECHANIC_SIAX_ACID}).setBossId(BOSS_SIAX_ID),
 
-	mechanic().set_name("was ran over").set_ids({MECHANIC_ENSOLYSS_LUNGE}).set_boss_id(BOSS_ENSOLYSS_ID),
+	mechanic().setName("was ran over").setIds({MECHANIC_ENSOLYSS_LUNGE}).setBossId(BOSS_ENSOLYSS_ID),
 
-	mechanic().set_name("was smashed").set_ids({MECHANIC_ENSOLYSS_SMASH}).set_boss_id(BOSS_ENSOLYSS_ID),
+	mechanic().setName("was smashed").setIds({MECHANIC_ENSOLYSS_SMASH}).setBossId(BOSS_ENSOLYSS_ID),
 
-	mechanic().set_name("stood in a pie slice").set_ids({MECHANIC_ARKK_PIE_A,MECHANIC_ARKK_PIE_B,MECHANIC_ARKK_PIE_C}).set_boss_id(BOSS_ARKK_ID),
+	mechanic().setName("stood in a pie slice").setIds({MECHANIC_ARKK_PIE_A,MECHANIC_ARKK_PIE_B,MECHANIC_ARKK_PIE_C}).setBossId(BOSS_ARKK_ID),
 
-//  mechanic().set_name("was feared").set_ids({MECHANIC_ARKK_FEAR}),
+//  mechanic().setName("was feared").setIds({MECHANIC_ARKK_FEAR}),
 
-	mechanic().set_name("was smashed").set_ids({MECHANIC_ARKK_OVERHEAD_SMASH}).set_boss_id(BOSS_ARKK_ID),
+	mechanic().setName("was smashed").setIds({MECHANIC_ARKK_OVERHEAD_SMASH}).setBossId(BOSS_ARKK_ID),
 
-	mechanic().set_name("has a bomb").set_ids({MECHANIC_ARKK_BOMB}).set_fail_if_hit(false).set_boss_id(BOSS_ARKK_ID),//TODO Add BOSS_ARTSARIIV_ID and make boss id a vector
+	mechanic().setName("has a bomb").setIds({MECHANIC_ARKK_BOMB}).setFailIfHit(false).setBossId(BOSS_ARKK_ID),//TODO Add BOSS_ARTSARIIV_ID and make boss id a vector
 
-//	mechanic().set_name("didn't block the goop").set_ids({MECHANIC_ARKK_GOOP}).set_boss_id(BOSS_ARKK_ID).set_can_evade(false),
+//	mechanic().setName("didn't block the goop").setIds({MECHANIC_ARKK_GOOP}).setBossId(BOSS_ARKK_ID).setCanEvade(false),
 
 #if 0//disable conjure detection due to potential toxicity
-    mechanic().set_name("picked up an ice bow").set_ids({CONJURE_ICE_BOW_BUFF}).set_fail_if_hit(false).set_special_requirement(special_requirement_conjure),
+    mechanic().setName("picked up an ice bow").setIds({CONJURE_ICE_BOW_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
 
-	mechanic().set_name("picked up a lightning hammer").set_ids({CONJURE_LIGHTNING_HAMMER_BUFF}).set_fail_if_hit(false).set_special_requirement(special_requirement_conjure),
+	mechanic().setName("picked up a lightning hammer").setIds({CONJURE_LIGHTNING_HAMMER_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
 
-	mechanic().set_name("picked up a flame axe").set_ids({CONJURE_FLAME_AXE_BUFF}).set_fail_if_hit(false).set_special_requirement(special_requirement_conjure),
+	mechanic().setName("picked up a flame axe").setIds({CONJURE_FLAME_AXE_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
 
-	mechanic().set_name("picked up an earth shield").set_ids({CONJURE_EARTH_SHIELD_BUFF}).set_fail_if_hit(false).set_special_requirement(special_requirement_conjure),
+	mechanic().setName("picked up an earth shield").setIds({CONJURE_EARTH_SHIELD_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
 
-	mechanic().set_name("picked up an FGS").set_ids({CONJURE_FIRE_GS_BUFF}).set_fail_if_hit(false).set_special_requirement(special_requirement_conjure)
+	mechanic().setName("picked up an FGS").setIds({CONJURE_FIRE_GS_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure)
 #endif // 0
 };

@@ -42,51 +42,51 @@ struct mechanic
 
     mechanic();
 
-    float is_valid_hit(cbtevent* ev, ag* src, ag* dst, game_state* gs);
+    float isValidHit(cbtevent* ev, ag* src, ag* dst, GameState* gs);
     bool (*special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
     float (*special_value)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
-    mechanic set_name(std::string const new_name) {this->name = new_name; return *this;}
-    mechanic set_ids(std::initializer_list<uint16_t> const new_ids) {this->ids = std::vector<uint16_t>(new_ids); return *this;}
-    mechanic set_boss_id(uint32_t const new_boss_id) {this->boss_id = new_boss_id; return *this;}
-    mechanic set_frequency_player(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
-    mechanic set_frequency_global(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}
-    mechanic set_is_activation(uint8_t const new_is_activation) {this->is_activation = new_is_activation; return *this;}
-    mechanic set_is_buffremove(uint8_t const new_is_buffremove) {this->is_buffremove = new_is_buffremove; return *this;}
-	mechanic set_overstack_value(int32_t const new_overstack_value) { this->overstack_value = new_overstack_value; return *this; }
-    mechanic set_is_interupt(bool const new_is_interupt) {this->is_interupt = new_is_interupt; return *this;}
-    mechanic set_is_multihit(bool const new_is_multihit) {this->is_multihit = new_is_multihit; return *this;}
-    mechanic set_target_is_dst(bool const new_target_is_dst) {this->target_is_dst = new_target_is_dst; return *this;}
-    mechanic set_fail_if_hit(bool const new_fail_if_hit) {this->fail_if_hit = new_fail_if_hit; return *this;}
-    mechanic set_valid_if_down(bool const new_valid_if_down) {this->valid_if_down = new_valid_if_down; return *this;}
-	mechanic set_can_evade(bool const new_can_evade) { this->can_evade = new_can_evade; return *this; }
-	mechanic set_can_block(bool const new_can_block) { this->can_block = new_can_block; return *this; }
-	mechanic set_can_invuln(bool const new_can_invuln) { this->can_invuln = new_can_invuln; return *this; }
-	mechanic set_verbosity(uint16_t const new_verbosity) { this->verbosity = new_verbosity; return *this; }
+    mechanic setName(std::string const new_name) {this->name = new_name; return *this;}
+    mechanic setIds(std::initializer_list<uint16_t> const new_ids) {this->ids = std::vector<uint16_t>(new_ids); return *this;}
+    mechanic setBossId(uint32_t const new_boss_id) {this->boss_id = new_boss_id; return *this;}//TODO:use Boss object
+    mechanic setFrequencyPlayer(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
+    mechanic setFrequencyGlobal(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}
+    mechanic setIsActivation(uint8_t const new_is_activation) {this->is_activation = new_is_activation; return *this;}
+    mechanic setIsBuffremove(uint8_t const new_is_buffremove) {this->is_buffremove = new_is_buffremove; return *this;}
+	mechanic setOverstackValue(int32_t const new_overstack_value) { this->overstack_value = new_overstack_value; return *this; }
+    mechanic setIsInterupt(bool const new_is_interupt) {this->is_interupt = new_is_interupt; return *this;}
+    mechanic setIsMultihit(bool const new_is_multihit) {this->is_multihit = new_is_multihit; return *this;}
+    mechanic setTargetIsDst(bool const new_target_is_dst) {this->target_is_dst = new_target_is_dst; return *this;}
+    mechanic setFailIfHit(bool const new_fail_if_hit) {this->fail_if_hit = new_fail_if_hit; return *this;}
+    mechanic setValidIfDown(bool const new_valid_if_down) {this->valid_if_down = new_valid_if_down; return *this;}
+	mechanic setCanEvade(bool const new_can_evade) { this->can_evade = new_can_evade; return *this; }
+	mechanic setCanBlock(bool const new_can_block) { this->can_block = new_can_block; return *this; }
+	mechanic setCanInvuln(bool const new_can_invuln) { this->can_invuln = new_can_invuln; return *this; }
+	mechanic setVerbosity(uint16_t const new_verbosity) { this->verbosity = new_verbosity; return *this; }
 
-    mechanic set_special_requirement(bool (*new_special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
-    mechanic set_special_value(float (*new_special_value)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
+    mechanic setSpecialRequirement(bool (*new_special_requirement)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
+    mechanic setSpecialValue(float (*new_special_value)(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
 };
 
-bool default_requirement(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
-bool special_requirement_conjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
-bool special_requirement_dhuum_snatch(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+bool requirementDefault(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+bool requirementConjure(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+bool requirementDhuumSnatch(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
-float default_value(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
-float special_value_dhuum_shackles(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+float valueDefault(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
+float valueDhuumShackles(const mechanic &current_mechanic, cbtevent* ev, ag* src, ag* dst, Player* current_player);
 
 const uint16_t max_deimos_oils = 3;
-struct deimos_oil
+struct DeimosOil
 {
 	uintptr_t id = 0;
 	uint64_t last_touch_time = 0;
 };
 
-extern deimos_oil deimos_oils[max_deimos_oils];
+extern DeimosOil deimos_oils[max_deimos_oils];
 
-bool special_requirement_deimos_oil(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player);
+bool requirementDeimosOil(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player);
 
-bool special_requirement_on_self(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player);
+bool requirementOnSelf(const mechanic & current_mechanic, cbtevent * ev, ag * src, ag * dst, Player * current_player);
 
 
 extern std::vector <mechanic> mechanics;

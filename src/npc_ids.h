@@ -98,7 +98,7 @@ const uint64_t BOSS_ARTSARIIV_HEALTH   = 5962266;
 const uint32_t BOSS_ARKK_ID            = 0x455F;
 const uint64_t BOSS_ARKK_HEALTH        = 9942250;
 
-struct boss
+struct Boss
 {
     std::vector<uint32_t> ids;//npc id (from ag->prof)
     std::string name;
@@ -106,14 +106,14 @@ struct boss
     uint64_t health;
 	uint16_t pulls;
 
-    boss();
+    Boss();
 
-    bool has_id(uint32_t new_id);
+    bool hasId(uint32_t new_id);
 
-    boss set_ids(std::initializer_list<uint32_t> const new_ids) {this->ids = std::vector<uint32_t>(new_ids); return *this;}
-    boss set_name(std::string const new_name) {this->name = new_name; return *this;}
-    boss set_timer(int64_t const new_timer) {this->timer = new_timer; return *this;}
-    boss set_health(uint64_t const new_health) {this->health = new_health; return *this;}
+    Boss setIds(std::initializer_list<uint32_t> const new_ids) {this->ids = std::vector<uint32_t>(new_ids); return *this;}
+    Boss setName(std::string const new_name) {this->name = new_name; return *this;}
+    Boss setTimer(int64_t const new_timer) {this->timer = new_timer; return *this;}
+    Boss setHealth(uint64_t const new_health) {this->health = new_health; return *this;}
 };
 
-extern std::vector<boss> bosses;
+extern std::vector<Boss> bosses;

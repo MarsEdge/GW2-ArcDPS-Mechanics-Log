@@ -8,8 +8,8 @@
 
 int split (const char *str, char c, char ***arr);
 
-struct game_state
+struct GameState
 {
     bool boss_found;
-    boss boss_data;
+    Boss boss_data;
 };

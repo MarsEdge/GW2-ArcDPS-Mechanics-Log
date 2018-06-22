@@ -15,8 +15,8 @@ Player::Player()
     mechanics_failed = 0;   //number of mechanics failed
     mechanics_received = 0;
     last_stab_time = 0;  //time stability is going to expire
-    last_hit_time=0;       //time player was last hit with a mechanic
-    last_mechanic=0;       //skill id of last failed mechanic
+    last_hit_time = 0;       //time player was last hit with a mechanic
+    last_mechanic = 0;       //skill id of last failed mechanic
     in_squad = true;
 }
 
@@ -60,7 +60,7 @@ Player::Player(char* new_name, char* new_account, uintptr_t new_id)
     in_squad = true;
 }
 
-Player::mechanic_tracker::mechanic_tracker(std::string &new_name,uint16_t &new_id,bool &new_fail, boss* new_boss)
+Player::MechanicTracker::MechanicTracker(std::string &new_name,uint16_t &new_id,bool &new_fail, Boss* new_boss)
 {
     name = new_name;
     id = new_id;
@@ -86,12 +86,12 @@ void Player::rally()
     is_downed = false;
 }
 
-void Player::fix_double_down()
+void Player::fixDoubleDown()
 {
     if(downs > 0) downs--;
 }
 
-void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail, boss* boss)
+void Player::receiveMechanic(std::string &name,uint16_t &id,bool &is_fail, Boss* boss)
 {
     if(!is_fail)
     {
@@ -101,7 +101,7 @@ void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail, boss
     {
         mechanics_failed++;
     }
-    set_last_mechanic(id);
+    setLastMechanic(id);
     for(uint16_t index=0;index<tracker.size();index++)
     {
         if(tracker.at(index).id == id)
@@ -111,11 +111,11 @@ void Player::mechanic_receive(std::string &name,uint16_t &id,bool &is_fail, boss
         }
     }
     std::lock_guard<std::mutex> lg(tracker_mtx);
-    tracker.push_back(mechanic_tracker(name,id,is_fail,boss));
+    tracker.push_back(MechanicTracker(name,id,is_fail,boss));
     return;
 }
 
-bool Player::is_relevant()
+bool Player::isRelevant()
 {
     return downs > 0
     || deaths > 0
@@ -125,12 +125,12 @@ bool Player::is_relevant()
 
 }
 
-uint64_t Player::get_last_stab_time()
+uint64_t Player::getLastStabTime()
 {
     return last_stab_time;
 }
 
-void Player::set_stab_time(uint64_t new_stab_time)
+void Player::setStabTime(uint64_t new_stab_time)
 {
     if(last_stab_time < new_stab_time)
     {
@@ -138,27 +138,27 @@ void Player::set_stab_time(uint64_t new_stab_time)
     }
 }
 
-uint64_t Player::get_last_hit_time()
+uint64_t Player::getLastHitTime()
 {
     return last_hit_time;
 }
 
-void Player::set_last_hit_time(uint64_t new_hit_time)
+void Player::setLastHitTime(uint64_t new_hit_time)
 {
     last_hit_time = new_hit_time;
 }
 
-uint16_t Player::get_last_mechanic()
+uint16_t Player::getLastMechanic()
 {
     return last_mechanic;
 }
 
-void Player::set_last_mechanic(uint16_t new_mechanic)
+void Player::setLastMechanic(uint16_t new_mechanic)
 {
     last_mechanic = new_mechanic;
 }
 
-std::string Player::mechanic_tracker::to_string()
+std::string Player::MechanicTracker::toString()
 {
     return name + "," +
     (!fail ? std::to_string(hits) + "," : "," + std::to_string(hits)) +
@@ -167,7 +167,7 @@ std::string Player::mechanic_tracker::to_string()
     "\n";
 }
 
-std::string Player::to_string()
+std::string Player::toString()
 {
     std::string output = "";
 
@@ -184,12 +184,12 @@ std::string Player::to_string()
     for(uint16_t index=0; index<tracker.size();index++)
     {
         output += name + "," + account + "," +
-        tracker.at(index).to_string();
+        tracker.at(index).toString();
     }
     return output;
 }
 
-uint16_t Player::get_mechanics_total()
+uint16_t Player::getMechanicsTotal()
 {
     uint16_t result = 1 + downs + deaths;
 
@@ -200,7 +200,7 @@ uint16_t Player::get_mechanics_total()
     return result;
 }
 
-void Player::reset_stats()
+void Player::resetStats()
 {
     downs = 0;
     deaths = 0;
@@ -215,9 +215,9 @@ void Player::reset_stats()
     tracker.clear();
 }
 
-Player* get_player(ag* new_player)
+Player* getPlayer(ag* new_player)
 {
-    if(!is_player(new_player))
+    if(!isPlayer(new_player))
     {
         return nullptr;
     }
@@ -232,7 +232,7 @@ Player* get_player(ag* new_player)
     return nullptr;
 }
 
-void add_player(char* name, char* account, uintptr_t id)
+void addPlayer(char* name, char* account, uintptr_t id)
 {
     if(!name || !account)
     {
@@ -259,7 +259,7 @@ void add_player(char* name, char* account, uintptr_t id)
     players.push_back(Player(name, account, id));
 }
 
-void remove_player(char* name, char* account, uintptr_t id)
+void removePlayer(char* name, char* account, uintptr_t id)
 {
     if(!name || !account)
     {
@@ -282,16 +282,16 @@ void remove_player(char* name, char* account, uintptr_t id)
     }
 }
 
-void add_pull(boss* boss)
+void addPull(Boss* boss)
 {
 	boss->pulls++;
 	for(uint16_t index=0;index<players.size();index++)
     {
-        players.at(index).add_pull(boss);
+        players.at(index).addPull(boss);
     }
 }
 
-void Player::add_pull(boss* new_boss)
+void Player::addPull(Boss* new_boss)
 {
     if(!in_squad)
     {
@@ -300,7 +300,7 @@ void Player::add_pull(boss* new_boss)
 
     for(uint16_t index=0;index<tracker.size();index++)
     {
-        tracker.at(index).add_pull(new_boss);
+        tracker.at(index).addPull(new_boss);
     }
     pulls++;
 }
@@ -314,16 +314,16 @@ void Player::merge(Player * new_player)
 	{
 		for (uint16_t index_hits = 0; index_hits<new_player->tracker.at(index).hits; index_hits++)
 		{
-			mechanic_receive(new_player->tracker.at(index).name, new_player->tracker.at(index).id, new_player->tracker.at(index).fail, new_player->tracker.at(index).current_boss);
+			receiveMechanic(new_player->tracker.at(index).name, new_player->tracker.at(index).id, new_player->tracker.at(index).fail, new_player->tracker.at(index).current_boss);
 		}
 	}
 	downs += new_player->downs;
 	deaths += new_player->deaths;
 	pulls += new_player->pulls;
-	new_player->reset_stats();
+	new_player->resetStats();
 }
 
-void Player::mechanic_tracker::add_pull(boss* new_boss)
+void Player::MechanicTracker::addPull(Boss* new_boss)
 {
     if(current_boss == new_boss)
     {
@@ -331,31 +331,31 @@ void Player::mechanic_tracker::add_pull(boss* new_boss)
     }
 }
 
-bool is_player(ag* new_player)
+bool isPlayer(ag* new_player)
 {
 	return new_player
 		&& new_player->elite != 0xffffffff
 		&& new_player->name;
 }
 
-void reset_all_player_stats()
+void resetAllPlayerStats()
 {
     std::lock_guard<std::mutex> lg(players_mtx);
     for(uint16_t index=0;index<players.size();index++)
     {
-        players.at(index).reset_stats();
+        players.at(index).resetStats();
     }
 }
 
-uint16_t get_mechanics_total()
+uint16_t getMechanicsTotal()
 {
     uint16_t result = 0;
 
     for(uint16_t index=0;index<players.size();index++)
     {
-        if(players.at(index).is_relevant())
+        if(players.at(index).isRelevant())
         {
-            result += players.at(index).get_mechanics_total();
+            result += players.at(index).getMechanicsTotal();
         }
     }
     return result;
