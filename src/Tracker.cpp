@@ -100,3 +100,15 @@ uint16_t Tracker::getMechanicsTotal()
 	}
 	return result;
 }
+
+void Tracker::processMechanic(Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
+{
+	if (new_mechanic->target_is_dst)
+	{
+		new_player_dst->receiveMechanic(new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, &boss_data);
+	}
+	else
+	{
+		new_player_src->receiveMechanic(new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, &boss_data);
+	}
+}

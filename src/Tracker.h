@@ -4,6 +4,7 @@
 #include <list>
 
 #include "player.h"
+#include "mechanics.h"
 #include "npc_ids.h"
 #include "helpers.h"
 
@@ -27,5 +28,7 @@ public:
 	void addPull(Boss* boss);
 	void resetAllPlayerStats();
 	uint16_t getMechanicsTotal();
+
+	void processMechanic(Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value);
 };
 

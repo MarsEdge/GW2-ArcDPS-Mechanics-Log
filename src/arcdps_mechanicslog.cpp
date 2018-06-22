@@ -365,11 +365,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if(ev->result != CBTR_INTERRUPT && ev->result != CBTR_BLIND)
             {
-				int value = 0;
+				int64_t value = 0;
+				current_player = tracker.getPlayer(src);
+				Player* other_player = tracker.getPlayer(dst);
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(value = mechanics[index].isValidHit(&tracker, ev, src, dst) && mechanics[index].verbosity >= 2)//TODO: Remove magic number 2
+                    if(value = mechanics[index].isValidHit(ev, current_player, other_player) && mechanics[index].verbosity >= 2)//TODO: Remove magic number 2
                     {
+						tracker.processMechanic(current_player, other_player, &mechanics[index], value);
                         int time = getElapsedTime(ev->time);
                         if(time < 0)
                         {
