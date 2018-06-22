@@ -372,7 +372,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 				int value = 0;
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(value = mechanics[index].isValidHit(ev, src, dst, &gs) && mechanics[index].verbosity >= 2)
+                    if(value = mechanics[index].isValidHit(ev, src, dst, &gs) && mechanics[index].verbosity >= 2)//TODO: Remove magic number 2
                     {
                         int time = getElapsedTime(ev->time);
                         if(time < 0)
