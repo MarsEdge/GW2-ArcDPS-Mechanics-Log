@@ -39,8 +39,7 @@ float Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
     Player* current_player = nullptr;
 
 	if (!ev) return false;
-	if (!src) return false;
-	if (!dst) return false;
+	if (!src && !dst) return false;
 
 	if (can_block && ev->result == CBTR_BLOCK) return false;
 	if (can_evade && ev->result == CBTR_EVADE) return false;
