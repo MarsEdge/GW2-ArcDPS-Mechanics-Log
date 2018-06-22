@@ -64,7 +64,10 @@ enum cbtstatechange {
 	CBTS_LANGUAGE, // src_agent will be text language
 	CBTS_GWBUILD, // src_agent will be game build
 	CBTS_SHARDID, // src_agent will be sever shard id
-	CBTS_REWARD // src_agent is self, dst_agent is reward id, value is reward type. these are the wiggly boxes that you get
+	CBTS_REWARD, // src_agent is self, dst_agent is reward id, value is reward type. these are the wiggly boxes that you get
+	CBTS_BUFFINITIAL, // combat event that will appear once per buff per agent on logging start (zero duration, buff==18)
+	CBTS_POSITION, // src_agent changed, cast float* p = (float*)&dst_agent, access as x/y/z (float[3])
+	CBTS_VELOCITY // src_agent changed, cast float* v = (float*)&dst_agent, access as x/y/z (float[3])
 };
 
 /* combat buff remove type */
