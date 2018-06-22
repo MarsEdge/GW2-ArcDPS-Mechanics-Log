@@ -291,8 +291,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if rally
             else if(ev->is_statechange==CBTS_CHANGEUP)
             {
-                current_player = tracker.getPlayer(src);//TODO put these in the if
-                if(current_player)
+                if(current_player = tracker.getPlayer(src))
                 {
                     current_player->rally();
                 }
@@ -301,8 +300,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if dead
             else if(ev->is_statechange==CBTS_CHANGEDEAD)
             {
-                current_player = tracker.getPlayer(src);
-                if(current_player)
+                if(current_player = tracker.getPlayer(src))
                 {
                     current_player->dead();
                 }
@@ -311,8 +309,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
             //if downed
             else if(ev->is_statechange==CBTS_CHANGEDOWN)
             {
-                current_player = tracker.getPlayer(src);
-                if(current_player)
+                if(current_player = tracker.getPlayer(src))
                 {
                     current_player->down();
                 }
@@ -335,8 +332,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                current_player= tracker.getPlayer(dst);
-                if(current_player)
+                if(current_player = tracker.getPlayer(dst))
                 {
                     current_player->setStabTime(ev->time+ms_per_tick);//cut the ending time of stab early
                 }
@@ -345,8 +341,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                      || ev->skillid==BUFF_ILLUSION_OF_LIFE//Illusion of Life manual case
                      )
             {
-                current_player= tracker.getPlayer(dst);
-                if(current_player)
+                if(current_player = tracker.getPlayer(dst))
                 {
                     current_player->fixDoubleDown();
                 }
@@ -359,8 +354,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                current_player= tracker.getPlayer(dst);
-                if(current_player)
+                if(current_player = tracker.getPlayer(dst))
                 {
                     current_player->setStabTime(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
                 }
