@@ -65,6 +65,9 @@
     <ClCompile Include="src\simpleini\testsi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\arcdps_datastructures.h">
@@ -111,6 +114,9 @@
     </ClInclude>
     <ClInclude Include="src\simpleini\SimpleIni.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tracker.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
