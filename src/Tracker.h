@@ -17,7 +17,7 @@ public:
 	std::list<Player> players;
 	
 	bool boss_found;
-	Boss boss_data;
+	Boss* boss_data;
 
 	Tracker();
 	~Tracker();
