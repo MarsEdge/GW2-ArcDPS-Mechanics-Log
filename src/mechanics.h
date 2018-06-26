@@ -78,7 +78,7 @@ int64_t valueDhuumShackles(const Mechanic &current_mechanic, cbtevent* ev, Playe
 const uint16_t max_deimos_oils = 3;
 struct DeimosOil
 {
-	uintptr_t id = 0;
+	uint16_t id = 0;
 	uint64_t last_touch_time = 0;
 };
 

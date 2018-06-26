@@ -142,7 +142,7 @@ bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, Player
 		{
 			oldest_index = index;
 		}
-		if (deimos_oils[index].id == src->id)
+		if (deimos_oils[index].id == ev->src_instid)
 		{
 			current_oil = deimos_oils[index];
 			current_index = index;
@@ -151,7 +151,7 @@ bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, Player
 
 	if (!current_oil.id)
 	{
-		current_oil.id = src->id;
+		current_oil.id = ev->src_instid;
 		current_oil.last_touch_time = ev->time;
 		deimos_oils[oldest_index] = current_oil;
 		return true;
