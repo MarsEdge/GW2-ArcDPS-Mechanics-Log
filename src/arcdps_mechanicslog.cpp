@@ -38,6 +38,7 @@ bool canClickWindows();
 int64_t start_time = 0;
 
 std::string print_buffer = "";
+std::mutex print_buffer_mtx;
 bool show_app_log;
 
 bool show_app_chart;
@@ -421,7 +422,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         }
 	}
 
-    print_buffer +=output;
+	if (output.size() > 0)
+	{
+		std::lock_guard<std::mutex> lock(print_buffer_mtx);
+		print_buffer += output;
+	}
+
 	return 0;
 }
 
@@ -431,6 +437,7 @@ void ShowMechanicsLog(bool* p_open)
 
     if(print_buffer.size() > 0)
     {
+		std::lock_guard<std::mutex> lock(print_buffer_mtx);
         log.addLog(print_buffer.c_str());
         print_buffer = "";
     }
