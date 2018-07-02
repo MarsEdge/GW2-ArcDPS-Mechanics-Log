@@ -171,6 +171,7 @@ void Player::setLastMechanic(uint16_t new_mechanic)
 std::string Player::MechanicTracker::toString()
 {
     return name + "," +
+	(current_boss ? current_boss->name : "") + "," +
     (!fail ? std::to_string(hits) + "," : "," + std::to_string(hits)) +
     "," + "," + "," +
     std::to_string(pulls) +
@@ -184,6 +185,7 @@ std::string Player::toString()
     output += name + "," +
     account + "," +
     "Overall" + "," +
+	"," +
     std::to_string(mechanics_received) + "," +
     std::to_string(mechanics_failed) + "," +
     std::to_string(downs) + "," +

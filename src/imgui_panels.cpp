@@ -248,7 +248,7 @@ std::string AppChart::toString(Tracker* tracker)
 {
     std::string output = "";
 
-    output += "Player Name,Account Name,Mechanic Name,Received,Failed,Downs,Deaths,Pulls\n";
+    output += "Player Name,Account Name,Boss Name,Mechanic Name,Received,Failed,Downs,Deaths,Pulls\n";
 
 	for (std::list<Player>::iterator player = tracker->players.begin(); player != tracker->players.end(); ++player)
     {
