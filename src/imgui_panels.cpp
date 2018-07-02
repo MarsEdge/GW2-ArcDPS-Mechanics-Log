@@ -263,7 +263,7 @@ std::string AppChart::toString(Tracker* tracker)
 void AppChart::writeToDisk(Tracker* tracker)
 {
     uint16_t new_export_total = tracker->getMechanicsTotal();
-    if(last_export_total == new_export_total)
+    if(last_export_total == new_export_total || new_export_total < 2)
     {
         return;
     }
