@@ -184,6 +184,7 @@ std::string Player::toString()
 
     output += name + "," +
     account + "," +
+	"All" + "," +
     "Overall" + "," +
 	"," +
     std::to_string(mechanics_received) + "," +
