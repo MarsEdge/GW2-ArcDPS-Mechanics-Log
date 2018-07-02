@@ -20,7 +20,7 @@ const unsigned int combatapi_delay = 5000;
 struct Mechanic
 {
     std::string name; //name of mechanic
-    std::vector<uint16_t> ids; //skill ids;
+    std::vector<uint32_t> ids; //skill ids;
     const Boss* boss;//required boss, ignored if null
     uint64_t frequency_player; //minimum time between instances of this mechanic per player(ms)
     uint64_t frequency_global; //minimum time between instances of this mechanic globally(ms)
@@ -47,7 +47,7 @@ struct Mechanic
     int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 
     Mechanic setName(std::string const new_name) {this->name = new_name; return *this;}
-    Mechanic setIds(std::initializer_list<uint16_t> const new_ids) {this->ids = std::vector<uint16_t>(new_ids); return *this;}
+    Mechanic setIds(std::initializer_list<uint32_t> const new_ids) {this->ids = std::vector<uint32_t>(new_ids); return *this;}
     Mechanic setBoss(const Boss* const new_boss) {this->boss = new_boss; return *this;}
     Mechanic setFrequencyPlayer(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
     Mechanic setFrequencyGlobal(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}

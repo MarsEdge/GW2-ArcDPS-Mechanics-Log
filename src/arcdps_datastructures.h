@@ -129,6 +129,37 @@ typedef struct cbtevent {
 	uint8_t pad64; /* internal tracking. garbage */
 } cbtevent;
 
+/* combat event - for logging (revision 1, when byte16 == 1) */
+typedef struct cbtevent1 {
+	uint64_t time;
+	uintptr_t src_agent;
+	uintptr_t dst_agent;
+	int32_t value;
+	int32_t buff_dmg;
+	uint32_t overstack_value;
+	uint32_t skillid;
+	uint16_t src_instid;
+	uint16_t dst_instid;
+	uint16_t src_master_instid;
+	uint16_t dst_master_instid;
+	uint8_t iff;
+	uint8_t buff;
+	uint8_t result;
+	uint8_t is_activation;
+	uint8_t is_buffremove;
+	uint8_t is_ninety;
+	uint8_t is_fifty;
+	uint8_t is_moving;
+	uint8_t is_statechange;
+	uint8_t is_flanking;
+	uint8_t is_shields;
+	uint8_t pad60;
+	uint8_t pad61;
+	uint8_t pad62;
+	uint8_t pad63;
+	uint8_t pad64;
+} cbtevent1;
+
 /* agent short */
 typedef struct ag
 {
