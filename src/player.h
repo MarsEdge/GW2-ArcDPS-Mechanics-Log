@@ -30,10 +30,10 @@ struct Player
 		uint32_t id; //skill id;
         bool fail;
         uint16_t hits;
-        Boss* current_boss; //boss
+        const Boss* current_boss; //boss
         uint16_t pulls;
 
-        MechanicTracker(std::string &new_name, uint32_t &new_id,bool &new_fail, Boss* new_boss);
+        MechanicTracker(std::string &new_name, uint32_t &new_id,bool &new_fail, const Boss* new_boss);
 
         std::string toString();
         void addPull(Boss* new_boss);
@@ -53,7 +53,7 @@ struct Player
     void rally();
     void fixDoubleDown(); //manual case to fix vapor form counting as 2 downs
 
-    void receiveMechanic(std::string &name, uint32_t &id,bool &is_fail, Boss* boss);
+    void receiveMechanic(std::string &name, uint32_t &id,bool &is_fail, const Boss* boss);
     bool isRelevant();     //if player is relevant for displaying
 
     uint64_t getLastStabTime();

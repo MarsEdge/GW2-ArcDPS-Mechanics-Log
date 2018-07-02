@@ -70,7 +70,7 @@ bool Player::operator==(std::string other_str)
 	return name == other_str || account == other_str;
 }
 
-Player::MechanicTracker::MechanicTracker(std::string &new_name, uint32_t &new_id,bool &new_fail, Boss* new_boss)
+Player::MechanicTracker::MechanicTracker(std::string &new_name, uint32_t &new_id,bool &new_fail, const Boss* new_boss)
 {
     name = new_name;
     id = new_id;
@@ -101,7 +101,7 @@ void Player::fixDoubleDown()
     if(downs > 0) downs--;
 }
 
-void Player::receiveMechanic(std::string &name, uint32_t &id,bool &is_fail, Boss* boss)
+void Player::receiveMechanic(std::string &name, uint32_t &id,bool &is_fail, const Boss* boss)
 {
     if(!is_fail)
     {
@@ -170,8 +170,9 @@ void Player::setLastMechanic(uint16_t new_mechanic)
 
 std::string Player::MechanicTracker::toString()
 {
-    return name + "," +
+    return 
 	(current_boss ? current_boss->name : "") + "," +
+	name + "," +
     (!fail ? std::to_string(hits) + "," : "," + std::to_string(hits)) +
     "," + "," + "," +
     std::to_string(pulls) +
