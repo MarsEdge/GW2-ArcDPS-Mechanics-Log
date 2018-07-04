@@ -30,13 +30,11 @@ Player* Tracker::getPlayer(ag* new_player)
 
 bool Tracker::addPlayer(char* name, char* account, uintptr_t id)
 {
-	if (!name || !account)
-	{
-		return false;
-	}
+	if (!name) return false;
+	if (!account) return false;
 
 	std::lock_guard<std::mutex> lg(players_mtx);
-	auto it = std::find(players.begin(), players.end(), std::string(account));//TODO: something more porformant that makeing a string for comparison?
+	auto it = std::find(players.begin(), players.end(), std::string(account));//TODO: something more porformant than makeing a string for comparison?
 
 	//player not tracked yet
 	if (it == players.end())
