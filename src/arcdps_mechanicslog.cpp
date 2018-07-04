@@ -242,7 +242,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 	if (!ev)
     {
         /* notify tracking change */
-		if (src && !src->elite)
+		if (isPlayer(src) && !src->elite)
         {
 			/* add */
 			if (dst && src->prof)
