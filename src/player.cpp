@@ -187,7 +187,6 @@ std::string Player::toString()
     account + "," +
 	"All" + "," +
     "Overall" + "," +
-	"," +
     std::to_string(mechanics_received) + "," +
     std::to_string(mechanics_failed) + "," +
     std::to_string(downs) + "," +
