@@ -227,8 +227,8 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("is sacrificed").setIds({MECHANIC_MATT_SACRIFICE}).setFailIfHit(false).setBoss(&boss_matti),
 
-	Mechanic().setName("is east fixate").setIds({MECHANIC_KC_FIXATE_EAST}).setFailIfHit(false).setBoss(&boss_kc),
-	Mechanic().setName("is west fixate").setIds({MECHANIC_KC_FIXATE_WEST}).setFailIfHit(false).setBoss(&boss_kc),
+	Mechanic().setName("is fixated").setIds({MECHANIC_KC_FIXATE}).setFailIfHit(false).setBoss(&boss_kc),
+//	Mechanic().setName("is west fixated").setIds({MECHANIC_KC_FIXATE_WEST}).setFailIfHit(false).setBoss(&boss_kc),
 
 //  Mechanic().setName("stood in the red half").setIds({MECHANIC_XERA_HALF}).setBoss(&boss_xera),
 

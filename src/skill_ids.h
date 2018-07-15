@@ -38,8 +38,8 @@ const uint32_t MECHANIC_MATT_CORRUPTION = 34416;//Corruption
 const uint32_t MECHANIC_MATT_SACRIFICE = 34442;//nameless
 
 //kc
-const uint32_t MECHANIC_KC_FIXATE_EAST = 34912;//Fixated
-const uint32_t MECHANIC_KC_FIXATE_WEST = 34925;//Fixated
+const uint32_t MECHANIC_KC_FIXATE = 34912;//Fixated, previously just the east fixate
+const uint32_t MECHANIC_KC_FIXATE_WEST = 34925;//Fixated, old and not used anymore
 
 //xera
 const uint32_t MECHANIC_XERA_HALF = 34883;
@@ -100,6 +100,9 @@ const uint32_t MECHANIC_DHUUM_GREEN_TIMER = 48281;//Mortal Coil
 const uint32_t MECHANIC_DHUUM_SNATCH = 47076;//nameless
 const uint32_t MECHANIC_DHUUM_BUTTON_CHANNEL = 47002;//nameless
 const uint32_t MECHANIC_DHUUM_CONE = 47561;//Slash
+
+const uint32_t MECHANIC_FOTM_AGONY = 15773;//Agony
+const uint32_t MECHANIC_FOTM_SOCIAL_AWKWARDNESS = 33475;//Social Awkwardness
 
 const uint32_t MECHANIC_NIGHTMARE_VOMIT = 37030;//Toxic Sickness
 
