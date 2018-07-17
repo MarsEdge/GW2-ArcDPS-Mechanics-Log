@@ -16,7 +16,6 @@ public:
 	
 	std::list<Player> players;
 	
-	bool boss_found;
 	Boss* boss_data;
 
 	Tracker();
@@ -25,10 +24,15 @@ public:
 	Player* getPlayer(ag* new_player);
 	bool addPlayer(char* name, char* account, uintptr_t id);
 	bool removePlayer(char* name, char* account, uintptr_t id);
+	Player generatePlayer(char* name, char* account, uintptr_t id);
+
 	void addPull(Boss* boss);
 	void resetAllPlayerStats();
 	uint16_t getMechanicsTotal();
+	uint8_t getPlayerNumInCombat();
 
+	void processCombatEnter(ag* new_agent);
+	void processCombatExit(ag* new_agent);
 	void processMechanic(Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value);
 };
 

@@ -23,6 +23,7 @@ struct Player
     uint64_t last_hit_time;       //time player was last hit with a mechanic
     uint16_t last_mechanic;       //skill id of last failed mechanic
     bool in_squad;          //currently in squad
+	bool in_combat;
 
     struct MechanicTracker
     {
@@ -37,6 +38,7 @@ struct Player
 
         std::string toString();
         void addPull(Boss* new_boss);
+		bool isRelevant();
     };
 
     std::vector<MechanicTracker> tracker;
@@ -69,6 +71,9 @@ struct Player
     uint16_t getMechanicsTotal();//returns the number of total mechanics the player had
     void resetStats();
     void addPull(Boss* new_boss);
+
+	void combatEnter();
+	void combatExit();
 
 	void merge(Player* new_player);
 };

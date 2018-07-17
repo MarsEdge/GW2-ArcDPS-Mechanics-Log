@@ -8,9 +8,3 @@
 
 int split (const char *str, char c, char ***arr);
 bool isPlayer(ag* new_player);
-
-struct GameState
-{
-    bool boss_found;
-    Boss boss_data;
-};

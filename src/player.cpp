@@ -18,6 +18,7 @@ Player::Player()
     last_hit_time = 0;       //time player was last hit with a mechanic
     last_mechanic = 0;       //skill id of last failed mechanic
     in_squad = true;
+	in_combat = false;
 }
 
 Player::Player(ag* new_player)
@@ -170,6 +171,8 @@ void Player::setLastMechanic(uint16_t new_mechanic)
 
 std::string Player::MechanicTracker::toString()
 {
+	if (!isRelevant()) return "";
+
     return 
 	(current_boss ? current_boss->name : "") + "," +
 	name + "," +
@@ -223,23 +226,33 @@ void Player::resetStats()
     last_stab_time = 0;
     last_hit_time=0;
     last_mechanic=0;
-	in_squad = false;
 
-    tracker.clear();
+	for (auto mechanic = tracker.begin(); mechanic != tracker.end(); ++mechanic)
+	{
+		mechanic->hits = 0;
+		mechanic->pulls = 0;
+	}
 }
 
 void Player::addPull(Boss* new_boss)
 {
-    if(!in_squad)
-    {
-        return;
-    }
+    if(!in_squad) return;
 
     for(uint16_t index=0;index<tracker.size();index++)
     {
         tracker.at(index).addPull(new_boss);
     }
     pulls++;
+}
+
+void Player::combatEnter()
+{
+	in_combat = true;
+}
+
+void Player::combatExit()
+{
+	in_combat = false;
 }
 
 void Player::merge(Player * new_player)
@@ -266,4 +279,9 @@ void Player::MechanicTracker::addPull(Boss* new_boss)
     {
         pulls++;
     }
+}
+
+bool Player::MechanicTracker::isRelevant()
+{
+	return hits > 0;
 }

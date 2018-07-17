@@ -45,7 +45,6 @@ bool show_app_chart;
 AppChart chart;
 
 Tracker tracker;
-GameState gs;
 
 CSimpleIniA arc_ini(true);
 bool valid_arc_ini = false;
@@ -62,10 +61,10 @@ WPARAM chart_key;
 
 inline int getElapsedTime(uint64_t &current_time)
 {
-    if(gs.boss_found
-       && gs.boss_data.timer)
+    if(tracker.boss_data
+       && tracker.boss_data->timer)
     {
-        return (gs.boss_data.timer-(static_cast<int64_t>(current_time)-start_time))/1000;
+        return (tracker.boss_data->timer-(static_cast<int64_t>(current_time)-start_time))/1000;
     }
     return (current_time-start_time)/1000;
 }
@@ -269,6 +268,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
         {
             if(ev->is_statechange==CBTS_ENTERCOMBAT)
             {
+				tracker.processCombatEnter(src);
                 if(src && src->self)
                 {
                     start_time = ev->time;
@@ -286,11 +286,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 
             else if(ev->is_statechange==CBTS_EXITCOMBAT)
             {
-
+				tracker.processCombatExit(src);
             }
 
             //if rally
-            else if(ev->is_statechange==CBTS_CHANGEUP)
+            else if(ev->is_statechange==CBTS_CHANGEUP)//TODO: make these into process functions in tracker.cpp
             {
                 if(current_player = tracker.getPlayer(src))
                 {

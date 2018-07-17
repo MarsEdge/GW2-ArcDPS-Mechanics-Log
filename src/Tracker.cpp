@@ -39,7 +39,7 @@ bool Tracker::addPlayer(char* name, char* account, uintptr_t id)
 	//player not tracked yet
 	if (it == players.end())
 	{
-		players.push_back(Player(name, account, id));
+		players.push_back(generatePlayer(name, account, id));
 	}
 	else//player tracked
 	{
@@ -67,10 +67,27 @@ bool Tracker::removePlayer(char* name, char* account, uintptr_t id)
 	}
 }
 
+Player Tracker::generatePlayer(char* name, char* account, uintptr_t id)
+{
+	Player out = Player(name, account, id);
+
+	for (auto mechanic = mechanics.begin(); mechanic != mechanics.end(); ++mechanic)
+	{
+		out.receiveMechanic(mechanic->name, mechanic->ids[0], mechanic->fail_if_hit, mechanic->boss);
+	}
+
+	out.resetStats();
+
+	return out;
+}
+
 void Tracker::addPull(Boss* boss)
 {
+	if (!boss) return;
+	
 	boss->pulls++;
-	for (std::list<Player>::iterator player = players.begin(); player != players.end(); ++player)
+
+	for (auto player = players.begin(); player != players.end(); ++player)
 	{
 		player->addPull(boss);
 	}
@@ -79,7 +96,7 @@ void Tracker::addPull(Boss* boss)
 void Tracker::resetAllPlayerStats()
 {
 	std::lock_guard<std::mutex> lg(players_mtx);
-	for (std::list<Player>::iterator player = players.begin(); player != players.end(); ++player)
+	for (auto player = players.begin(); player != players.end(); ++player)
 	{
 		player->resetStats();
 	}
@@ -89,7 +106,7 @@ uint16_t Tracker::getMechanicsTotal()
 {
 	uint16_t result = 0;
 
-	for (std::list<Player>::iterator player = players.begin(); player != players.end(); ++player)
+	for (auto player = players.begin(); player != players.end(); ++player)
 	{
 		if (player->isRelevant())
 		{
@@ -97,6 +114,55 @@ uint16_t Tracker::getMechanicsTotal()
 		}
 	}
 	return result;
+}
+
+uint8_t Tracker::getPlayerNumInCombat()
+{
+	uint8_t result = 0;
+
+	for (auto player = players.begin(); player != players.end(); ++player)
+	{
+		if (player->in_squad && player->in_combat)
+		{
+			result++;
+		}
+	}
+	return result;
+}
+
+void Tracker::processCombatEnter(ag* new_agent)
+{
+	Player* new_player = nullptr;
+	if (new_player = getPlayer(new_agent))
+	{
+		new_player->combatEnter();
+	}
+
+	if (!boss_data)
+	{
+		for (auto current_boss = bosses.begin(); current_boss != bosses.end(); ++current_boss)
+		{
+			if ((*current_boss)->hasId(new_agent->prof))
+			{
+				boss_data = *current_boss;
+				addPull(boss_data);
+			}
+		}
+	}
+}
+
+void Tracker::processCombatExit(ag* new_agent)
+{
+	Player* new_player = nullptr;
+	if (new_player = getPlayer(new_agent))
+	{
+		new_player->combatExit();
+	}
+
+	if (getPlayerNumInCombat() == 0)
+	{
+		boss_data = nullptr;
+	}
 }
 
 void Tracker::processMechanic(Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)

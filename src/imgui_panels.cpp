@@ -194,10 +194,10 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
             if(expand
 				|| show_all)
             {
-                for(uint16_t tracker_index=0;
-                tracker_index<player->tracker.size();
-                tracker_index++)
+                for(uint16_t tracker_index=0; tracker_index<player->tracker.size(); tracker_index++)
                 {
+					if (!player->tracker.at(tracker_index).isRelevant()) continue;
+
                     ImGui::PushItemWidth(window_width*0.9);
                     ImGui::Indent();
                     ImGui::Text(player->tracker.at(tracker_index).name.c_str());
