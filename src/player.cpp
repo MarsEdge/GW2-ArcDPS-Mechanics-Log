@@ -199,7 +199,8 @@ std::string Player::toString()
 
     for(uint16_t index=0; index<tracker.size();index++)
     {
-        output += name + "," + account + "," +
+		if (!tracker.at(index).isRelevant()) continue;
+		output += name + "," + account + "," +
         tracker.at(index).toString();
     }
     return output;
