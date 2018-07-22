@@ -20,6 +20,7 @@ Mechanic::Mechanic()
 	is_activation = 0;
 	is_buffremove = 0;
 	overstack_value = -1;
+	value = -1;
     valid_if_down = false;
 	
 	can_evade = true;
@@ -77,6 +78,12 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 	if (is_buffremove
 		&& overstack_value >= 0
 		&& overstack_value != ev->overstack_value)
+	{
+		return false;
+	}
+
+	if (value != -1
+		&& ev->value != value)
 	{
 		return false;
 	}
@@ -232,11 +239,15 @@ std::vector <Mechanic> mechanics =
 
 //  Mechanic().setName("stood in the red half").setIds({MECHANIC_XERA_HALF}).setBoss(&boss_xera),
 
-	Mechanic().setName("has magic").setIds({MECHANIC_XERA_MAGIC}).setFailIfHit(false).setTargetIsDst(false).setFrequencyGlobal(12000).setValidIfDown(true).setBoss(&boss_xera).setSpecialRequirement(requirementOnSelf),
+	Mechanic().setName("has magic").setIds({MECHANIC_XERA_MAGIC}).setFailIfHit(false).setValidIfDown(true).setValue(15000).setBoss(&boss_xera),
+
+	Mechanic().setName("used magic").setIds({MECHANIC_XERA_MAGIC_BUFF}).setFailIfHit(false).setTargetIsDst(false).setFrequencyGlobal(12000).setValidIfDown(true).setBoss(&boss_xera).setSpecialRequirement(requirementOnSelf),
 
 	Mechanic().setName("touched an orb").setIds({MECHANIC_XERA_ORB}).setBoss(&boss_xera),
 
 	Mechanic().setName("stood in an orb aoe").setIds({MECHANIC_XERA_ORB_AOE}).setFrequencyPlayer(1000).setVerbosity(1).setBoss(&boss_xera),
+
+	Mechanic().setName("was teleported").setIds({MECHANIC_XERA_PORT}).setVerbosity(1).setBoss(&boss_xera),
 
 	Mechanic().setName("was teleported").setIds({MECHANIC_CARIN_TELEPORT}).setBoss(&boss_cairn),
 
@@ -262,6 +273,10 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("was hit by smash").setIds({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).setBoss(&boss_deimos),
 
 	Mechanic().setName("closed a tear").setIds({MECHANIC_DEIMOS_TEAR}).setBoss(&boss_deimos),
+
+	Mechanic().setName("has the teleport").setIds({MECHANIC_DEIMOS_PORT_BUFF}).setValue(6500).setBoss(&boss_deimos),
+
+	Mechanic().setName("was teleported").setIds({MECHANIC_DEIMOS_PORT}).setVerbosity(1).setBoss(&boss_deimos),
 
 	Mechanic().setName("stood in inner donut").setIds({MECHANIC_HORROR_DONUT_INNER}).setVerbosity(1).setBoss(&boss_sh),
 

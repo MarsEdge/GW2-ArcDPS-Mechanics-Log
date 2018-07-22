@@ -28,6 +28,7 @@ struct Mechanic
 	uint8_t is_activation;
 	uint8_t is_buffremove;
 	int32_t overstack_value;//required overstack value
+	int32_t value;//required value
     bool is_interupt;
     bool is_multihit;
     bool target_is_dst;
@@ -54,6 +55,7 @@ struct Mechanic
     Mechanic setIsActivation(uint8_t const new_is_activation) {this->is_activation = new_is_activation; return *this;}
     Mechanic setIsBuffremove(uint8_t const new_is_buffremove) {this->is_buffremove = new_is_buffremove; return *this;}
 	Mechanic setOverstackValue(int32_t const new_overstack_value) { this->overstack_value = new_overstack_value; return *this; }
+	Mechanic setValue(int32_t const new_value) { this->value = new_value; return *this; }
     Mechanic setIsInterupt(bool const new_is_interupt) {this->is_interupt = new_is_interupt; return *this;}
     Mechanic setIsMultihit(bool const new_is_multihit) {this->is_multihit = new_is_multihit; return *this;}
     Mechanic setTargetIsDst(bool const new_target_is_dst) {this->target_is_dst = new_target_is_dst; return *this;}
@@ -65,7 +67,7 @@ struct Mechanic
 	Mechanic setVerbosity(uint16_t const new_verbosity) { this->verbosity = new_verbosity; return *this; }
 
     Mechanic setSpecialRequirement(bool (*new_special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
-    Mechanic setSpecialValue(int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
+    Mechanic setSpecialReturnValue(int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
 };
 
 bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);

@@ -45,7 +45,10 @@ const uint32_t MECHANIC_KC_FIXATE_WEST = 34925;//Fixated, old and not used anymo
 const uint32_t MECHANIC_XERA_HALF = 34883;
 const uint32_t MECHANIC_XERA_ORB = 35128;//Temporal Shred
 const uint32_t MECHANIC_XERA_ORB_AOE = 34913;//Temporal Shred
-const uint32_t MECHANIC_XERA_MAGIC = 35000;//Intervention
+const uint32_t MECHANIC_XERA_MAGIC = 34956;
+const uint32_t MECHANIC_XERA_MAGIC_BUFF = 35000;//Intervention
+const uint32_t MECHANIC_XERA_PORT = 34997;
+const uint32_t MECHANIC_XERA_PORT_RETURN = 35076;//Hero's Return
 
 //carin
 const uint32_t MECHANIC_CARIN_TELEPORT = 38113;//Displacement
@@ -73,6 +76,8 @@ const uint32_t MECHANIC_DEIMOS_SMASH_INITIAL = 37929; //smash while killing the 
 const uint32_t MECHANIC_DEIMOS_SMASH_END_A = 37980;//Demonic Shock Wave,smash during last 10%
 const uint32_t MECHANIC_DEIMOS_SMASH_END_B = 37982;//different skill id for the 2 sides of the platform
 const uint32_t MECHANIC_DEIMOS_TEAR = 37733;//Tear Instability, buff from closing a tear
+const uint32_t MECHANIC_DEIMOS_PORT_BUFF = 37730;//Chosen by Eye of Janthir
+const uint32_t MECHANIC_DEIMOS_PORT = 38169;
 
 //Soulless Horror
 const uint32_t MECHANIC_HORROR_DONUT_INNER = 47327;//Vortex Slash
