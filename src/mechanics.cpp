@@ -99,7 +99,7 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 
 	if (!current_player) return false;
 
-	if (is_multihit && ev->time < (current_player->getLastHitTime() + frequency_player)) return false;
+	if (is_multihit && ev->time < (current_player->getLastMechanicHitTime(ids[0]) + frequency_player)) return false;
 
 	if (!valid_if_down && current_player->is_downed) return false;
 
@@ -107,7 +107,6 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 
 	if (!special_requirement(*this, ev, src, dst, current_player)) return false;
 
-    current_player->setLastHitTime(ev->time);
     last_hit_time = ev->time;
 
     return special_value(*this, ev, src, dst, current_player);
@@ -309,7 +308,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in a crack").setIds({MECHANIC_DHUUM_CRACK}).setBoss(&boss_dhuum),
 
-	Mechanic().setName("stood in a mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(0).setBoss(&boss_dhuum),
+	Mechanic().setName("stood in a mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(1).setBoss(&boss_dhuum),
 
 	Mechanic().setName("touched the center").setIds({MECHANIC_DHUUM_SUCK_AOE}).setBoss(&boss_dhuum),
 

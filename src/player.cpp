@@ -71,7 +71,7 @@ bool Player::operator==(std::string other_str)
 	return name == other_str || account == other_str;
 }
 
-Player::MechanicTracker::MechanicTracker(std::string &new_name, uint32_t &new_id,bool &new_fail, const Boss* new_boss)
+Player::MechanicTracker::MechanicTracker(uint64_t new_time, std::string &new_name, uint32_t &new_id,bool &new_fail, Boss* new_boss)
 {
     name = new_name;
     id = new_id;
@@ -79,6 +79,7 @@ Player::MechanicTracker::MechanicTracker(std::string &new_name, uint32_t &new_id
     current_boss = new_boss;
     hits = 1;
     pulls = new_boss ? new_boss->pulls : 1;
+	last_hit_time = new_time;
 }
 
 void Player::down()
@@ -102,7 +103,7 @@ void Player::fixDoubleDown()
     if(downs > 0) downs--;
 }
 
-void Player::receiveMechanic(std::string &name, uint32_t &id,bool &is_fail, const Boss* boss)
+void Player::receiveMechanic(uint64_t time, std::string &name, uint32_t &id,bool &is_fail, Boss* boss)
 {
     if(!is_fail)
     {
@@ -113,16 +114,19 @@ void Player::receiveMechanic(std::string &name, uint32_t &id,bool &is_fail, cons
         mechanics_failed++;
     }
     setLastMechanic(id);
+	setLastHitTime(time);
     for(uint16_t index=0;index<tracker.size();index++)
     {
         if(tracker.at(index).id == id)
         {
             tracker.at(index).hits++;
+			
+			if (tracker.at(index).last_hit_time < time) tracker.at(index).last_hit_time = time;
             return;
         }
     }
     std::lock_guard<std::mutex> lg(tracker_mtx);
-    tracker.push_back(MechanicTracker(name,id,is_fail,boss));
+    tracker.push_back(MechanicTracker(time,name,id,is_fail,boss));
     return;
 }
 
@@ -164,9 +168,24 @@ uint16_t Player::getLastMechanic()
     return last_mechanic;
 }
 
-void Player::setLastMechanic(uint16_t new_mechanic)
+void Player::setLastMechanic(uint32_t new_mechanic)
 {
     last_mechanic = new_mechanic;
+}
+
+uint64_t Player::getLastMechanicHitTime(uint32_t new_mechanic)
+{
+	uint64_t out = 0;
+
+	for (uint16_t index = 0; index<tracker.size(); index++)
+	{
+		if (tracker.at(index).id == new_mechanic)
+		{
+			out = tracker.at(index).last_hit_time;
+			break;
+		}
+	}
+	return out;
 }
 
 std::string Player::MechanicTracker::toString()
@@ -265,7 +284,7 @@ void Player::merge(Player * new_player)
 	{
 		for (uint16_t index_hits = 0; index_hits<new_player->tracker.at(index).hits; index_hits++)
 		{
-			receiveMechanic(new_player->tracker.at(index).name, new_player->tracker.at(index).id, new_player->tracker.at(index).fail, new_player->tracker.at(index).current_boss);
+			receiveMechanic(new_player->last_hit_time, new_player->tracker.at(index).name, new_player->tracker.at(index).id, new_player->tracker.at(index).fail, new_player->tracker.at(index).current_boss);
 		}
 	}
 	downs += new_player->downs;

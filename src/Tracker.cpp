@@ -73,7 +73,7 @@ Player Tracker::generatePlayer(char* name, char* account, uintptr_t id)
 
 	for (auto mechanic = mechanics.begin(); mechanic != mechanics.end(); ++mechanic)
 	{
-		out.receiveMechanic(mechanic->name, mechanic->ids[0], mechanic->fail_if_hit, mechanic->boss);
+		out.receiveMechanic(0,mechanic->name, mechanic->ids[0], mechanic->fail_if_hit, mechanic->boss);
 	}
 
 	out.resetStats();
@@ -165,14 +165,14 @@ void Tracker::processCombatExit(ag* new_agent)
 	}
 }
 
-void Tracker::processMechanic(Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
+void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
 {
 	if (new_mechanic->target_is_dst)
 	{
-		new_player_dst->receiveMechanic(new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
+		new_player_dst->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
 	}
 	else
 	{
-		new_player_src->receiveMechanic(new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
+		new_player_src->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
 	}
 }

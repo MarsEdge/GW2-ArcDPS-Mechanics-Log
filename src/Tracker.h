@@ -33,6 +33,6 @@ public:
 
 	void processCombatEnter(ag* new_agent);
 	void processCombatExit(ag* new_agent);
-	void processMechanic(Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value);
+	void processMechanic(cbtevent* ev, Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value);
 };
 

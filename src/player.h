@@ -31,10 +31,11 @@ struct Player
 		uint32_t id; //skill id;
         bool fail;
         uint16_t hits;
-        const Boss* current_boss; //boss
+        Boss* current_boss; //boss
         uint16_t pulls;
+		uint64_t last_hit_time;
 
-        MechanicTracker(std::string &new_name, uint32_t &new_id,bool &new_fail, const Boss* new_boss);
+        MechanicTracker(uint64_t new_time, std::string &new_name, uint32_t &new_id,bool &new_fail, Boss* new_boss);
 
         std::string toString();
         void addPull(Boss* new_boss);
@@ -55,7 +56,7 @@ struct Player
     void rally();
     void fixDoubleDown(); //manual case to fix vapor form counting as 2 downs
 
-    void receiveMechanic(std::string &name, uint32_t &id,bool &is_fail, const Boss* boss);
+    void receiveMechanic(uint64_t time, std::string &name, uint32_t &id,bool &is_fail, Boss* boss);
     bool isRelevant();     //if player is relevant for displaying
 
     uint64_t getLastStabTime();
@@ -65,7 +66,9 @@ struct Player
     void setLastHitTime(uint64_t new_hit_time);
 
     uint16_t getLastMechanic();
-    void setLastMechanic(uint16_t new_mechanic);
+    void setLastMechanic(uint32_t new_mechanic);
+
+	uint64_t getLastMechanicHitTime(uint32_t new_mechanic);
 
     std::string toString();
     uint16_t getMechanicsTotal();//returns the number of total mechanics the player had

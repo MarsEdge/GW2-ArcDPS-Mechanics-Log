@@ -61,11 +61,6 @@ WPARAM chart_key;
 
 inline int getElapsedTime(uint64_t &current_time)
 {
-    if(tracker.boss_data
-       && tracker.boss_data->timer)
-    {
-        return (tracker.boss_data->timer-(static_cast<int64_t>(current_time)-start_time))/1000;
-    }
     return (current_time-start_time)/1000;
 }
 
@@ -240,19 +235,22 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
 	if (!ev)
     {
-        /* notify tracking change */
-		if (isPlayer(src) && !src->elite)
-        {
-			/* add */
-			if (dst && src->prof)
-            {
-                tracker.addPlayer(src->name,dst->name,src->id);
-			}
+		if (src)
+		{
+			/* notify tracking change */
+			if (isPlayer(src) && !src->elite)
+			{
+				/* add */
+				if (dst && src->prof)
+				{
+					tracker.addPlayer(src->name, dst->name, src->id);
+				}
 
-			/* remove */
-			else
-            {
-				tracker.removePlayer(src->name, src->name, src->id);
+				/* remove */
+				else
+				{
+					tracker.removePlayer(src->name, src->name, src->id);
+				}
 			}
 		}
 	}
@@ -373,7 +371,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
                 {
                     if(value = mechanics[index].isValidHit(ev, current_player, other_player) && mechanics[index].verbosity >= 2)//TODO: Remove magic number 2
                     {
-						tracker.processMechanic(current_player, other_player, &mechanics[index], value);
+						tracker.processMechanic(ev, current_player, other_player, &mechanics[index], value);
                         int time = getElapsedTime(ev->time);
                         if(time < 0)
                         {
