@@ -75,7 +75,7 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 		return false;
 	}
 
-	if (is_buffremove
+	if (is_buffremove//TODO: this check is wrong. overstack does not require buffremove
 		&& overstack_value >= 0
 		&& overstack_value != ev->overstack_value)
 	{
@@ -271,7 +271,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("was hit by smash").setIds({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).setBoss(&boss_deimos),
 
-	Mechanic().setName("closed a tear").setIds({MECHANIC_DEIMOS_TEAR}).setBoss(&boss_deimos),
+	Mechanic().setName("closed a tear").setIds({MECHANIC_DEIMOS_TEAR}).setFailIfHit(false).setBoss(&boss_deimos),
 
 	Mechanic().setName("has the teleport").setIds({MECHANIC_DEIMOS_PORT_BUFF}).setValue(6500).setBoss(&boss_deimos),
 
@@ -294,6 +294,8 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("was puked on").setIds({MECHANIC_EATER_PUKE}).setFrequencyPlayer(3000).setBoss(&boss_soul_eater),
 
 	Mechanic().setName("stood in web").setIds({MECHANIC_EATER_WEB}).setFrequencyPlayer(3000).setBoss(&boss_soul_eater),
+
+	Mechanic().setName("got an orb").setIds({MECHANIC_EATER_ORB}).setFrequencyPlayer(ms_per_tick).setBoss(&boss_soul_eater),
 
 	Mechanic().setName("touched a messenger").setIds({MECHANIC_DHUUM_GOLEM}).setBoss(&boss_dhuum),
 
@@ -322,6 +324,8 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in cone").setIds({MECHANIC_DHUUM_CONE}).setBoss(&boss_dhuum),
 
+	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}),
+	
 	Mechanic().setName("vomited on someone").setIds({MECHANIC_NIGHTMARE_VOMIT}).setTargetIsDst(false),
 
 	Mechanic().setName("was hit by wirl").setIds({MECHANIC_MAMA_WIRL,MECHANIC_MAMA_WIRL_NORMAL}).setBoss(&boss_mama),

@@ -92,6 +92,7 @@ const uint32_t MECHANIC_HORROR_DEBUFF = 47414;//Necrosis
 //Eater of Souls
 const uint32_t MECHANIC_EATER_PUKE = 47303;//Hungering Miasma
 const uint32_t MECHANIC_EATER_WEB = 47695;//Spinner's Web
+const uint32_t MECHANIC_EATER_ORB = 47090;//Reclaimed Energy
 
 //Dhuum
 const uint32_t MECHANIC_DHUUM_GOLEM = 48172; //Hateful Ephemera (flesh golem)
@@ -108,6 +109,7 @@ const uint32_t MECHANIC_DHUUM_CONE = 47561;//Slash
 
 const uint32_t MECHANIC_FOTM_AGONY = 15773;//Agony
 const uint32_t MECHANIC_FOTM_SOCIAL_AWKWARDNESS = 33475;//Social Awkwardness
+const uint32_t MECHANIC_FOTM_FLUX_BOMB = 37695;//unnamed
 
 const uint32_t MECHANIC_NIGHTMARE_VOMIT = 37030;//Toxic Sickness
 
