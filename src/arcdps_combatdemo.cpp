@@ -8,14 +8,15 @@
 
 /* arcdps export table */
 typedef struct arcdps_exports {
-	uintptr_t size; /* arcdps internal use, ignore */
-	uintptr_t sig; /* pick a non-zero number that isn't used by other modules */
+	uintptr_t size; /* size of exports table */
+	uintptr_t sig; /* pick a number between 0 and uint64_t max that isn't used by other modules */
 	char* out_name; /* name string */
 	char* out_build; /* build string */
-	void* wnd; /* wndproc callback, fn(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) */
-	void* combat; /* combat event callback, fn(cbtevent* ev, ag* src, ag* dst, char* skillname) */
+	void* wnd_nofilter; /* wndproc callback, fn(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) */
+	void* combat; /* combat event callback, fn(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision) */
 	void* imgui; /* id3dd9::present callback, before imgui::render, fn() */
 	void* options; /* id3dd9::present callback, appending to the end of options window in arcdps, fn() */
+	void* combat_local;  /* combat event callback like area but from chat log, fn(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision) */
 } arcdps_exports;
 
 /* combat event */
@@ -50,7 +51,7 @@ typedef struct cbtevent {
 	uint8_t is_statechange; /* from cbtstatechange enum */
 	uint8_t is_flanking; /* target agent was not facing source */
 	uint8_t is_shields; /* all or partial damage was vs barrier/shield */
-	uint8_t pad63; /* internal tracking. garbage */
+	uint8_t is_offcycle; /* zero if buff dmg happened during tick, non-zero otherwise */
 	uint8_t pad64; /* internal tracking. garbage */
 } cbtevent;
 
@@ -69,7 +70,7 @@ arcdps_exports arc_exports;
 char* arcvers;
 void dll_init(HANDLE hModule);
 void dll_exit();
-extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* imguicontext);
+extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* imguicontext, IDirect3DDevice9* id3dd9);
 extern "C" __declspec(dllexport) void* get_release_addr();
 arcdps_exports* mod_init();
 uintptr_t mod_release();
@@ -98,14 +99,14 @@ void dll_exit() {
 	return;
 }
 
-/* export -- arcdps looks for this exported function and calls the address it returns */
-extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* imguicontext) {
+/* export -- arcdps looks for this exported function and calls the address it returns on client load */
+extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* imguicontext, IDirect3DDevice9* id3dd9) {
 	arcvers = arcversionstr;
 	//ImGui::SetCurrentContext((ImGuiContext*)imguicontext);
 	return mod_init;
 }
 
-/* export -- arcdps looks for this exported function and calls the address it returns */
+/* export -- arcdps looks for this exported function and calls the address it returns on client exit */
 extern "C" __declspec(dllexport) void* get_release_addr() {
 	arcvers = 0;
 	return mod_release;
@@ -125,15 +126,17 @@ arcdps_exports* mod_init() {
 	/* print */
 	DWORD written = 0;
 	HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
-	WriteConsoleA(hnd, &buff[0], p - &buff[0], &written, 0);
+	WriteConsoleA(hnd, &buff[0], (DWORD)(p - &buff[0]), &written, 0);
 
 	/* for arcdps */
+	memset(&arc_exports, 0, sizeof(arcdps_exports));
+	arc_exports.sig = 0xFFFA;
 	arc_exports.size = sizeof(arcdps_exports);
 	arc_exports.out_name = "combatdemo";
 	arc_exports.out_build = "0.1";
-	arc_exports.sig = 0x12345678;
-	arc_exports.wnd = mod_wnd;
+	arc_exports.wnd_nofilter = mod_wnd;
 	arc_exports.combat = mod_combat;
+	//arc_exports.size = (uintptr_t)"error message if you decide to not load, sig must be 0";
 	return &arc_exports;
 }
 
@@ -150,7 +153,7 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	char* p = &buff[0];
 
 	/* common */
-	p += _snprintf(p, 400, "==== wndproc %llx ====\n", hWnd);
+	p += _snprintf(p, 400, "==== wndproc %llx ====\n", (uintptr_t)hWnd);
 	p += _snprintf(p, 400, "umsg %u, wparam %lld, lparam %lld\n", uMsg, wParam, lParam);
 
 	/* print */
@@ -162,11 +165,10 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 /* combat callback -- may be called asynchronously. return ignored */
 /* one participant will be party/squad, or minion of. no spawn statechange events. despawn statechange only on marked boss npcs */
-uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
+uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision) {
 	/* big buffer */
 	char buff[4096];
 	char* p = &buff[0];
-	wchar_t buffw[4096];
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
 	if (!ev) {
@@ -177,21 +179,20 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 			/* add */
 			if (src->prof) {
 				p += _snprintf(p, 400, "==== cbtnotify ====\n");
-				// self flag disabled - always 1
-				p += _snprintf(p, 400, "agent added: %s:%s (%0llx), prof: %u, elite: %u, self: %u\n", src->name, dst->name, src->id, dst->prof, dst->elite, dst->self);
+				p += _snprintf(p, 400, "agent added: %s:%s (%0llx), instid: %u, prof: %u, elite: %u, self: %u\n", src->name, dst->name, src->id, dst->id, dst->prof, dst->elite, dst->self);
 			}
 
 			/* remove */
 			else {
 				p += _snprintf(p, 400, "==== cbtnotify ====\n");
-				p += _snprintf(p, 400, "agent removed: %s (%llx)\n", src->name, src->id);
+				p += _snprintf(p, 400, "agent removed: %s (%0llx)\n", src->name, src->id);
 			}
 		}
 
 		/* notify target change */
 		else if (src->elite == 1) {
 			p += _snprintf(p, 400, "==== cbtnotify ====\n");
-			p += _snprintf(p, 400, "new target: %llx\n", src->id);
+			p += _snprintf(p, 400, "new target: %0llx\n", src->id);
 		}
 	}
 
@@ -204,8 +205,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 		/* common */
 		p += _snprintf(p, 400, "==== cbtevent %u at %llu ====\n", cbtcount, ev->time);
-		p += _snprintf(p, 400, "source agent: %s (%llx:%u, %lx:%lx), master: %u\n", src->name, ev->src_agent, ev->src_instid, src->prof, src->elite, ev->src_master_instid);
-		if (ev->dst_agent) p += _snprintf(p, 400, "target agent: %s (%llx:%u, %lx:%lx)\n", dst->name, ev->dst_agent, ev->dst_instid, dst->prof, dst->elite);
+		p += _snprintf(p, 400, "source agent: %s (%0llx:%u, %lx:%lx), master: %u\n", src->name, ev->src_agent, ev->src_instid, src->prof, src->elite, ev->src_master_instid);
+		if (ev->dst_agent) p += _snprintf(p, 400, "target agent: %s (%0llx:%u, %lx:%lx)\n", dst->name, ev->dst_agent, ev->dst_instid, dst->prof, dst->elite);
 		else p += _snprintf(p, 400, "target agent: n/a\n");
 
 		/* statechange */
@@ -267,8 +268,10 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname) {
 
 	/* print */
 	DWORD written = 0;
-	int32_t rc = MultiByteToWideChar(CP_UTF8, 0, &buff[0], MAX_PATH, &buffw[0], 4096);
-	buffw[rc] = 0;
-	WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE), &buffw[0], wcslen(&buffw[0]), &written, 0);
+	p[0] = 0;
+	wchar_t buffw[4096];
+	//int32_t rc = MultiByteToWideChar(CP_UTF8, 0, &buff[0], 4096, &buffw[0], 4096);
+	//buffw[rc] = 0;
+	//WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE), &buffw[0], (DWORD)wcslen(&buffw[0]), &written, 0); causes a crash?
 	return 0;
 }
