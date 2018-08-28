@@ -117,12 +117,6 @@ bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* 
     return true;
 }
 
-bool requirementConjure(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
-{
-//    return dst->prof != 6;//not elementalist
-	return false;
-}
-
 bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
 {
     if((current_player->getLastHitTime() + current_mechanic.frequency_player) < ev->time)
@@ -353,16 +347,4 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("has a bomb").setIds({MECHANIC_ARKK_BOMB}).setFailIfHit(false).setBoss(&boss_arkk),//TODO Add BOSS_ARTSARIIV_ID and make boss id a vector
 
 //	Mechanic().setName("didn't block the goop").setIds({MECHANIC_ARKK_GOOP}).setBoss(&boss_arkk).setCanEvade(false),
-
-#if 0//disable conjure detection due to potential toxicity
-    Mechanic().setName("picked up an ice bow").setIds({CONJURE_ICE_BOW_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
-
-	Mechanic().setName("picked up a lightning hammer").setIds({CONJURE_LIGHTNING_HAMMER_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
-
-	Mechanic().setName("picked up a flame axe").setIds({CONJURE_FLAME_AXE_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
-
-	Mechanic().setName("picked up an earth shield").setIds({CONJURE_EARTH_SHIELD_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure),
-
-	Mechanic().setName("picked up an FGS").setIds({CONJURE_FIRE_GS_BUFF}).setFailIfHit(false).setSpecialRequirement(requirementConjure)
-#endif // 0
 };

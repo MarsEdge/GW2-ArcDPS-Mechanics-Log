@@ -138,22 +138,6 @@ const uint32_t MECHANIC_ARKK_OVERHEAD_SMASH = 38844;//Overhead Smash
 const uint32_t MECHANIC_ARKK_BOMB = 38880;//Corporeal Reassignment
 const uint32_t MECHANIC_ARKK_GOOP = 39711;//unnamed,the projectile that spawns the goop
 
-//conjures
-const uint32_t CONJURE_ICE_BOW = 5567;//Conjure Frost Bow
-const uint32_t CONJURE_ICE_BOW_BUFF = 15790;//Conjure Frost Attributes
-
-const uint32_t CONJURE_LIGHTNING_HAMMER = 5624;//Conjure Lightning Hammer
-const uint32_t CONJURE_LIGHTNING_HAMMER_BUFF = 15791;//Conjure Lightning Attributes
-
-const uint32_t CONJURE_FLAME_AXE = 5540;//Conjure Flame Axe
-const uint32_t CONJURE_FLAME_AXE_BUFF = 15789;//Conjure Flame Attributes
-
-const uint32_t CONJURE_EARTH_SHIELD = 5546;//Conjure Earth Shield
-const uint32_t CONJURE_EARTH_SHIELD_BUFF = 15788;//Conjure Earth Attributes
-
-const uint32_t CONJURE_FIRE_GS = 5516;//Conjure Fiery Greatsword
-const uint32_t CONJURE_FIRE_GS_BUFF = 15792;//Conjure Fire Attributes
-
 //Buffs
 const uint32_t BUFF_STABILITY = 1122;//Stability
 const uint32_t BUFF_VAPOR_FORM = 5620;//Vapor Form
