@@ -132,34 +132,35 @@ bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Play
 
 bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
 {
-	DeimosOil current_oil;
-	uint16_t oldest_index = max_deimos_oils-1;
-	uint16_t current_index = 0;
+	DeimosOil* current_oil = nullptr;
+	DeimosOil* oldest_oil = &deimos_oils[0];
 
-	for (uint16_t index = 0; index < max_deimos_oils; index++)
+	//find if the oil is already tracked
+	for (auto index = 0; index < max_deimos_oils; index++)
 	{
-		if (deimos_oils[index].last_touch_time < current_oil.last_touch_time)
+		if (deimos_oils[index].last_touch_time < oldest_oil->last_touch_time)//find oldest oil
 		{
-			oldest_index = index;
+			oldest_oil = &deimos_oils[index];
 		}
-		if (deimos_oils[index].id == ev->src_instid)
+		if (deimos_oils[index].id == ev->src_instid)//if oil is already known
 		{
-			current_oil = deimos_oils[index];
-			current_index = index;
+			current_oil = &deimos_oils[index];
 		}
 	}
 
-	if (!current_oil.id)
+	//if oil is new
+	if (!current_oil)
 	{
-		current_oil.id = ev->src_instid;
-		current_oil.last_touch_time = ev->time;
-		deimos_oils[oldest_index] = current_oil;
+		current_oil = oldest_oil;
+		current_oil->id = ev->src_instid;
+		current_oil->first_touch_time = ev->time;
+		current_oil->last_touch_time = ev->time;
 		return true;
 	}
 	else
-	{
-		deimos_oils[current_index].last_touch_time = ev->time;
-		if ((ev->time - current_oil.last_touch_time) > current_mechanic.frequency_player)
+	{//oil is already known
+		current_oil->last_touch_time = ev->time;
+		if ((ev->time - current_oil->last_touch_time) > current_mechanic.frequency_player)
 		{
 			return true;
 		}

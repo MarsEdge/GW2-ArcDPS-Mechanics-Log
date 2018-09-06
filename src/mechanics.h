@@ -81,6 +81,7 @@ const uint16_t max_deimos_oils = 3;
 struct DeimosOil
 {
 	uint16_t id = 0;
+	uint64_t first_touch_time = 0;
 	uint64_t last_touch_time = 0;
 };
 
