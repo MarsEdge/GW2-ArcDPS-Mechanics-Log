@@ -95,7 +95,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::BeginGroup();
     ImGui::Text("Name");
     ImGui::SameLine(getChartColumnLoc(window_width,1));
-    ImGui::Text("Received");
+    ImGui::Text("Neutral");
     ImGui::SameLine(getChartColumnLoc(window_width,2));
     ImGui::Text("Failed");
     ImGui::SameLine(getChartColumnLoc(window_width,3));
@@ -248,7 +248,7 @@ std::string AppChart::toString(Tracker* tracker)
 {
     std::string output = "";
 
-    output += "Player Name,Account Name,Boss Name,Mechanic Name,Received,Failed,Downs,Deaths,Pulls\n";
+    output += "Player Name,Account Name,Boss Name,Mechanic Name,Neutral,Failed,Downs,Deaths,Pulls\n";
 
 	for (std::list<Player>::iterator player = tracker->players.begin(); player != tracker->players.end(); ++player)
     {
