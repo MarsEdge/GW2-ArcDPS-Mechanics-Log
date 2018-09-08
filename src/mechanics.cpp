@@ -245,7 +245,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("was teleported").setIds({MECHANIC_CARIN_TELEPORT}).setBoss(&boss_cairn),
 
-	Mechanic().setName("was slapped").setIds({MECHANIC_CARIN_SWEEP}).setBoss(&boss_cairn),
+	Mechanic().setName("was slapped").setIds({MECHANIC_CARIN_SWEEP}).setBoss(&boss_cairn).setIsInterupt(true),
 
 //  Mechanic().setName("reflected shards").setIds({MECHANIC_CARIN_SHARD}).setTargetIsDst(false).setBoss(&boss_cairn),
 
