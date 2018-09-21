@@ -319,6 +319,18 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in cone").setIds({MECHANIC_DHUUM_CONE}).setBoss(&boss_dhuum),
 
+	Mechanic().setName("was squashed").setIds({MECHANIC_AMAL_SQUASH}).setIsInterupt(true),
+
+	Mechanic().setName("ate shockwave").setIds({MECHANIC_LARGOS_SHOCKWAVE}).setIsInterupt(true),
+
+	Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(1),
+
+	Mechanic().setName("was bubbled").setIds({MECHANIC_LARGOS_BUBBLE}),
+
+	Mechanic().setName("has a tidal pool").setIds({MECHANIC_LARGOS_TIDAL_POOL}),
+
+	Mechanic().setName("ate shockwave").setIds({MECHANIC_QADIM_SHOCKWAVE}),
+
 	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}),
 	
 	Mechanic().setName("vomited on someone").setIds({MECHANIC_NIGHTMARE_VOMIT}).setTargetIsDst(false),

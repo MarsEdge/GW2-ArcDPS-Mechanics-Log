@@ -107,6 +107,18 @@ const uint32_t MECHANIC_DHUUM_SNATCH = 47076;//nameless
 const uint32_t MECHANIC_DHUUM_BUTTON_CHANNEL = 47002;//nameless
 const uint32_t MECHANIC_DHUUM_CONE = 47561;//Slash
 
+//Conjured Amalgamate
+const uint32_t MECHANIC_AMAL_SQUASH = 52173;//Pulverize
+
+//Largos
+const uint32_t MECHANIC_LARGOS_SHOCKWAVE = 53018;//Sea Swell
+const uint32_t MECHANIC_LARGOS_WATERLOGGED = 51935;//Waterlogged
+const uint32_t MECHANIC_LARGOS_BUBBLE = 51755;//unnamed
+const uint32_t MECHANIC_LARGOS_TIDAL_POOL = 53097;//unnamed
+
+//Qadim
+const uint32_t MECHANIC_QADIM_SHOCKWAVE = 52224;//Flame Wave
+
 const uint32_t MECHANIC_FOTM_AGONY = 15773;//Agony
 const uint32_t MECHANIC_FOTM_SOCIAL_AWKWARDNESS = 33475;//Social Awkwardness
 const uint32_t MECHANIC_FOTM_FLUX_BOMB = 37695;//unnamed
