@@ -323,13 +323,21 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("ate shockwave").setIds({MECHANIC_LARGOS_SHOCKWAVE}).setIsInterupt(true),
 
-	Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(1),
+	Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(1).setValidIfDown(true).setFrequencyPlayer(1),
 
 	Mechanic().setName("was bubbled").setIds({MECHANIC_LARGOS_BUBBLE}),
 
-	Mechanic().setName("has a tidal pool").setIds({MECHANIC_LARGOS_TIDAL_POOL}),
+	Mechanic().setName("has a tidal pool").setIds({MECHANIC_LARGOS_TIDAL_POOL}).setFailIfHit(false),
+
+	Mechanic().setName("had boons stolen").setIds({MECHANIC_LARGOS_BOON_RIP}),
+
+	Mechanic().setName("stood in wirlpool").setIds({MECHANIC_LARGOS_WIRLPOOL}),
 
 	Mechanic().setName("ate shockwave").setIds({MECHANIC_QADIM_SHOCKWAVE}),
+
+	Mechanic().setName("stood in arcing fire").setIds({MECHANIC_QADIM_ARCING_FIRE_A,MECHANIC_QADIM_ARCING_FIRE_B,MECHANIC_QADIM_ARCING_FIRE_C}),
+
+	Mechanic().setName("stood in giant fireball").setIds({MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B}),
 
 	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}),
 	
