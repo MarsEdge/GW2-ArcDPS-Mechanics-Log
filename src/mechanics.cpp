@@ -339,7 +339,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in giant fireball").setIds({MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B}),
 
-	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}),
+	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}).setFailIfHit(false),
 	
 	Mechanic().setName("vomited on someone").setIds({MECHANIC_NIGHTMARE_VOMIT}).setTargetIsDst(false),
 
