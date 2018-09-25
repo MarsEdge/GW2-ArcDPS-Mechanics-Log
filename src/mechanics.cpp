@@ -173,7 +173,7 @@ bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, Player
 
 bool requirementOnSelf(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
 {
-	return src && dst && src->id == dst->id;
+	return ev->src_instid == ev->dst_instid;
 }
 
 int64_t valueDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
@@ -335,9 +335,9 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("ate shockwave").setIds({MECHANIC_QADIM_SHOCKWAVE}),
 
-	Mechanic().setName("stood in arcing fire").setIds({MECHANIC_QADIM_ARCING_FIRE_A,MECHANIC_QADIM_ARCING_FIRE_B,MECHANIC_QADIM_ARCING_FIRE_C}),
+	Mechanic().setName("stood in arcing fire").setIds({MECHANIC_QADIM_ARCING_FIRE_A,MECHANIC_QADIM_ARCING_FIRE_B,MECHANIC_QADIM_ARCING_FIRE_C}).setVerbosity(1),
 
-	Mechanic().setName("stood in giant fireball").setIds({MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B}),
+	Mechanic().setName("stood in giant fireball").setIds({MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_C}),
 
 	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}).setFailIfHit(false),
 	
