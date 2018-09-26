@@ -17,6 +17,12 @@ extern bool has_logged_mechanic;
 const unsigned int ms_per_tick = 40;// 1000/25
 const unsigned int combatapi_delay = 5000;
 
+enum Verbosity
+{
+	verbosity_chart = 1 << 0,
+	verbosity_log = 1 << 1
+};
+
 struct Mechanic
 {
     std::string name; //name of mechanic
@@ -39,11 +45,14 @@ struct Mechanic
 	bool can_block;
 	bool can_invuln;
 
-	uint16_t verbosity;
+	int verbosity;
 
     Mechanic();
 
 	int64_t isValidHit(cbtevent* ev, Player* src, Player* dst);
+
+	std::string getIniName();
+
     bool (*special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
     int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 
@@ -64,7 +73,7 @@ struct Mechanic
 	Mechanic setCanEvade(bool const new_can_evade) { this->can_evade = new_can_evade; return *this; }
 	Mechanic setCanBlock(bool const new_can_block) { this->can_block = new_can_block; return *this; }
 	Mechanic setCanInvuln(bool const new_can_invuln) { this->can_invuln = new_can_invuln; return *this; }
-	Mechanic setVerbosity(uint16_t const new_verbosity) { this->verbosity = new_verbosity; return *this; }
+	Mechanic setVerbosity(int const new_verbosity) { this->verbosity = new_verbosity; return *this; }
 
     Mechanic setSpecialRequirement(bool (*new_special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
     Mechanic setSpecialReturnValue(int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)) {this->special_value = new_special_value; return *this;}

@@ -369,10 +369,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 				Player* other_player = tracker.getPlayer(dst);
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(value = mechanics[index].isValidHit(ev, current_player, other_player) && mechanics[index].verbosity >= 2)//TODO: Remove magic number 2
+                    if(value = mechanics[index].isValidHit(ev, current_player, other_player))
                     {
 						tracker.processMechanic(ev, current_player, other_player, &mechanics[index], value);
-                        int time = getElapsedTime(ev->time);
+
+						if (!(mechanics[index].verbosity & verbosity_log)) continue;
+
+						int time = getElapsedTime(ev->time);
                         if(time < 0)
                         {
                             output += "-";
@@ -440,14 +443,17 @@ void ShowMechanicsLog(bool* p_open)
         print_buffer = "";
     }
 
-    if(show_app_log) log.draw("MECHANICS LOG", p_open, ImGuiWindowFlags_NoCollapse
+    if(show_app_log) log.draw("Mechanics Log", p_open, ImGuiWindowFlags_NoCollapse
 		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
 }
 
 void ShowMechanicsChart(bool* p_open)
 {
-    if(show_app_chart) chart.draw(&tracker, "MECHANICS CHART", p_open, ImGuiWindowFlags_NoCollapse
-		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0), arc_clicklock_altui);
+	if (show_app_chart)
+	{
+		chart.draw(&tracker, "Mechanics Chart", p_open, ImGuiWindowFlags_NoCollapse
+			| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0), arc_clicklock_altui);
+	}
 }
 
 uintptr_t mod_imgui()
@@ -475,8 +481,8 @@ uintptr_t mod_imgui()
 
 uintptr_t mod_options()
 {
-    ImGui::Checkbox("MECHANICS LOG", &show_app_log);
-    ImGui::Checkbox("MECHANICS CHART", &show_app_chart);
+    ImGui::Checkbox("Mechanics Log", &show_app_log);
+    ImGui::Checkbox("Mechanics Chart", &show_app_chart);
 
     return 0;
 }
@@ -520,6 +526,15 @@ void parseIni()
 
 	pszValue = mechanics_ini.GetValue("chart", "key", "78");
 	chart_key = std::stoi(pszValue);
+
+	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)
+	{
+		pszValue = mechanics_ini.GetValue("mechanic verbosity",
+			current_mechanic->getIniName().c_str(),
+			std::to_string(current_mechanic->verbosity).c_str());
+		
+		current_mechanic->setVerbosity(std::stoi(pszValue));
+	}
 }
 
 void writeIni()
@@ -530,6 +545,16 @@ void writeIni()
 
 	rc = mechanics_ini.SetValue("log", "key", std::to_string(log_key).c_str());
 	rc = mechanics_ini.SetValue("chart", "key", std::to_string(chart_key).c_str());
+
+	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)
+	{
+		if (current_mechanic->verbosity == 0) continue;//hide disabled mechanics
+		
+		rc = mechanics_ini.SetValue("mechanic verbosity",
+			current_mechanic->getIniName().c_str(),
+			std::to_string(current_mechanic->verbosity).c_str());
+
+	}
 
 	rc = mechanics_ini.SaveFile("addons\\arcdps\\arcdps_mechanics.ini");
 }

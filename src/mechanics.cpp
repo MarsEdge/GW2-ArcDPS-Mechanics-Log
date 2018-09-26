@@ -27,7 +27,7 @@ Mechanic::Mechanic()
 	can_block = true;
 	can_invuln = true;
 
-	verbosity = 2;
+	verbosity = (verbosity_chart | verbosity_log);
 
     special_requirement = requirementDefault;
 	special_value = valueDefault;
@@ -46,7 +46,7 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 	if (can_evade && ev->result == CBTR_EVADE) return false;
 	if (can_invuln && ev->result == CBTR_ABSORB) return false;
 
-	if (verbosity == 0) return false;
+	if (!verbosity) return false;
 
     for(index=0;index<ids.size();index++)
     {
@@ -110,6 +110,13 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
     last_hit_time = ev->time;
 
     return special_value(*this, ev, src, dst, current_player);
+}
+
+std::string Mechanic::getIniName()
+{
+	return std::to_string(ids.at(0))
+		+ " - " + (boss ? boss->name : "")
+		+ " - " + name;
 }
 
 bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
@@ -190,7 +197,7 @@ std::vector <Mechanic> mechanics =
 {
     Mechanic().setName("was teleported").setIds({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).setBoss(&boss_vg),
 
-	Mechanic().setName("stood in the green circle").setIds({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).setFailIfHit(false).setBoss(&boss_vg).setCanInvuln(false).setVerbosity(1),
+	Mechanic().setName("stood in the green circle").setIds({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).setFailIfHit(false).setBoss(&boss_vg).setCanInvuln(false).setVerbosity(verbosity_chart),
 
 	Mechanic().setName("was slammed").setIds({MECHANIC_GORS_SLAM}).setIsInterupt(true).setBoss(&boss_gors),
 
@@ -210,7 +217,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("got a bomb").setIds({MECHANIC_SLOTH_BOMB}).setFailIfHit(false).setFrequencyPlayer(6000).setBoss(&boss_sloth),
 
-	Mechanic().setName("stood in a bomb aoe").setIds({MECHANIC_SLOTH_BOMB_AOE}).setVerbosity(1).setBoss(&boss_sloth),
+	Mechanic().setName("stood in a bomb aoe").setIds({MECHANIC_SLOTH_BOMB_AOE}).setVerbosity(verbosity_chart).setBoss(&boss_sloth),
 
 	Mechanic().setName("was hit by flame breath").setIds({MECHANIC_SLOTH_FLAME_BREATH}).setBoss(&boss_sloth),
 
@@ -239,9 +246,9 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("touched an orb").setIds({MECHANIC_XERA_ORB}).setBoss(&boss_xera),
 
-	Mechanic().setName("stood in an orb aoe").setIds({MECHANIC_XERA_ORB_AOE}).setFrequencyPlayer(1000).setVerbosity(1).setBoss(&boss_xera),
+	Mechanic().setName("stood in an orb aoe").setIds({MECHANIC_XERA_ORB_AOE}).setFrequencyPlayer(1000).setVerbosity(verbosity_chart).setBoss(&boss_xera),
 
-	Mechanic().setName("was teleported").setIds({MECHANIC_XERA_PORT}).setVerbosity(1).setBoss(&boss_xera),
+	Mechanic().setName("was teleported").setIds({MECHANIC_XERA_PORT}).setVerbosity(verbosity_chart).setBoss(&boss_xera),
 
 	Mechanic().setName("was teleported").setIds({MECHANIC_CARIN_TELEPORT}).setBoss(&boss_cairn),
 
@@ -270,21 +277,21 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("has the teleport").setIds({MECHANIC_DEIMOS_PORT_BUFF}).setValue(6500).setBoss(&boss_deimos),
 
-	Mechanic().setName("was teleported").setIds({MECHANIC_DEIMOS_PORT}).setVerbosity(1).setBoss(&boss_deimos),
+	Mechanic().setName("was teleported").setIds({MECHANIC_DEIMOS_PORT}).setVerbosity(verbosity_chart).setBoss(&boss_deimos),
 
-	Mechanic().setName("stood in inner donut").setIds({MECHANIC_HORROR_DONUT_INNER}).setVerbosity(1).setBoss(&boss_sh),
+	Mechanic().setName("stood in inner donut").setIds({MECHANIC_HORROR_DONUT_INNER}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
-	Mechanic().setName("stood in outer donut").setIds({MECHANIC_HORROR_DONUT_OUTER}).setVerbosity(1).setBoss(&boss_sh),
+	Mechanic().setName("stood in outer donut").setIds({MECHANIC_HORROR_DONUT_OUTER}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
 	Mechanic().setName("stood in torment aoe").setIds({MECHANIC_HORROR_GOLEM_AOE}).setBoss(&boss_sh),
 
-	Mechanic().setName("stood in pie slice").setIds({MECHANIC_HORROR_PIE_4_A,MECHANIC_HORROR_PIE_4_B}).setVerbosity(1).setBoss(&boss_sh),
+	Mechanic().setName("stood in pie slice").setIds({MECHANIC_HORROR_PIE_4_A,MECHANIC_HORROR_PIE_4_B}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
 	Mechanic().setName("touched a scythe").setIds({MECHANIC_HORROR_SCYTHE}).setBoss(&boss_sh),
 
-	Mechanic().setName("took fixate").setIds({MECHANIC_HORROR_FIXATE}).setFailIfHit(false).setVerbosity(1).setBoss(&boss_sh),
+	Mechanic().setName("took fixate").setIds({MECHANIC_HORROR_FIXATE}).setFailIfHit(false).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
-	Mechanic().setName("was debuffed").setIds({MECHANIC_HORROR_DEBUFF}).setFailIfHit(false).setVerbosity(1).setBoss(&boss_sh),
+	Mechanic().setName("was debuffed").setIds({MECHANIC_HORROR_DEBUFF}).setFailIfHit(false).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
 	Mechanic().setName("was puked on").setIds({MECHANIC_EATER_PUKE}).setFrequencyPlayer(3000).setBoss(&boss_soul_eater),
 
@@ -305,7 +312,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in a crack").setIds({MECHANIC_DHUUM_CRACK}).setBoss(&boss_dhuum),
 
-	Mechanic().setName("stood in a mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(1).setBoss(&boss_dhuum),
+	Mechanic().setName("stood in a mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(verbosity_chart).setBoss(&boss_dhuum),
 
 	Mechanic().setName("touched the center").setIds({MECHANIC_DHUUM_SUCK_AOE}).setBoss(&boss_dhuum),
 
@@ -323,7 +330,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("ate shockwave").setIds({MECHANIC_LARGOS_SHOCKWAVE}),
 
-	Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(1).setValidIfDown(true).setFrequencyPlayer(1),
+	Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(verbosity_chart).setValidIfDown(true).setFrequencyPlayer(1),
 
 	Mechanic().setName("was bubbled").setIds({MECHANIC_LARGOS_BUBBLE}),
 
@@ -335,7 +342,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("ate shockwave").setIds({MECHANIC_QADIM_SHOCKWAVE}),
 
-	Mechanic().setName("stood in arcing fire").setIds({MECHANIC_QADIM_ARCING_FIRE_A,MECHANIC_QADIM_ARCING_FIRE_B,MECHANIC_QADIM_ARCING_FIRE_C}).setVerbosity(1),
+	Mechanic().setName("stood in arcing fire").setIds({MECHANIC_QADIM_ARCING_FIRE_A,MECHANIC_QADIM_ARCING_FIRE_B,MECHANIC_QADIM_ARCING_FIRE_C}).setVerbosity(verbosity_chart),
 
 	Mechanic().setName("stood in giant fireball").setIds({MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_C}),
 
