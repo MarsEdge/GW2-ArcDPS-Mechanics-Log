@@ -321,7 +321,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("was squashed").setIds({MECHANIC_AMAL_SQUASH}).setIsInterupt(true),
 
-	Mechanic().setName("ate shockwave").setIds({MECHANIC_LARGOS_SHOCKWAVE}).setIsInterupt(true),
+	Mechanic().setName("ate shockwave").setIds({MECHANIC_LARGOS_SHOCKWAVE}),
 
 	Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(1).setValidIfDown(true).setFrequencyPlayer(1),
 
