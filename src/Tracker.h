@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <list>
+#include <string>
 
 #include "player.h"
 #include "mechanics.h"
@@ -22,8 +23,10 @@ public:
 	~Tracker();
 
 	Player* getPlayer(ag* new_player);
-	bool addPlayer(char* name, char* account, uintptr_t id);
-	bool removePlayer(char* name, char* account, uintptr_t id);
+	Player* getPlayer(uintptr_t new_player);
+	Player* getPlayer(std::string new_player);
+	bool addPlayer(ag* src, ag* dst);//src&dst of combat event
+	bool removePlayer(ag* src);
 	Player generatePlayer(char* name, char* account, uintptr_t id);
 
 	void addPull(Boss* boss);

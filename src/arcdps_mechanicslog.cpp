@@ -243,13 +243,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname)
 				/* add */
 				if (dst && src->prof)
 				{
-					tracker.addPlayer(src->name, dst->name, src->id);
+					tracker.addPlayer(src,dst);
 				}
 
 				/* remove */
 				else
 				{
-					tracker.removePlayer(src->name, src->name, src->id);
+					tracker.removePlayer(src);
 				}
 			}
 		}

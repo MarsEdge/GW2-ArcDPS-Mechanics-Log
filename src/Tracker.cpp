@@ -28,41 +28,83 @@ Player* Tracker::getPlayer(ag* new_player)
 	}
 }
 
-bool Tracker::addPlayer(char* name, char* account, uintptr_t id)
+Player * Tracker::getPlayer(uintptr_t new_player)
 {
-	if (!name) return false;
-	if (!account) return false;
-
-	std::lock_guard<std::mutex> lg(players_mtx);
-	auto it = std::find(players.begin(), players.end(), std::string(account));//TODO: something more porformant than makeing a string for comparison?
+	std::lock_guard<std::mutex> lock(players_mtx);
+	auto it = std::find(players.begin(), players.end(), new_player);
 
 	//player not tracked yet
 	if (it == players.end())
+	{
+		return nullptr;
+	}
+	else//player tracked
+	{
+		return &*it;
+	}
+}
+
+Player * Tracker::getPlayer(std::string new_player)
+{
+	std::lock_guard<std::mutex> lock(players_mtx);
+	auto it = std::find(players.begin(), players.end(), new_player);
+
+	//player not tracked yet
+	if (it == players.end())
+	{
+		return nullptr;
+	}
+	else//player tracked
+	{
+		return &*it;
+	}
+}
+
+bool Tracker::addPlayer(ag* src, ag* dst)
+{
+	if (!src) return false;
+	if (!dst) return false;
+
+	char* name = src->name;
+	char* account = dst->name;
+	uintptr_t id = src->id;
+
+	if (!name) return false;
+	if (!account) return false;
+
+	Player* new_player = getPlayer(account);
+	//player not tracked yet
+	if (!new_player)
 	{
 		players.push_back(generatePlayer(name, account, id));
 	}
 	else//player tracked
 	{
-		it->id = id;
-		it->name = name;
-		it->in_squad = true;
+		new_player->id = id;
+		new_player->name = name;
+		new_player->in_squad = true;
 	}
 	return true;
 }
 
-bool Tracker::removePlayer(char* name, char* account, uintptr_t id)
+bool Tracker::removePlayer(ag* src)
 {
-	std::lock_guard<std::mutex> lock(players_mtx);
-	auto it = std::find(players.begin(), players.end(), id);
+	if (!src) return false;
+
+	char* name = src->name;
+	char* account = src->name;//TODO: if account names are ever added, put it here
+	uintptr_t id = src->id;
+
+	Player* new_player = getPlayer(id);
 
 	//player not tracked yet
-	if (it == players.end())
+	if (!new_player)
 	{
 		return false;
 	}
 	else
 	{
-		it->in_squad = false;
+		new_player->in_squad = false;
 		return true;
 	}
 }
