@@ -116,7 +116,7 @@ const uint32_t MECHANIC_LARGOS_WATERLOGGED = 51935;//Waterlogged
 const uint32_t MECHANIC_LARGOS_BUBBLE = 51755;//unnamed
 const uint32_t MECHANIC_LARGOS_TIDAL_POOL = 53097;//unnamed
 //TODO: being run over
-const uint32_t MECHANIC_LARGOS_BOON_RIP = 51727;//Aquatic Assassin
+const uint32_t MECHANIC_LARGOS_BOON_RIP = 51727;//Aquatic Assassin, TODO: fix, wrong id?
 const uint32_t MECHANIC_LARGOS_WIRLPOOL = 52130;//Aquatic Vortex
 
 //Qadim
@@ -127,6 +127,7 @@ const uint32_t MECHANIC_QADIM_ARCING_FIRE_C = 53153;//Fire Dance
 const uint32_t MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A = 51802;//Incineration Orb
 const uint32_t MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B = 52673;//Incineration Orb
 const uint32_t MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_C = 53093;//Incineration Orb
+//TODO: teleported
 
 const uint32_t MECHANIC_FOTM_AGONY = 15773;//Agony
 const uint32_t MECHANIC_FOTM_SOCIAL_AWKWARDNESS = 33475;//Social Awkwardness
