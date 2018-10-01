@@ -338,7 +338,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("had boons stolen").setIds({MECHANIC_LARGOS_BOON_RIP}),
 
-	Mechanic().setName("stood in wirlpool").setIds({MECHANIC_LARGOS_WIRLPOOL}),
+	Mechanic().setName("stood in whirlpool").setIds({MECHANIC_LARGOS_WHIRLPOOL}),
 
 	Mechanic().setName("ate shockwave").setIds({MECHANIC_QADIM_SHOCKWAVE}),
 

@@ -117,7 +117,7 @@ const uint32_t MECHANIC_LARGOS_BUBBLE = 51755;//unnamed
 const uint32_t MECHANIC_LARGOS_TIDAL_POOL = 53097;//unnamed
 //TODO: being run over
 const uint32_t MECHANIC_LARGOS_BOON_RIP = 51727;//Aquatic Assassin, TODO: fix, wrong id?
-const uint32_t MECHANIC_LARGOS_WIRLPOOL = 52130;//Aquatic Vortex
+const uint32_t MECHANIC_LARGOS_WHIRLPOOL = 52130;//Aquatic Vortex
 
 //Qadim
 const uint32_t MECHANIC_QADIM_SHOCKWAVE = 52224;//Flame Wave
