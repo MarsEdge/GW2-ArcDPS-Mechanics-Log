@@ -328,7 +328,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("was squashed").setIds({MECHANIC_AMAL_SQUASH}).setIsInterupt(true),
 
-	Mechanic().setName("ate shockwave").setIds({MECHANIC_LARGOS_SHOCKWAVE}),
+	Mechanic().setName("was shockwaved").setIds({MECHANIC_LARGOS_SHOCKWAVE}),
 
 	Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(verbosity_chart).setValidIfDown(true).setFrequencyPlayer(1),
 
@@ -340,7 +340,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in whirlpool").setIds({MECHANIC_LARGOS_WHIRLPOOL}),
 
-	Mechanic().setName("ate shockwave").setIds({MECHANIC_QADIM_SHOCKWAVE}),
+	Mechanic().setName("was shockwaved").setIds({MECHANIC_QADIM_SHOCKWAVE}),
 
 	Mechanic().setName("stood in arcing fire").setIds({MECHANIC_QADIM_ARCING_FIRE_A,MECHANIC_QADIM_ARCING_FIRE_B,MECHANIC_QADIM_ARCING_FIRE_C}).setVerbosity(verbosity_chart),
 
