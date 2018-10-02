@@ -163,7 +163,7 @@ void Player::setLastHitTime(uint64_t new_hit_time)
     last_hit_time = new_hit_time;
 }
 
-uint16_t Player::getLastMechanic()
+uint32_t Player::getLastMechanic()
 {
     return last_mechanic;
 }

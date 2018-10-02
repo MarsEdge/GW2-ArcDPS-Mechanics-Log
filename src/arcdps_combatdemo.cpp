@@ -17,6 +17,7 @@ typedef struct arcdps_exports {
 	void* imgui; /* id3dd9::present callback, before imgui::render, fn() */
 	void* options; /* id3dd9::present callback, appending to the end of options window in arcdps, fn() */
 	void* combat_local;  /* combat event callback like area but from chat log, fn(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision) */
+	void* wnd_filter; /* wndproc callback like above, input filered using modifiers */
 } arcdps_exports;
 
 /* combat event */
@@ -62,6 +63,7 @@ typedef struct ag {
 	uint32_t prof; /* profession at time of event. refer to evtc notes for identification */
 	uint32_t elite; /* elite spec at time of event. refer to evtc notes for identification */
 	uint32_t self; /* 1 if self, 0 if not */
+	uint16_t team; /* sep21+ */
 } ag;
 
 /* proto/globals */
@@ -179,7 +181,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 			/* add */
 			if (src->prof) {
 				p += _snprintf(p, 400, "==== cbtnotify ====\n");
-				p += _snprintf(p, 400, "agent added: %s:%s (%0llx), instid: %u, prof: %u, elite: %u, self: %u\n", src->name, dst->name, src->id, dst->id, dst->prof, dst->elite, dst->self);
+				p += _snprintf(p, 400, "agent added: %s:%s (%0llx), instid: %u, prof: %u, elite: %u, self: %u, team: %u, subgroup: %u\n", src->name, dst->name, src->id, dst->id, dst->prof, dst->elite, dst->self, src->team, dst->team);
 			}
 
 			/* remove */
