@@ -24,6 +24,8 @@ public:
 	Boss setHealth(uint64_t const new_health) { this->health = new_health; return *this; }
 };
 
+extern Boss boss_generic;
+
 extern Boss boss_vg;
 
 extern Boss boss_gors;
@@ -64,6 +66,15 @@ extern Boss boss_ice_king;
 extern Boss boss_cave;
 
 extern Boss boss_dhuum;
+
+
+extern Boss boss_ca;
+
+extern Boss boss_largos;
+
+extern Boss boss_qadim;
+
+extern Boss boss_fotm_generic;
 
 
 extern Boss boss_mama;

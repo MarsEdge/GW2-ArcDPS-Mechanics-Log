@@ -21,6 +21,7 @@ bool Boss::hasId(uint32_t new_id)
     return false;
 }
 
+Boss boss_generic = Boss().setName("Generic");
 Boss boss_vg = Boss().setIds({ 0x3C4E }).setTimer(8 * 60 * 1000).setHealth(22021440).setName("Vale Guardian");
 Boss boss_gors = Boss().setIds({ 0x3C45 }).setTimer(7 * 60 * 1000).setHealth(21628200).setName("Gorseval the Multifarious");
 Boss boss_sab = Boss().setIds({ 0x3C0F }).setTimer(9 * 60 * 1000).setHealth(34015256).setName("Sabetha the Saboteur");
@@ -38,6 +39,10 @@ Boss boss_soul_eater = Boss().setIds({ 0x4C50 }).setHealth(1720425).setName("Sta
 Boss boss_ice_king = Boss().setIds({ 0x4CEB }).setTimer((3 * 60 + 30) * 1000).setHealth(9831000).setName("Statues - Ice King");
 Boss boss_cave = Boss().setIds({ 0x4CC3,0x4D84 }).setHealth(2457750).setName("Statues - Cave");//North: Eye of Judgement, South: Eye of Fate
 Boss boss_dhuum = Boss().setIds({ 0x4BFA }).setTimer(10 * 60 * 1000).setHealth(32000000).setName("Dhuum");
+Boss boss_ca = Boss().setIds({ 43974,37464,10142 }).setTimer(8 * 60 * 1000).setName("Conjured Amalgamate");//TODO: Get boss HP
+Boss boss_largos = Boss().setIds({ 21105, 21089 }).setName("Twin Largos");//TODO get boss HP and enrage timers
+Boss boss_qadim = Boss().setIds({ 20934 }).setTimer(13 * 60 * 1000).setName("Qadim");//TODO get boss HP
+Boss boss_fotm_generic = Boss().setName("FotM Generic");
 Boss boss_mama = Boss().setIds({ 0x427D,0x4268,0x424E }).setHealth(5200519).setName("MAMA");//ids: cm,normal,knight at the start of the trash on CM
 Boss boss_siax = Boss().setIds({ 0x4284 }).setHealth(6138797).setName("Siax");//TODO get normal mode id
 Boss boss_ensolyss = Boss().setIds({ 0x4234 }).setHealth(14059890).setName("Ensolyss of the Endless Torment");//TODO get normal mode id
@@ -47,6 +52,7 @@ Boss boss_arkk = Boss().setIds({ 0x455F }).setHealth(9942250).setName("Arkk");//
 
 std::list<Boss*> bosses =
 {
+	&boss_generic,
 	&boss_vg,
 	&boss_gors,
 	&boss_sab,
@@ -64,6 +70,10 @@ std::list<Boss*> bosses =
 	&boss_ice_king,
 	&boss_cave,
 	&boss_dhuum,
+	&boss_ca,
+	&boss_largos,
+	&boss_qadim,
+	&boss_fotm_generic,
 	&boss_mama,
 	&boss_siax,
 	&boss_ensolyss,
