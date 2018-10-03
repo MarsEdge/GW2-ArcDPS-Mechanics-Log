@@ -39,10 +39,13 @@ int64_t start_time = 0;
 
 std::string print_buffer = "";
 std::mutex print_buffer_mtx;
-bool show_app_log;
+bool show_app_log = false;
 
-bool show_app_chart;
+bool show_app_chart = false;
 AppChart chart;
+
+bool show_options = false;
+AppOptions options;
 
 Tracker tracker;
 
@@ -457,6 +460,15 @@ void ShowMechanicsChart(bool* p_open)
 	}
 }
 
+void ShowMechanicsOptions(bool* p_open)
+{
+	if (show_options)
+	{
+		options.draw(&mechanics, "Mechanics Options", p_open, ImGuiWindowFlags_NoCollapse
+			| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
+	}
+}
+
 uintptr_t mod_imgui()
 {
 	auto io = &ImGui::GetIO();
@@ -477,6 +489,8 @@ uintptr_t mod_imgui()
 
 	ShowMechanicsChart(&show_app_chart);
 
+	ShowMechanicsOptions(&show_options);
+
     return 0;
 }
 
@@ -484,6 +498,7 @@ uintptr_t mod_options()
 {
     ImGui::Checkbox("Mechanics Log", &show_app_log);
     ImGui::Checkbox("Mechanics Chart", &show_app_chart);
+    ImGui::Checkbox("Mechanics Options", &show_options);
 
     return 0;
 }

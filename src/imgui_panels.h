@@ -39,5 +39,10 @@ struct AppChart
 	std::string getDefaultExportPath();
 };
 
+struct AppOptions
+{
+	void    draw(std::vector<Mechanic>* mechanics, const char* title, bool* p_open, ImGuiWindowFlags flags);
+};
+
 float getChartColumnWidth(float window_width);
 float getChartColumnLoc(float window_width, uint16_t col);

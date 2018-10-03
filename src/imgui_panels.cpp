@@ -111,7 +111,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::EndGroup();
 
     ImGui::BeginChild("scrolling");
-	for (std::list<Player>::iterator player = tracker->players.begin(); player != tracker->players.end(); ++player)
+	for (auto player = tracker->players.begin(); player != tracker->players.end(); ++player)
     {
         if(player->isRelevant())
         {
@@ -250,7 +250,7 @@ std::string AppChart::toString(Tracker* tracker)
 
     output += "Player Name,Account Name,Boss Name,Mechanic Name,Neutral,Failed,Downs,Deaths,Pulls\n";
 
-	for (std::list<Player>::iterator player = tracker->players.begin(); player != tracker->players.end(); ++player)
+	for (auto player = tracker->players.begin(); player != tracker->players.end(); ++player)
     {
         if(player->isRelevant())
         {
@@ -299,4 +299,28 @@ std::string AppChart::getDefaultExportPath()
 		return std::string(my_documents) + "\\Guild Wars 2\\addons\\arcdps\\arcdps.mechanics";
 	}
 	return "";
+}
+
+void AppOptions::draw(std::vector<Mechanic>* mechanics, const char * title, bool * p_open, ImGuiWindowFlags flags)
+{
+	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiSetCond_FirstUseEver);
+	ImGui::Begin(title, p_open, flags);
+	ImGui::PushAllowKeyboardFocus(false);
+	
+	ImGui::Text("Mechanic Verbosity");
+
+	ImGui::PushItemWidth(ImGui::GetWindowWidth()/3.0f);
+
+	for (auto current_mechanic = mechanics->begin(); current_mechanic != mechanics->end(); ++current_mechanic)
+	{
+		ImGui::Combo(current_mechanic->getIniName().c_str(), &current_mechanic->verbosity,
+			"Hidden\0"
+			"Chart Only\0"
+			"Log only\0"
+			"Both\0\0",4);
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::PopAllowKeyboardFocus();
+	ImGui::End();
 }
