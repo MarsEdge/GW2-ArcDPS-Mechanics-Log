@@ -209,6 +209,8 @@ void Tracker::processCombatExit(ag* new_agent)
 
 void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
 {
+	if (!(new_mechanic->verbosity & verbosity_chart)) return;
+	
 	if (new_mechanic->target_is_dst)
 	{
 		new_player_dst->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
