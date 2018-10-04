@@ -13,6 +13,7 @@
 #include "skill_ids.h"
 #include "npc_ids.h"
 #include "Tracker.h"
+#include "Options.h"
 
 /* proto/globals */
 arcdps_exports arc_exports;
@@ -42,10 +43,10 @@ std::mutex print_buffer_mtx;
 bool show_app_log = false;
 
 bool show_app_chart = false;
-AppChart chart;
+AppChart chart_ui;
 
 bool show_options = false;
-AppOptions options;
+AppOptions options_ui;
 
 Tracker tracker;
 
@@ -60,6 +61,8 @@ CSimpleIniA mechanics_ini(true);
 bool valid_mechanics_ini = false;
 WPARAM log_key;
 WPARAM chart_key;
+
+Options options;
 
 
 inline int getElapsedTime(uint64_t &current_time)
@@ -124,7 +127,7 @@ arcdps_exports* mod_init()
 /* release mod -- return ignored */
 uintptr_t mod_release()
 {
-    chart.writeToDisk(&tracker);
+    chart_ui.writeToDisk(&tracker);
 	tracker.players.clear();//TODO encapsulate
 	writeIni();
 	return 0;
@@ -373,7 +376,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 				Player* other_player = tracker.getPlayer(dst);
                 for(uint16_t index=0;index<mechanics.size();index++)
                 {
-                    if(value = mechanics[index].isValidHit(ev, current_player, other_player))
+					if (options.show_only_self)//skip mechanics that are not self if the option is set
+					{
+						if (mechanics[index].target_is_dst && !dst->self) continue;
+						if (!mechanics[index].target_is_dst && !src->self) continue;
+					}
+
+					if(value = mechanics[index].isValidHit(ev, current_player, other_player))
                     {
 						tracker.processMechanic(ev, current_player, other_player, &mechanics[index], value);
 
@@ -455,7 +464,7 @@ void ShowMechanicsChart(bool* p_open)
 {
 	if (show_app_chart)
 	{
-		chart.draw(&tracker, "Mechanics Chart", p_open, ImGuiWindowFlags_NoCollapse
+		chart_ui.draw(&tracker, "Mechanics Chart", p_open, ImGuiWindowFlags_NoCollapse
 			| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0), arc_clicklock_altui);
 	}
 }
@@ -464,7 +473,7 @@ void ShowMechanicsOptions(bool* p_open)
 {
 	if (show_options)
 	{
-		options.draw(&mechanics, "Mechanics Options", p_open, ImGuiWindowFlags_NoCollapse
+		options_ui.draw(&options, "Mechanics Options", p_open, ImGuiWindowFlags_NoCollapse
 			| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
 	}
 }
@@ -496,16 +505,21 @@ uintptr_t mod_imgui()
 
 uintptr_t mod_options()
 {
-    ImGui::Checkbox("Mechanics Log", &show_app_log);
-    ImGui::Checkbox("Mechanics Chart", &show_app_chart);
-    ImGui::Checkbox("Mechanics Options", &show_options);
+	bool expand = ImGui::TreeNode("Mechanics");
+	if (expand || arc_clicklock_altui)
+	{
+		ImGui::Checkbox("Mechanics Log", &show_app_log);
+		ImGui::Checkbox("Mechanics Chart", &show_app_chart);
+		ImGui::Checkbox("Mechanics Options", &show_options);
+		if (expand)ImGui::TreePop();
+	}
 
     return 0;
 }
 
 static int changeExportPath(ImGuiTextEditCallbackData *data)
 {
-	chart.export_path = data->Buf;
+	chart_ui.export_path = data->Buf;
 }
 
 void parseIni()
@@ -534,8 +548,8 @@ void parseIni()
 	pszValue = mechanics_ini.GetValue("chart", "show", "0");
 	show_app_chart = std::stoi(pszValue);
 
-	pszValue = mechanics_ini.GetValue("chart", "export_path", chart.getDefaultExportPath().c_str());
-	chart.export_path = pszValue;
+	pszValue = mechanics_ini.GetValue("chart", "export_path", chart_ui.getDefaultExportPath().c_str());
+	chart_ui.export_path = pszValue;
 
 	pszValue = mechanics_ini.GetValue("log", "key", "76");
 	log_key = std::stoi(pszValue);
@@ -551,13 +565,15 @@ void parseIni()
 		
 		current_mechanic->setVerbosity(std::stoi(pszValue));
 	}
+
+	options.mechanics = &mechanics;
 }
 
 void writeIni()
 {
 	SI_Error rc = mechanics_ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
 	rc = mechanics_ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());
-	rc = mechanics_ini.SetValue("chart", "export_path", chart.export_path.c_str());
+	rc = mechanics_ini.SetValue("chart", "export_path", chart_ui.export_path.c_str());
 
 	rc = mechanics_ini.SetValue("log", "key", std::to_string(log_key).c_str());
 	rc = mechanics_ini.SetValue("chart", "key", std::to_string(chart_key).c_str());

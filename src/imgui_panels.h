@@ -3,6 +3,7 @@
 #include "player.h"
 #include "imgui.h"
 #include "Tracker.h"
+#include "Options.h"
 #include <string>
 #include <fstream>
 #include <windows.h>
@@ -41,7 +42,7 @@ struct AppChart
 
 struct AppOptions
 {
-	void    draw(std::vector<Mechanic>* mechanics, const char* title, bool* p_open, ImGuiWindowFlags flags);
+	void    draw(Options* options, const char* title, bool* p_open, ImGuiWindowFlags flags);
 };
 
 float getChartColumnWidth(float window_width);

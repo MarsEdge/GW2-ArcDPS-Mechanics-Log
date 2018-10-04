@@ -301,23 +301,27 @@ std::string AppChart::getDefaultExportPath()
 	return "";
 }
 
-void AppOptions::draw(std::vector<Mechanic>* mechanics, const char * title, bool * p_open, ImGuiWindowFlags flags)
+void AppOptions::draw(Options* options, const char * title, bool * p_open, ImGuiWindowFlags flags)
 {
 	ImGui::SetNextWindowSize(ImVec2(550, 650), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
 	ImGui::PushAllowKeyboardFocus(false);
 	
-	ImGui::Text("Mechanic Verbosity");
+	ImGui::Checkbox("Only show mechanics for self", &options->show_only_self);
+
+	ImGui::Separator();
+	
+	ImGui::Text("Where to show each mechanic");
 
 	ImGui::PushItemWidth(ImGui::GetWindowWidth()/3.0f);
 
-	for (auto current_mechanic = mechanics->begin(); current_mechanic != mechanics->end(); ++current_mechanic)
+	for (auto current_mechanic = options->mechanics->begin(); current_mechanic != options->mechanics->end(); ++current_mechanic)
 	{
 		ImGui::Combo(current_mechanic->getIniName().c_str(), &current_mechanic->verbosity,
 			"Hidden\0"
 			"Chart Only\0"
 			"Log only\0"
-			"Both\0\0",4);
+			"Everywhere\0\0",4);
 	}
 	ImGui::PopItemWidth();
 

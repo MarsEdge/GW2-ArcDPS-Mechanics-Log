@@ -80,6 +80,9 @@
     <ClCompile Include="src\simpleini\testsi.cpp">
       <Filter>Source Files\SimpleInI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\arcdps_datastructures.h">
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="src\simpleini\ConvertUTF.h">
       <Filter>Header Files\SimpleIni</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Options.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
