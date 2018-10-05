@@ -344,7 +344,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in whirlpool").setIds({MECHANIC_LARGOS_WHIRLPOOL}).setBoss(&boss_largos),
 
-	Mechanic().setName("was shockwaved").setIds({MECHANIC_QADIM_SHOCKWAVE}).setBoss(&boss_qadim),
+	Mechanic().setName("was shockwaved").setIds({MECHANIC_QADIM_SHOCKWAVE_A,MECHANIC_QADIM_SHOCKWAVE_B}).setBoss(&boss_qadim),
 
 	Mechanic().setName("stood in arcing fire").setIds({MECHANIC_QADIM_ARCING_FIRE_A,MECHANIC_QADIM_ARCING_FIRE_B,MECHANIC_QADIM_ARCING_FIRE_C}).setVerbosity(verbosity_chart).setBoss(&boss_qadim),
 
