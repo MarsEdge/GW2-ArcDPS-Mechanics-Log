@@ -336,6 +336,8 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("has a tidal pool").setIds({MECHANIC_LARGOS_TIDAL_POOL}).setFailIfHit(false).setBoss(&boss_largos),
 
+	Mechanic().setName("stood in Geyser").setIds({MECHANIC_LARGOS_GEYSER}).setBoss(&boss_largos),
+
 	Mechanic().setName("had boons stolen").setIds({MECHANIC_LARGOS_BOON_RIP}).setBoss(&boss_largos),
 
 	Mechanic().setName("stood in whirlpool").setIds({MECHANIC_LARGOS_WHIRLPOOL}).setBoss(&boss_largos),
