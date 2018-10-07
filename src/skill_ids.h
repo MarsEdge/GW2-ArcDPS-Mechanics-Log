@@ -122,7 +122,7 @@ const uint32_t MECHANIC_LARGOS_WHIRLPOOL = 52130;//Aquatic Vortex
 
 //Qadim
 const uint32_t MECHANIC_QADIM_SHOCKWAVE_A = 52224;//Flame Wave
-const uint32_t MECHANIC_QADIM_SHOCKWAVE_B = 52814;//Flame Wave
+const uint32_t MECHANIC_QADIM_SHOCKWAVE_B = 52820;//Flame Wave
 const uint32_t MECHANIC_QADIM_ARCING_FIRE_A = 52383;//Fire Dance
 const uint32_t MECHANIC_QADIM_ARCING_FIRE_B = 52614;//Fire Dance
 const uint32_t MECHANIC_QADIM_ARCING_FIRE_C = 53153;//Fire Dance
