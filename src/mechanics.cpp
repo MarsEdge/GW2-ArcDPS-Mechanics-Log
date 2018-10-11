@@ -312,7 +312,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in a crack").setIds({MECHANIC_DHUUM_CRACK}).setBoss(&boss_dhuum),
 
-	Mechanic().setName("stood in a mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(verbosity_chart).setBoss(&boss_dhuum),
+	Mechanic().setName("stood in a poison mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(verbosity_chart).setBoss(&boss_dhuum),
 
 	Mechanic().setName("touched the center").setIds({MECHANIC_DHUUM_SUCK_AOE}).setBoss(&boss_dhuum),
 
