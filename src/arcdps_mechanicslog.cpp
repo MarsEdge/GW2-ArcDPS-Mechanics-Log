@@ -549,6 +549,7 @@ void parseIni()
 	show_app_chart = std::stoi(pszValue);
 
 	pszValue = mechanics_ini.GetValue("chart", "export_path", chart_ui.getDefaultExportPath().c_str());
+	if (pszValue.length() < 5) pszValue = chart_ui.getDefaultExportPath();
 	chart_ui.export_path = pszValue;
 
 	pszValue = mechanics_ini.GetValue("log", "key", "76");
