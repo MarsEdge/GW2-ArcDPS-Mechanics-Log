@@ -129,7 +129,7 @@ const uint32_t MECHANIC_QADIM_ARCING_FIRE_C = 53153;//Fire Dance
 const uint32_t MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A = 51802;//Incineration Orb
 const uint32_t MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B = 52673;//Incineration Orb
 const uint32_t MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_C = 53093;//Incineration Orb
-//TODO: teleported
+const uint32_t MECHANIC_QADIM_TELEPORT = 52281;//Swap
 //TODO: stating inside Qadim (in the mini lava font)
 
 const uint32_t MECHANIC_FOTM_AGONY = 15773;//Agony
