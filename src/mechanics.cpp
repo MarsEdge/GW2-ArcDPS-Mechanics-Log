@@ -9,6 +9,7 @@ DeimosOil deimos_oils[max_deimos_oils];
 Mechanic::Mechanic()
 {
     name = "";
+	ids_size = 0;
     boss = &boss_generic;
     frequency_player = 2000;
     frequency_global = 0;
@@ -48,7 +49,7 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 
 	if (!verbosity) return false;
 
-    for(index=0;index<ids.size();index++)
+    for(index=0;index<ids_size;index++)
     {
         if(ev->skillid==this->ids[index])
         {
@@ -350,7 +351,7 @@ std::vector <Mechanic> mechanics =
 
 //	Mechanic().setName("stood in giant fireball").setIds({MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_C}).setBoss(&boss_qadim),
 
-	Mechanic().setName("was teleported").setIds({MECHANIC_QADIM_TELEPORT}).setBoss(&boss_qadim),
+	Mechanic().setName("was teleported").setIds({MECHANIC_QADIM_TELEPORT}).setBoss(&boss_qadim).setValidIfDown(true),
 
 	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}).setFailIfHit(false).setBoss(&boss_fotm_generic),
 	
