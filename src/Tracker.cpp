@@ -14,7 +14,6 @@ Tracker::~Tracker()
 Player* Tracker::getPlayer(ag* new_player)
 {
 	if (!isPlayer(new_player)) return nullptr;
-	std::lock_guard<std::mutex> lock(players_mtx);
 	auto it = std::find(players.begin(), players.end(), new_player->id);
 
 	//player not tracked yet
@@ -32,7 +31,6 @@ Player * Tracker::getPlayer(uintptr_t new_player)
 {
 	if (!new_player) return nullptr;
 
-	std::lock_guard<std::mutex> lock(players_mtx);
 	auto it = std::find(players.begin(), players.end(), new_player);
 
 	//player not tracked yet
@@ -49,7 +47,6 @@ Player * Tracker::getPlayer(uintptr_t new_player)
 Player * Tracker::getPlayer(std::string new_player)
 {
 	if (new_player.empty()) return nullptr;
-	std::lock_guard<std::mutex> lock(players_mtx);
 	auto it = std::find(players.begin(), players.end(), new_player);
 
 	//player not tracked yet
