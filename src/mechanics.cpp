@@ -9,6 +9,7 @@ DeimosOil deimos_oils[max_deimos_oils];
 Mechanic::Mechanic()
 {
     name = "";
+	memset(ids, 0, sizeof(ids));
 	ids_size = 0;
     boss = &boss_generic;
     frequency_player = 2000;
@@ -115,7 +116,7 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 
 std::string Mechanic::getIniName()
 {
-	return std::to_string(ids.at(0))
+	return std::to_string(ids[0])
 		+ " - " + (boss ? boss->name : "")
 		+ " - " + name;
 }

@@ -16,6 +16,7 @@ extern bool has_logged_mechanic;
 
 const unsigned int ms_per_tick = 40;// 1000/25
 const unsigned int combatapi_delay = 5000;
+const unsigned int max_ids_per_mechanic = 10;
 
 enum Verbosity
 {
@@ -26,7 +27,7 @@ enum Verbosity
 struct Mechanic
 {
     std::string name; //name of mechanic
-    std::vector<uint32_t> ids; //skill ids;
+    uint32_t ids[max_ids_per_mechanic]; //skill ids;
 	size_t ids_size;
     Boss* boss;//required boss, ignored if null
     uint64_t frequency_player; //minimum time between instances of this mechanic per player(ms)
@@ -58,7 +59,7 @@ struct Mechanic
     int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 
     Mechanic setName(std::string const new_name) {this->name = new_name; return *this;}
-	Mechanic setIds(std::initializer_list<uint32_t> const new_ids) { this->ids = std::vector<uint32_t>(new_ids); this->ids_size = this->ids.size(); return *this; }
+	Mechanic setIds(std::initializer_list<uint32_t> const new_ids) { std::copy(new_ids.begin(), new_ids.end(), this->ids); this->ids_size = new_ids.size(); return *this; }
     Mechanic setBoss(Boss* const new_boss) {this->boss = new_boss; return *this;}
     Mechanic setFrequencyPlayer(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
     Mechanic setFrequencyGlobal(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}
