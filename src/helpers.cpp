@@ -6,7 +6,7 @@ int split (char *str, char c, char ***arr)
     int token_len = 1;
     int i = 0;
     char *p;
-    char *t;
+    char *t = nullptr;
 
     p = str;
     uint16_t times=0;
@@ -22,7 +22,7 @@ int split (char *str, char c, char ***arr)
     }
 
     *arr = (char**) malloc(sizeof(char*) * count);
-    if (*arr == NULL)
+    if (*arr == nullptr)
         exit(1);
 
     p = str;
@@ -32,7 +32,7 @@ int split (char *str, char c, char ***arr)
         if (*p == c)
         {
             (*arr)[i] = (char*) malloc( sizeof(char) * token_len );
-            if ((*arr)[i] == NULL)
+            if ((*arr)[i] == nullptr)
                 exit(1);
 
             token_len = 0;
@@ -46,7 +46,7 @@ int split (char *str, char c, char ***arr)
         }
     }
     (*arr)[i] = (char*) malloc( sizeof(char) * token_len );
-    if ((*arr)[i] == NULL)
+    if ((*arr)[i] == nullptr)
         exit(1);
 
     i = 0;

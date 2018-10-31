@@ -28,8 +28,8 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision);
 uintptr_t mod_imgui();
 uintptr_t mod_options();
-static int changeExportPath(ImGuiTextEditCallbackData *data);
-int getElapsedTime(uint64_t &current_time);
+static int changeExportPath(ImGuiTextEditCallbackData const *data);
+inline int getElapsedTime(uint64_t const &current_time) noexcept;
 void parseIni();
 void writeIni();
 bool modsPressed();
@@ -65,7 +65,7 @@ WPARAM chart_key;
 Options options;
 
 
-inline int getElapsedTime(uint64_t &current_time)
+inline int getElapsedTime(uint64_t const &current_time) noexcept
 {
     return (current_time-start_time)/1000;
 }
@@ -101,7 +101,7 @@ extern "C" __declspec(dllexport) void* get_init_addr(char* arcversionstr, void* 
 
 /* export -- arcdps looks for this exported function and calls the address it returns */
 extern "C" __declspec(dllexport) void* get_release_addr() {
-	arcvers = 0;
+	arcvers = nullptr;
 	return mod_release;
 }
 
@@ -136,13 +136,13 @@ uintptr_t mod_release()
 /* window callback -- return is assigned to umsg (return zero to not be processed by arcdps or game) */
 uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	auto io = &ImGui::GetIO();
+	auto const io = &ImGui::GetIO();
 
 	switch (uMsg)
 	{
 		case WM_KEYUP:
 		{
-			int vkey = (int)wParam;
+			const int vkey = (int)wParam;
 			io->KeysDown[vkey] = 0;
 			if (vkey == VK_CONTROL)
 			{
@@ -160,7 +160,7 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_KEYDOWN:
 		{
-			int vkey = (int)wParam;
+			const int vkey = (int)wParam;
 			io->KeysDown[vkey] = 1;
 			if (vkey == VK_CONTROL)
 			{
@@ -178,7 +178,7 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_SYSKEYUP:
 		{
-			int vkey = (int)wParam;
+			const int vkey = (int)wParam;
 			io->KeysDown[vkey] = 0;
 			if (vkey == VK_CONTROL)
 			{
@@ -196,7 +196,7 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_SYSKEYDOWN:
 		{
-			int vkey = (int)wParam;
+			const int vkey = (int)wParam;
 			io->KeysDown[vkey] = 1;
 			if (vkey == VK_CONTROL)
 			{
@@ -388,7 +388,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 
 						if (!(mechanics[index].verbosity & verbosity_log)) continue;
 
-						int time = getElapsedTime(ev->time);
+						const int time = getElapsedTime(ev->time);
                         if(time < 0)
                         {
                             output += "-";
@@ -480,7 +480,7 @@ void ShowMechanicsOptions(bool* p_open)
 
 uintptr_t mod_imgui()
 {
-	auto io = &ImGui::GetIO();
+	auto const io = &ImGui::GetIO();
 
 	if (io->KeysDown[arc_global_mod1] && io->KeysDown[arc_global_mod2])
 	{
@@ -505,7 +505,7 @@ uintptr_t mod_imgui()
 
 uintptr_t mod_options()
 {
-	bool expand = ImGui::TreeNode("Mechanics");
+	const bool expand = ImGui::TreeNode("Mechanics");
 	if (expand || arc_clicklock_altui)
 	{
 		ImGui::Checkbox("Mechanics Log", &show_app_log);
@@ -517,7 +517,7 @@ uintptr_t mod_options()
     return 0;
 }
 
-static int changeExportPath(ImGuiTextEditCallbackData *data)
+static int changeExportPath(ImGuiTextEditCallbackData const *data)
 {
 	chart_ui.export_path = data->Buf;
 }
@@ -528,10 +528,10 @@ void parseIni()
 	valid_arc_ini = rc < 0;
 
 	std::string pszValue = arc_ini.GetValue("keys", "global_mod1", "0x10");
-	arc_global_mod1 = std::stoi(pszValue,0,16);
+	arc_global_mod1 = std::stoi(pszValue,nullptr,16);
 
 	pszValue = arc_ini.GetValue("keys", "global_mod2", "0x12");
-	arc_global_mod2 = std::stoi(pszValue,0,16);
+	arc_global_mod2 = std::stoi(pszValue,nullptr,16);
 
 	pszValue = arc_ini.GetValue("session", "movelock_altui", "0");
 	arc_movelock_altui = std::stoi(pszValue);
