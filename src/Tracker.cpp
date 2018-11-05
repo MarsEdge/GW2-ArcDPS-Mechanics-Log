@@ -194,12 +194,12 @@ void Tracker::processCombatEnter(cbtevent* ev, ag* new_agent)
 	if (new_agent && new_agent->self)
 	{
 		start_time = ev->time;
-	}
-	
-	if (has_logged_mechanic)
-	{
-		has_logged_mechanic = false;
-		log_events.push_back(LogEvent(nullptr, nullptr, getElapsedTime(ev->time), 1));//TODO: make function for pushing log events
+
+		if (has_logged_mechanic)
+		{
+			has_logged_mechanic = false;
+			log_events.push_back(LogEvent(nullptr, nullptr, getElapsedTime(ev->time), 1));//TODO: make function for pushing log events
+		}
 	}
 	if (log_events.size() > max_log_events)
 	{
@@ -238,6 +238,7 @@ void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_
 		{
 			log_events.pop_front();
 		}
+		has_logged_mechanic = true;
 	}
 	
 	if (new_mechanic->verbosity & verbosity_chart)
