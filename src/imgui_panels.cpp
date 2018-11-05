@@ -1,57 +1,35 @@
 #include "imgui_panels.h"
 
-// Usage:
-//  static ExampleAppLog my_log;
-//  my_log.AddLog("Hello %d world\n", 123);
-//  my_log.Draw("title");
-void    AppLog::clear()
-{
-    buf.clear();
-    line_offsets.clear();
-}
-
-void    AppLog::addLog(const char* fmt, ...) IM_PRINTFARGS(2)
-{
-    int old_size = buf.size();
-    va_list args;
-    va_start(args, fmt);
-    buf.appendv(fmt, args);
-    va_end(args);
-    for (int new_size = buf.size(); old_size < new_size; old_size++)
-        if (buf[old_size] == '\n')
-            line_offsets.push_back(old_size);
-    scroll_to_bottom = true;
-}
-
-void    AppLog::draw(const char* title, bool* p_open = NULL, ImGuiWindowFlags flags = 0)
+void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tracker* tracker)
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
 	ImGui::PushAllowKeyboardFocus(false);
-    if (ImGui::Button("Clear")) clear();
+	if (ImGui::Button("Clear")) tracker->log_events.clear();
     ImGui::SameLine();
     bool copy = ImGui::Button("Copy");
     ImGui::SameLine();
     filter.Draw("Filter", -50.0f);
     ImGui::Separator();
     ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
-    if (copy) ImGui::LogToClipboard();
+	int64_t last_mechanic_time = 0;
+	bool beginning = true;
+	if (copy) ImGui::LogToClipboard();
 
-    if (filter.IsActive())
-    {
-        const char* buf_begin = buf.begin();
-        const char* line = buf_begin;
-        for (int line_no = 0; line != NULL; line_no++)
-        {
-            const char* line_end = (line_no < line_offsets.Size) ? buf_begin + line_offsets[line_no] : NULL;
-            if (filter.PassFilter(line, line_end))
-                ImGui::TextUnformatted(line, line_end);
-            line = line_end && line_end[1] ? line_end + 1 : NULL;
-        }
-    }
-    else
-    {
-        ImGui::TextUnformatted(buf.begin());
+	for (auto current_event = tracker->log_events.begin(); current_event != tracker->log_events.end(); ++current_event)
+	{
+		if (!filter.IsActive() || filter.PassFilter(current_event->getFilterText().c_str()))
+		{
+			if (!beginning
+				&& current_event->time > (last_mechanic_time + line_break_frequency))
+			{
+				ImGui::Dummy(ImVec2(0, ImGui::GetTextLineHeight()));
+			}
+			last_mechanic_time = current_event->time;
+			
+			current_event->draw();
+			beginning = false;
+		}
     }
 
     if (scroll_to_bottom)
@@ -301,13 +279,15 @@ std::string AppChart::getDefaultExportPath()
 	return "";
 }
 
-void AppOptions::draw(Options* options, const char * title, bool * p_open, ImGuiWindowFlags flags)
+void AppOptions::draw(Options* options, Tracker* tracker, const char * title, bool * p_open, ImGuiWindowFlags flags)
 {
 	ImGui::SetNextWindowSize(ImVec2(550, 650), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
 	ImGui::PushAllowKeyboardFocus(false);
 	
 	ImGui::Checkbox("Only show mechanics for self", &options->show_only_self);
+
+	ImGui::InputInt("Max mechanics in log", &tracker->max_log_events, 25);
 
 	ImGui::Separator();
 	

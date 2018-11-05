@@ -1,8 +1,5 @@
 #include "mechanics.h"
 
-bool have_added_line_break = true;
-uint64_t last_mechanic_time = 0;
-uint64_t line_break_frequency = 5000;
 bool has_logged_mechanic = false;
 DeimosOil deimos_oils[max_deimos_oils];
 

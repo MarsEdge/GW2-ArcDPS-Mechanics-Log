@@ -29,18 +29,14 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 uintptr_t mod_imgui();
 uintptr_t mod_options();
 static int changeExportPath(ImGuiTextEditCallbackData const *data);
-inline int getElapsedTime(uint64_t const &current_time) noexcept;
 void parseIni();
 void writeIni();
 bool modsPressed();
 bool canMoveWindows();
 bool canClickWindows();
 
-int64_t start_time = 0;
-
-std::string print_buffer = "";
-std::mutex print_buffer_mtx;
 bool show_app_log = false;
+AppLog log_ui;
 
 bool show_app_chart = false;
 AppChart chart_ui;
@@ -65,10 +61,7 @@ WPARAM chart_key;
 Options options;
 
 
-inline int getElapsedTime(uint64_t const &current_time) noexcept
-{
-    return (current_time-start_time)/1000;
-}
+
 
 /* dll main -- winapi */
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ulReasonForCall, LPVOID lpReserved) {
@@ -237,7 +230,6 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision)
 {
 	Player* current_player = nullptr;
-	std::string output = "";
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
 	if (!ev)
@@ -273,25 +265,12 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
         {
             if(ev->is_statechange==CBTS_ENTERCOMBAT)
             {
-				tracker.processCombatEnter(src);
-                if(src && src->self)
-                {
-                    start_time = ev->time;
-                    if(has_logged_mechanic)
-                    {
-                        has_logged_mechanic = false;
-                        output += "===========\n";
-                    }
-                }
-                else
-                {
-                    
-                }
+				tracker.processCombatEnter(ev, src);
             }
 
             else if(ev->is_statechange==CBTS_EXITCOMBAT)
             {
-				tracker.processCombatExit(src);
+				tracker.processCombatExit(ev, src);
             }
 
             //if rally
@@ -385,61 +364,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 					if(value = mechanics[index].isValidHit(ev, current_player, other_player))
                     {
 						tracker.processMechanic(ev, current_player, other_player, &mechanics[index], value);
-
-						if (!(mechanics[index].verbosity & verbosity_log)) continue;
-
-						const int time = getElapsedTime(ev->time);
-                        if(time < 0)
-                        {
-                            output += "-";
-                        }
-                        output += std::to_string(abs(time/60));
-                        output += ":";
-                        if(abs(time)%60 < 10)
-                        {
-                            output += "0";
-                        }
-                        output += std::to_string(abs(time)%60);
-                        output += " - ";
-                        if(mechanics[index].target_is_dst)
-                        {
-                            output += dst->name;
-                        }
-                        else
-                        {
-                            output += src->name;
-                        }
-                        output += " ";
-                        output += mechanics[index].name;
-
-						if (value != 1)
-						{
-							output += ", value = " + std::to_string(value);
-						}
-
-                        output += "\n";
-						last_mechanic_time = ev->time;
-						have_added_line_break = false;
-						has_logged_mechanic = true;
+						log_ui.scroll_to_bottom = true;
                     }
                 }
             }
         }
 
 		/* common */
-
-		if(!have_added_line_break
-        && ev->time > (last_mechanic_time + line_break_frequency))
-        {
-            have_added_line_break = true;
-            output += "\n";
-        }
-	}
-
-	if (output.size() > 0)
-	{
-		std::lock_guard<std::mutex> lock(print_buffer_mtx);
-		print_buffer += output;
 	}
 
 	return 0;
@@ -447,17 +378,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 
 void ShowMechanicsLog(bool* p_open)
 {
-    static AppLog log;
-
-    if(print_buffer.size() > 0)
-    {
-		std::lock_guard<std::mutex> lock(print_buffer_mtx);
-        log.addLog(print_buffer.c_str());
-        print_buffer = "";
-    }
-
-    if(show_app_log) log.draw("Mechanics Log", p_open, ImGuiWindowFlags_NoCollapse
-		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
+	if(show_app_log) log_ui.draw("Mechanics Log", p_open, ImGuiWindowFlags_NoCollapse
+		| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0), &tracker);
 }
 
 void ShowMechanicsChart(bool* p_open)
@@ -473,7 +395,7 @@ void ShowMechanicsOptions(bool* p_open)
 {
 	if (show_options)
 	{
-		options_ui.draw(&options, "Mechanics Options", p_open, ImGuiWindowFlags_NoCollapse
+		options_ui.draw(&options, &tracker, "Mechanics Options", p_open, ImGuiWindowFlags_NoCollapse
 			| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
 	}
 }
@@ -558,6 +480,12 @@ void parseIni()
 	pszValue = mechanics_ini.GetValue("chart", "key", "78");
 	chart_key = std::stoi(pszValue);
 
+	pszValue = mechanics_ini.GetValue("general", "self_only", std::to_string(options.show_only_self).c_str());
+	options.show_only_self = std::stoi(pszValue);
+
+	pszValue = mechanics_ini.GetValue("log", "max_mechanics", std::to_string(tracker.max_log_events).c_str());
+	tracker.max_log_events = std::stoi(pszValue);
+
 	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)
 	{
 		pszValue = mechanics_ini.GetValue("mechanic verbosity",
@@ -578,6 +506,9 @@ void writeIni()
 
 	rc = mechanics_ini.SetValue("log", "key", std::to_string(log_key).c_str());
 	rc = mechanics_ini.SetValue("chart", "key", std::to_string(chart_key).c_str());
+	
+	rc = mechanics_ini.SetValue("general", "self_only", std::to_string(options.show_only_self).c_str());
+	rc = mechanics_ini.SetValue("log", "max_mechanics", std::to_string(tracker.max_log_events).c_str());
 
 	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)
 	{

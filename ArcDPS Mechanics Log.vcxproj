@@ -133,6 +133,7 @@ copy /Y "$(TargetPath)" "C:\Program Files\Guild Wars 2\bin64\$(TargetFileName)"<
     <ClCompile Include="src\imgui_demo.cpp" />
     <ClCompile Include="src\imgui_draw.cpp" />
     <ClCompile Include="src\imgui_panels.cpp" />
+    <ClCompile Include="src\LogEvent.cpp" />
     <ClCompile Include="src\mechanics.cpp" />
     <ClCompile Include="src\npc_ids.cpp" />
     <ClCompile Include="src\Options.cpp" />
@@ -159,6 +160,7 @@ copy /Y "$(TargetPath)" "C:\Program Files\Guild Wars 2\bin64\$(TargetFileName)"<
     <ClInclude Include="src\imgui.h" />
     <ClInclude Include="src\imgui_internal.h" />
     <ClInclude Include="src\imgui_panels.h" />
+    <ClInclude Include="src\LogEvent.h" />
     <ClInclude Include="src\mechanics.h" />
     <ClInclude Include="src\npc_ids.h" />
     <ClInclude Include="src\Options.h" />

@@ -172,7 +172,7 @@ uint8_t Tracker::getPlayerNumInCombat()
 	return result;
 }
 
-void Tracker::processCombatEnter(ag* new_agent)
+void Tracker::processCombatEnter(cbtevent* ev, ag* new_agent)
 {
 	Player* new_player = nullptr;
 	if (new_player = getPlayer(new_agent))
@@ -191,9 +191,23 @@ void Tracker::processCombatEnter(ag* new_agent)
 			}
 		}
 	}
+	if (new_agent && new_agent->self)
+	{
+		start_time = ev->time;
+	}
+	
+	if (has_logged_mechanic)
+	{
+		has_logged_mechanic = false;
+		log_events.push_back(LogEvent(nullptr, nullptr, getElapsedTime(ev->time), 1));//TODO: make function for pushing log events
+	}
+	if (log_events.size() > max_log_events)
+	{
+		log_events.pop_front();
+	}
 }
 
-void Tracker::processCombatExit(ag* new_agent)
+void Tracker::processCombatExit(cbtevent* ev, ag* new_agent)
 {
 	Player* new_player = nullptr;
 	if (new_player = getPlayer(new_agent))
@@ -209,14 +223,37 @@ void Tracker::processCombatExit(ag* new_agent)
 
 void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
 {
-	if (!(new_mechanic->verbosity & verbosity_chart)) return;
+	if (new_mechanic->verbosity & verbosity_log)
+	{
+		//TODO: Need mutex here?
+		if (new_mechanic->target_is_dst)
+		{
+			log_events.push_back(LogEvent(new_player_dst, new_mechanic, getElapsedTime(ev->time), value));
+		}
+		else
+		{
+			log_events.push_back(LogEvent(new_player_dst, new_mechanic, getElapsedTime(ev->time), value));
+		}
+		if (log_events.size() > max_log_events)
+		{
+			log_events.pop_front();
+		}
+	}
 	
-	if (new_mechanic->target_is_dst)
+	if (new_mechanic->verbosity & verbosity_chart)
 	{
-		new_player_dst->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
+		if (new_mechanic->target_is_dst)
+		{
+			new_player_dst->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
+		}
+		else
+		{
+			new_player_src->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
+		}
 	}
-	else
-	{
-		new_player_src->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
-	}
+}
+
+int Tracker::getElapsedTime(uint64_t const &current_time) noexcept
+{
+	return (current_time - start_time) / 1000;
 }
