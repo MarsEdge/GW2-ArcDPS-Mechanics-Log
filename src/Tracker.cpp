@@ -178,6 +178,22 @@ void Tracker::processCombatEnter(cbtevent* ev, ag* new_agent)
 	if (new_player = getPlayer(new_agent))
 	{
 		new_player->combatEnter();
+
+		if (new_agent && new_agent->self)
+		{
+			start_time = ev->time;
+
+			if (has_logged_mechanic)
+			{
+				has_logged_mechanic = false;
+				log_events.push_back(LogEvent(nullptr, nullptr, getElapsedTime(ev->time), 1));//TODO: make function for pushing log events
+
+				if (log_events.size() > max_log_events)
+				{
+					log_events.pop_front();
+				}
+			}
+		}
 	}
 
 	if (!boss_data)
@@ -190,20 +206,6 @@ void Tracker::processCombatEnter(cbtevent* ev, ag* new_agent)
 				addPull(boss_data);
 			}
 		}
-	}
-	if (new_agent && new_agent->self)
-	{
-		start_time = ev->time;
-
-		if (has_logged_mechanic)
-		{
-			has_logged_mechanic = false;
-			log_events.push_back(LogEvent(nullptr, nullptr, getElapsedTime(ev->time), 1));//TODO: make function for pushing log events
-		}
-	}
-	if (log_events.size() > max_log_events)
-	{
-		log_events.pop_front();
 	}
 }
 
