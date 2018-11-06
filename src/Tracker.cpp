@@ -203,7 +203,6 @@ void Tracker::processCombatEnter(cbtevent* ev, ag* new_agent)
 			if ((*current_boss)->hasId(new_agent->prof))
 			{
 				boss_data = *current_boss;
-				addPull(boss_data);
 			}
 		}
 	}
@@ -215,11 +214,12 @@ void Tracker::processCombatExit(cbtevent* ev, ag* new_agent)
 	if (new_player = getPlayer(new_agent))
 	{
 		new_player->combatExit();
-	}
 
-	if (getPlayerNumInCombat() == 0)
-	{
-		boss_data = nullptr;
+		if (getPlayerNumInCombat() == 0)
+		{
+			addPull(boss_data);
+			boss_data = nullptr;
+		}
 	}
 }
 
