@@ -234,7 +234,7 @@ void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_
 		}
 		else
 		{
-			log_events.push_back(LogEvent(new_player_dst, new_mechanic, getElapsedTime(ev->time), value));
+			log_events.push_back(LogEvent(new_player_src, new_mechanic, getElapsedTime(ev->time), value));
 		}
 		if (log_events.size() > max_log_events)
 		{
