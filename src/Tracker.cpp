@@ -227,7 +227,7 @@ void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_
 {
 	if (new_mechanic->verbosity & verbosity_log)
 	{
-		//TODO: Need mutex here?
+		std::lock_guard<std::mutex> lg(log_events_mtx);
 		if (new_mechanic->target_is_dst)
 		{
 			log_events.push_back(LogEvent(new_player_dst, new_mechanic, getElapsedTime(ev->time), value));

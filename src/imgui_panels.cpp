@@ -16,6 +16,8 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 	bool beginning = true;
 	if (copy) ImGui::LogToClipboard();
 
+	std::lock_guard<std::mutex> lg(tracker->log_events_mtx);
+
 	for (auto current_event = tracker->log_events.begin(); current_event != tracker->log_events.end(); ++current_event)
 	{
 		if (!filter.IsActive() || filter.PassFilter(current_event->getFilterText().c_str()))
