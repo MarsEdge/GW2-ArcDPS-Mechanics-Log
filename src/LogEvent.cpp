@@ -8,6 +8,8 @@ LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time
 	mechanic = new_mechanic;
 	time = new_time;
 	value = new_value;
+
+	bakeTimeStr();
 }
 
 
@@ -24,17 +26,9 @@ void LogEvent::draw()
 	}
 	
 	std::string output = "";
-	if (time < 0)
-	{
-		output += "-";
-	}
-	output += std::to_string(abs(time / 60));
-	output += ":";
-	if (abs(time) % 60 < 10)
-	{
-		output += "0";
-	}
-	output += std::to_string(abs(time) % 60);
+	
+	output += time_str;
+
 	output += " - ";
 
 	output += player->name;
@@ -48,6 +42,25 @@ void LogEvent::draw()
 	}
 
 	ImGui::Text(output.c_str());
+}
+
+void LogEvent::bakeTimeStr()
+{
+	std::string output = "";
+	
+	if (time < 0)
+	{
+		output += "-";
+	}
+	output += std::to_string(abs(time / 60));
+	output += ":";
+	if (abs(time) % 60 < 10)
+	{
+		output += "0";
+	}
+	output += std::to_string(abs(time) % 60);
+
+	time_str = output;
 }
 
 std::string LogEvent::getFilterText()
