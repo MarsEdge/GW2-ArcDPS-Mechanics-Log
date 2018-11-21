@@ -225,9 +225,9 @@ void Tracker::processCombatExit(cbtevent* ev, ag* new_agent)
 
 void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
 {
+	std::lock_guard<std::mutex> lg(log_events_mtx);
 	if (new_mechanic->verbosity & verbosity_log)
 	{
-		std::lock_guard<std::mutex> lg(log_events_mtx);
 		if (new_mechanic->target_is_dst)
 		{
 			log_events.push_back(LogEvent(new_player_dst, new_mechanic, getElapsedTime(ev->time), value));
