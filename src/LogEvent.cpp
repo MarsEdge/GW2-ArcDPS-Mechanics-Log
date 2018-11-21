@@ -41,7 +41,7 @@ void LogEvent::draw()
 		output += ", value = " + std::to_string(value);
 	}
 
-	ImGui::Text(output.c_str());
+	ImGui::TextUnformatted(output.c_str());
 }
 
 void LogEvent::bakeTimeStr()
