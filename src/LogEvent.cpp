@@ -69,7 +69,7 @@ std::string LogEvent::getFilterText()
 	{
 		return "=";
 	}
-	return std::to_string(time)
+	return time_str
 		+ player->name
 		+ mechanic->name;
 }
