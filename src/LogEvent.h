@@ -12,14 +12,14 @@ public:
 	Player* player = nullptr;
 	Mechanic* mechanic = nullptr;
 	int time = 0;
-	std::string time_str = "";
+	std::string str = "";
 	int64_t value = 1;
 
 	LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time, int64_t new_value);
 	~LogEvent();
 
 	void draw();
-	void bakeTimeStr();
+	void bakeStr();
 	std::string getFilterText();
 };
 

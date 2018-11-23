@@ -9,7 +9,7 @@ LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time
 	time = new_time;
 	value = new_value;
 
-	bakeTimeStr();
+	bakeStr();
 }
 
 
@@ -24,28 +24,17 @@ void LogEvent::draw()
 		ImGui::Separator();//TODO: make function for if an event is a placeholder
 		return;
 	}
-	
-	std::string output = "";
-	
-	output += time_str;
 
-	output += " - ";
-
-	output += player->name;
-
-	output += " ";
-	output += mechanic->name;
-
-	if (value != 1)
-	{
-		output += ", value = " + std::to_string(value);
-	}
-
-	ImGui::TextUnformatted(output.c_str());
+	ImGui::TextUnformatted(str.c_str());
 }
 
-void LogEvent::bakeTimeStr()
+void LogEvent::bakeStr()
 {
+	if (!player && !mechanic)
+	{
+		return;
+	}
+	
 	std::string output = "";
 	
 	if (time < 0)
@@ -60,7 +49,19 @@ void LogEvent::bakeTimeStr()
 	}
 	output += std::to_string(abs(time) % 60);
 
-	time_str = output;
+	output += " - ";
+
+	output += player->name;
+
+	output += " ";
+	output += mechanic->name;
+
+	if (value != 1)
+	{
+		output += ", value = " + std::to_string(value);
+	}
+
+	str = output;
 }
 
 std::string LogEvent::getFilterText()
@@ -69,7 +70,5 @@ std::string LogEvent::getFilterText()
 	{
 		return "=";
 	}
-	return time_str
-		+ player->name
-		+ mechanic->name;
+	return str;
 }
