@@ -225,17 +225,18 @@ void Tracker::processCombatExit(cbtevent* ev, ag* new_agent)
 
 void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
 {
-	std::lock_guard<std::mutex> lg(log_events_mtx);
+	std::lock_guard<std::mutex> lg(tracker_mtx);
+
+	Player* relevant_player = new_mechanic->target_is_dst ? new_player_dst : new_player_src;
+
+	if (new_mechanic->is_multihit && ev->time < (relevant_player->getLastMechanicHitTime(new_mechanic->ids[0]) + new_mechanic->frequency_player)) return;//check mechanic timing again to prevent race conditions
+
 	if (new_mechanic->verbosity & verbosity_log)
 	{
-		if (new_mechanic->target_is_dst)
-		{
-			log_events.push_back(LogEvent(new_player_dst, new_mechanic, getElapsedTime(ev->time), value));
-		}
-		else
-		{
-			log_events.push_back(LogEvent(new_player_src, new_mechanic, getElapsedTime(ev->time), value));
-		}
+		std::lock_guard<std::mutex> lg(log_events_mtx);
+		
+		log_events.push_back(LogEvent(relevant_player, new_mechanic, getElapsedTime(ev->time), value));
+		
 		if (log_events.size() > max_log_events)
 		{
 			log_events.pop_front();
@@ -245,14 +246,7 @@ void Tracker::processMechanic(cbtevent* ev, Player* new_player_src, Player* new_
 	
 	if (new_mechanic->verbosity & verbosity_chart)
 	{
-		if (new_mechanic->target_is_dst)
-		{
-			new_player_dst->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
-		}
-		else
-		{
-			new_player_src->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
-		}
+		relevant_player->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
 	}
 }
 
