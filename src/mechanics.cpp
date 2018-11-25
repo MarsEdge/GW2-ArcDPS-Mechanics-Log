@@ -216,7 +216,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("got a bomb").setIds({MECHANIC_SLOTH_BOMB}).setFailIfHit(false).setFrequencyPlayer(6000).setBoss(&boss_sloth),
 
-	Mechanic().setName("stood in a bomb aoe").setIds({MECHANIC_SLOTH_BOMB_AOE}).setVerbosity(verbosity_chart).setBoss(&boss_sloth),
+	Mechanic().setName("stood in bomb aoe").setIds({MECHANIC_SLOTH_BOMB_AOE}).setVerbosity(verbosity_chart).setBoss(&boss_sloth),
 
 	Mechanic().setName("was hit by flame breath").setIds({MECHANIC_SLOTH_FLAME_BREATH}).setBoss(&boss_sloth),
 
@@ -243,7 +243,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("used magic").setIds({MECHANIC_XERA_MAGIC_BUFF}).setFailIfHit(false).setTargetIsDst(false).setFrequencyGlobal(12000).setValidIfDown(true).setBoss(&boss_xera).setSpecialRequirement(requirementOnSelf).setVerbosity(0),
 
-	Mechanic().setName("touched an orb").setIds({MECHANIC_XERA_ORB}).setBoss(&boss_xera),
+	Mechanic().setName("triggered an orb").setIds({MECHANIC_XERA_ORB}).setBoss(&boss_xera),
 
 	Mechanic().setName("stood in an orb aoe").setIds({MECHANIC_XERA_ORB_AOE}).setFrequencyPlayer(1000).setVerbosity(verbosity_chart).setBoss(&boss_xera),
 
@@ -257,7 +257,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("missed a green circle").setIds({MECHANIC_CARIN_GREEN_A,MECHANIC_CARIN_GREEN_B,MECHANIC_CARIN_GREEN_C,MECHANIC_CARIN_GREEN_D,MECHANIC_CARIN_GREEN_E,MECHANIC_CARIN_GREEN_F}).setIsInterupt(true).setBoss(&boss_cairn),
 
-	Mechanic().setName("was hit by shockwave").setIds({MECHANIC_SAM_SHOCKWAVE}).setIsInterupt(true).setBoss(&boss_sam),
+	Mechanic().setName("was shockwaved").setIds({MECHANIC_SAM_SHOCKWAVE}).setIsInterupt(true).setBoss(&boss_sam),
 
 	Mechanic().setName("was horizontally slapped").setIds({MECHANIC_SAM_SLAP_HORIZONTAL}).setIsInterupt(true).setBoss(&boss_sam),
 
@@ -270,7 +270,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("touched an oil").setIds({MECHANIC_DEIMOS_OIL}).setFrequencyPlayer(5000).setBoss(&boss_deimos).setSpecialRequirement(requirementDeimosOil),
 
-	Mechanic().setName("was hit by smash").setIds({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).setBoss(&boss_deimos),
+	Mechanic().setName("was smashed").setIds({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).setBoss(&boss_deimos),
 
 	Mechanic().setName("closed a tear").setIds({MECHANIC_DEIMOS_TEAR}).setFailIfHit(false).setBoss(&boss_deimos),
 
@@ -278,9 +278,9 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("was teleported").setIds({MECHANIC_DEIMOS_PORT}).setVerbosity(verbosity_chart).setBoss(&boss_deimos),
 
-	Mechanic().setName("stood in inner donut").setIds({MECHANIC_HORROR_DONUT_INNER}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
+	Mechanic().setName("stood in inner ring").setIds({MECHANIC_HORROR_DONUT_INNER}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
-	Mechanic().setName("stood in outer donut").setIds({MECHANIC_HORROR_DONUT_OUTER}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
+	Mechanic().setName("stood in outer ring").setIds({MECHANIC_HORROR_DONUT_OUTER}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
 	Mechanic().setName("stood in torment aoe").setIds({MECHANIC_HORROR_GOLEM_AOE}).setBoss(&boss_sh),
 
@@ -313,9 +313,9 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("stood in a poison mark").setIds({MECHANIC_DHUUM_MARK}).setVerbosity(verbosity_chart).setBoss(&boss_dhuum),
 
-	Mechanic().setName("touched the center").setIds({MECHANIC_DHUUM_SUCK_AOE}).setBoss(&boss_dhuum),
+	Mechanic().setName("was sucked center").setIds({MECHANIC_DHUUM_SUCK_AOE}).setBoss(&boss_dhuum),
 
-	Mechanic().setName("stood in a teleport aoe").setIds({MECHANIC_DHUUM_TELEPORT_AOE}).setBoss(&boss_dhuum),
+	Mechanic().setName("stood in dip aoe").setIds({MECHANIC_DHUUM_TELEPORT_AOE}).setBoss(&boss_dhuum),
 
 //	Mechanic().setName("died on green").setIds({MECHANIC_DHUUM_GREEN_TIMER}).setIsBuffremove(CBTB_MANUAL).setOverstackValue(0).setBoss(&boss_dhuum),
 
@@ -355,7 +355,7 @@ std::vector <Mechanic> mechanics =
 	
 //	Mechanic().setName("vomited on someone").setIds({MECHANIC_NIGHTMARE_VOMIT}).setTargetIsDst(false).setBoss(&boss_fotm_generic),
 
-	Mechanic().setName("was hit by wirl").setIds({MECHANIC_MAMA_WIRL,MECHANIC_MAMA_WIRL_NORMAL}).setBoss(&boss_mama),
+	Mechanic().setName("was hit by whirl").setIds({MECHANIC_MAMA_WHIRL,MECHANIC_MAMA_WHIRL_NORMAL}).setBoss(&boss_mama),
 
 	Mechanic().setName("was knocked").setIds({MECHANIC_MAMA_KNOCK}).setBoss(&boss_mama),
 
