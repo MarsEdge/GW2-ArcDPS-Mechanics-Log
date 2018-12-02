@@ -79,7 +79,6 @@ struct Mechanic
 };
 
 bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
-bool requirementConjure(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 bool requirementBuffApply(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 
