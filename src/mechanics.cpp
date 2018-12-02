@@ -136,6 +136,13 @@ bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Play
     return false;
 }
 
+bool requirementBuffApply(const Mechanic & current_mechanic, cbtevent * ev, Player * src, Player * dst, Player * current_player)
+{
+	return ev
+		&& ev->buff
+		&& ev->buff_dmg==0;
+}
+
 bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
 {
 	DeimosOil* current_oil = nullptr;
@@ -202,7 +209,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("was egged").setIds({MECHANIC_GORS_EGG}).setBoss(&boss_gors),
 
-	Mechanic().setName("touched an orb").setIds({MECHANIC_GORS_ORB}).setBoss(&boss_gors),
+	Mechanic().setName("touched an orb").setIds({MECHANIC_GORS_ORB}).setBoss(&boss_gors).setSpecialRequirement(requirementBuffApply),
 
 	Mechanic().setName("got a sapper bomb").setIds({MECHANIC_SAB_SAPPER_BOMB}).setFailIfHit(false).setValidIfDown(true).setBoss(&boss_sab),
 
