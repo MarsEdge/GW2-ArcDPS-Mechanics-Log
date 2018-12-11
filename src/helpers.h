@@ -6,5 +6,4 @@
 #include "arcdps_datastructures.h"
 #include "npc_ids.h"
 
-int split (const char *str, char c, char ***arr) noexcept;
-bool isPlayer(ag* new_player);
+bool isPlayer(const ag* new_player) noexcept;

@@ -293,7 +293,7 @@ void Player::merge(Player * new_player)
 	new_player->resetStats();
 }
 
-void Player::MechanicTracker::addPull(Boss* new_boss)
+void Player::MechanicTracker::addPull(const Boss* new_boss)
 {
     if(current_boss == new_boss)
     {

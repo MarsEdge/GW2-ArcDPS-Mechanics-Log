@@ -10,9 +10,9 @@
 
 struct Player
 {
-    std::string name;
-    std::string account;
-    uintptr_t id;            //instance id
+    std::string name = "";
+    std::string account = "";
+    uintptr_t id = 0;            //instance id
     uint16_t downs;              //number of times the player has downed
     uint16_t deaths;              //number of times the player has completely died
     uint16_t pulls;         //number of boss pulls
@@ -27,18 +27,18 @@ struct Player
 
     struct MechanicTracker
     {
-        std::string name; //name of mechanic
-		uint32_t id; //skill id;
+        std::string name = ""; //name of mechanic
+		uint32_t id = 0; //skill id;
         bool fail;
         uint16_t hits;
-        Boss* current_boss; //boss
+        Boss* current_boss = nullptr; //boss
         uint16_t pulls;
-		uint64_t last_hit_time;
+		uint64_t last_hit_time = 0;
 
         MechanicTracker(uint64_t new_time, std::string &new_name, uint32_t &new_id,bool &new_fail, Boss* new_boss);
 
         std::string toString();
-        void addPull(Boss* new_boss);
+        void addPull(const Boss* new_boss);
 		bool isRelevant();
     };
 

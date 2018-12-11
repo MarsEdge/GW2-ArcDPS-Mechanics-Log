@@ -8,7 +8,7 @@ class Options
 public:
 	bool show_only_self = false;
 
-	std::vector<Mechanic>* mechanics;
+	std::vector<Mechanic>* mechanics = nullptr;
 
 	Options();
 	~Options();

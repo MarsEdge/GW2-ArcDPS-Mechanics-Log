@@ -23,30 +23,31 @@ enum Verbosity
 
 struct Mechanic
 {
-    std::string name; //name of mechanic
-    uint32_t ids[max_ids_per_mechanic]; //skill ids;
-	size_t ids_size;
-    Boss* boss;//required boss, ignored if null
-    uint64_t frequency_player; //minimum time between instances of this mechanic per player(ms)
-    uint64_t frequency_global; //minimum time between instances of this mechanic globally(ms)
-    uint64_t last_hit_time; //time of last instance of mechanic
-	uint8_t is_activation;
-	uint8_t is_buffremove;
-	int32_t overstack_value;//required overstack value
-	int32_t value;//required value
-    bool is_interupt;
-    bool is_multihit;
-    bool target_is_dst;
-    bool fail_if_hit;
-    bool valid_if_down; //mechanic counts if player is in down-state
+    std::string name = ""; //name of mechanic
+    std::string name_internal = ""; //name of skill in skilldef
+	uint32_t ids[max_ids_per_mechanic] = { 0 }; //skill ids;
+	size_t ids_size = 0;
+    Boss* boss = &boss_generic;//required boss, ignored if null
+    uint64_t frequency_player = 2000; //minimum time between instances of this mechanic per player(ms)
+    uint64_t frequency_global = 0; //minimum time between instances of this mechanic globally(ms)
+    uint64_t last_hit_time = 0; //time of last instance of mechanic
+	uint8_t is_activation = 0;
+	uint8_t is_buffremove = 0;
+	int32_t overstack_value = -1;//required overstack value
+	int32_t value = -1;//required value
+    bool is_interupt = false;
+    bool is_multihit = true;
+    bool target_is_dst = true;
+    bool fail_if_hit = true;
+    bool valid_if_down = false; //mechanic counts if player is in down-state
 
-	bool can_evade;
-	bool can_block;
-	bool can_invuln;
+	bool can_evade = true;
+	bool can_block = true;
+	bool can_invuln = true;
 
-	int verbosity;
+	int verbosity = (verbosity_chart | verbosity_log);
 
-    Mechanic();
+    Mechanic() noexcept;
 
 	int64_t isValidHit(cbtevent* ev, Player* src, Player* dst);
 
@@ -56,6 +57,7 @@ struct Mechanic
     int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
 
     Mechanic setName(std::string const new_name) {this->name = new_name; return *this;}
+    Mechanic setNameInternal(std::string const new_name_internal) {this->name_internal = new_name_internal; return *this;}
 	Mechanic setIds(std::initializer_list<uint32_t> const new_ids) { std::copy(new_ids.begin(), new_ids.end(), this->ids); this->ids_size = new_ids.size(); return *this; }
     Mechanic setBoss(Boss* const new_boss) {this->boss = new_boss; return *this;}
     Mechanic setFrequencyPlayer(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}

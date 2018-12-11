@@ -13,7 +13,7 @@
 struct AppLog
 {
     ImGuiTextFilter filter;
-    bool scroll_to_bottom;
+    bool scroll_to_bottom = false;
 	uint64_t line_break_frequency = 5;
 
     void draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tracker* tracker);
@@ -21,8 +21,8 @@ struct AppLog
 
 struct AppChart
 {
-    Player* merge_A;//1st player to merge
-    Player* merge_B;//2nd player to merge
+    Player* merge_A = nullptr;//1st player to merge
+    Player* merge_B = nullptr;//2nd player to merge
     ImGuiTextFilter     filter;
     uint16_t last_export_total;
 	std::string export_path;

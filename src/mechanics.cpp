@@ -3,32 +3,9 @@
 bool has_logged_mechanic = false;
 DeimosOil deimos_oils[max_deimos_oils];
 
-Mechanic::Mechanic()
+Mechanic::Mechanic() noexcept
 {
-    name = "";
-	memset(ids, 0, sizeof(ids));
-	ids_size = 0;
-    boss = &boss_generic;
-    frequency_player = 2000;
-    frequency_global = 0;
-    last_hit_time = 0;
-    is_interupt = false;
-    is_multihit = true;
-    target_is_dst = true;
-    fail_if_hit = true;
-	is_activation = 0;
-	is_buffremove = 0;
-	overstack_value = -1;
-	value = -1;
-    valid_if_down = false;
-	
-	can_evade = true;
-	can_block = true;
-	can_invuln = true;
-
-	verbosity = (verbosity_chart | verbosity_log);
-
-    special_requirement = requirementDefault;
+	special_requirement = requirementDefault;
 	special_value = valueDefault;
 }
 
@@ -357,6 +334,8 @@ std::vector <Mechanic> mechanics =
 //	Mechanic().setName("stood in giant fireball").setIds({MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_A,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_B,MECHANIC_QADIM_BOUNCING_FIREBALL_BIG_C}).setBoss(&boss_qadim),
 
 	Mechanic().setName("was teleported").setIds({MECHANIC_QADIM_TELEPORT}).setBoss(&boss_qadim).setValidIfDown(true),
+
+	Mechanic().setName("stood in hitbox").setNameInternal("Sea of Flame").setIds({52461}).setBoss(&boss_qadim),
 
 	Mechanic().setName("got a flux bomb").setIds({MECHANIC_FOTM_FLUX_BOMB}).setFailIfHit(false).setBoss(&boss_fotm_generic),
 	
