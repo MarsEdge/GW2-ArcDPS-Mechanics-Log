@@ -91,28 +91,28 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::EndGroup();
 
     ImGui::BeginChild("scrolling");
-	for (auto player = tracker->players.begin(); player != tracker->players.end(); ++player)
+	for (auto current_player = tracker->players.begin(); current_player != tracker->players.end(); ++current_player)
     {
-        if(player->isRelevant())
+        if(current_player->isRelevant())
         {
             ImGui::PushItemWidth(window_width*0.9);
             ImGui::AlignFirstTextHeightToWidgets();
-            expand = ImGui::TreeNode(player->name.c_str());
+            expand = ImGui::TreeNode(current_player->name.c_str());
 
             ImGui::SameLine(getChartColumnLoc(window_width,1));
-            ImGui::Text("%d", player->mechanics_received);
+            ImGui::Text("%d", current_player->mechanics_received);
             ImGui::SameLine(getChartColumnLoc(window_width,2));
-            ImGui::Text("%d", player->mechanics_failed);
+            ImGui::Text("%d", current_player->mechanics_failed);
             ImGui::SameLine(getChartColumnLoc(window_width,3));
-            ImGui::Text("%d", player->downs);
+            ImGui::Text("%d", current_player->downs);
             ImGui::SameLine(getChartColumnLoc(window_width,4));
-            ImGui::Text("%d", player->deaths);
+            ImGui::Text("%d", current_player->deaths);
             ImGui::SameLine(getChartColumnLoc(window_width,5));
-            ImGui::Text("%d", player->pulls);
+            ImGui::Text("%d", current_player->pulls);
             ImGui::PopItemWidth();
             ImGui::SameLine(getChartColumnLoc(window_width,6));
             if(merge_A
-               && merge_A->id == player->id)
+               && merge_A->id == current_player->id)
             {
                 ImGui::PushStyleColor(ImGuiCol_Text,merge_text_col);
                 pop_color = true;
@@ -120,13 +120,13 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
             if(ImGui::SmallButton("To"))
             {
                 if(merge_A
-                   && merge_A->id == player->id)
+                   && merge_A->id == current_player->id)
                 {
                     merge_A = nullptr;
                 }
                 else
                 {
-                    merge_A = &*player;
+                    merge_A = &*current_player;
                 }
             }
             if(pop_color)
@@ -136,7 +136,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
             }
             ImGui::SameLine();
             if(merge_B
-               && merge_B->id == player->id)
+               && merge_B->id == current_player->id)
             {
                 ImGui::PushStyleColor(ImGuiCol_Text,merge_text_col);
                 pop_color = true;
@@ -145,13 +145,13 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
             if(ImGui::SmallButton("From"))
             {
                 if(merge_B
-                   && merge_B->id == player->id)
+                   && merge_B->id == current_player->id)
                 {
                     merge_B = nullptr;
                 }
                 else
                 {
-                    merge_B = &*player;
+                    merge_B = &*current_player;
                 }
             }
             if(pop_color)
@@ -162,7 +162,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
             ImGui::SameLine(getChartColumnLoc(window_width,7));
             if(ImGui::SmallButton("X")
                || (merge
-                   && player->id == merge_B->id))
+                   && current_player->id == merge_B->id))
             {
                 if(expand)
                 {
@@ -174,14 +174,14 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
             if(expand
 				|| show_all)
             {
-                for(uint16_t tracker_index=0; tracker_index<player->tracker.size(); tracker_index++)
+				for (auto current_player_mechanics = current_player->tracker.begin(); current_player_mechanics != current_player->tracker.end(); ++current_player_mechanics)
                 {
-					if (!player->tracker.at(tracker_index).isRelevant()) continue;
+					if (!current_player_mechanics->isRelevant()) continue;
 
                     ImGui::PushItemWidth(window_width*0.9);
                     ImGui::Indent();
-                    ImGui::Text(player->tracker.at(tracker_index).name.c_str());
-                    if(!player->tracker.at(tracker_index).fail)
+                    ImGui::Text(current_player_mechanics->name.c_str());
+                    if(!current_player_mechanics->fail)
                     {
                         ImGui::SameLine(getChartColumnLoc(window_width,1));
                     }
@@ -189,9 +189,9 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
                     {
                         ImGui::SameLine(getChartColumnLoc(window_width,2));
                     }
-                    ImGui::Text("%d", player->tracker.at(tracker_index).hits);
+                    ImGui::Text("%d", current_player_mechanics->hits);
                     ImGui::SameLine(getChartColumnLoc(window_width,5));
-                    ImGui::Text("%d", player->tracker.at(tracker_index).pulls);
+                    ImGui::Text("%d", current_player_mechanics->pulls);
                     ImGui::Unindent();
                     ImGui::PopItemWidth();
 
