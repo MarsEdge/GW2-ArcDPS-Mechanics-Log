@@ -60,6 +60,8 @@ bool Tracker::addPlayer(ag* src, ag* dst)
 
 	if (!name) return false;
 	if (!account) return false;
+	if (std::string(name).length() < 2) return false;
+	if (std::string(account).length() < 2) return false;
 
 	Player* new_player = getPlayer(account);
 	//player not tracked yet
