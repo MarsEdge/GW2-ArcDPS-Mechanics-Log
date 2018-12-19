@@ -5,11 +5,13 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
 	ImGui::PushAllowKeyboardFocus(false);
+	ImGui::BeginChild("Buttons",ImVec2(0,ImGui::GetItemsLineHeightWithSpacing() + 2*ImGui::GetStyle().FramePadding.y),true);
 	if (ImGui::Button("Clear")) tracker->log_events.clear();
     ImGui::SameLine();
     bool copy = ImGui::Button("Copy");
     ImGui::SameLine();
     filter.Draw("Filter", -50.0f);
+	ImGui::EndChild();
     ImGui::Separator();
     ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
 	int64_t last_mechanic_time = 0;
