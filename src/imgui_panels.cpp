@@ -5,12 +5,12 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
 	ImGui::PushAllowKeyboardFocus(false);
-	ImGui::BeginChild("Buttons",ImVec2(0,ImGui::GetItemsLineHeightWithSpacing() + 2*ImGui::GetStyle().FramePadding.y),true);
+	ImGui::BeginChild("Buttons",ImVec2(0,ImGui::GetItemsLineHeightWithSpacing()));
 	if (ImGui::Button("Clear")) tracker->log_events.clear();
     ImGui::SameLine();
     bool copy = ImGui::Button("Copy");
     ImGui::SameLine();
-    filter.Draw("Filter", -50.0f);
+	filter.Draw("Filter", -50.0f);
 	ImGui::EndChild();
     ImGui::Separator();
     ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -311,4 +311,18 @@ void AppOptions::draw(Options* options, Tracker* tracker, const char * title, bo
 
 	ImGui::PopAllowKeyboardFocus();
 	ImGui::End();
+}
+
+// Helper to display a little (?) mark which shows a tooltip when hovered.
+static void showHelpMarker(const char* desc)
+{
+	ImGui::TextDisabled("(?)");
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+		ImGui::TextUnformatted(desc);
+		ImGui::PopTextWrapPos();
+		ImGui::EndTooltip();
+	}
 }

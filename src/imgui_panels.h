@@ -43,3 +43,4 @@ struct AppOptions
 
 float getChartColumnWidth(float window_width);
 float getChartColumnLoc(float window_width, uint16_t col);
+static void showHelpMarker(const char* desc);
