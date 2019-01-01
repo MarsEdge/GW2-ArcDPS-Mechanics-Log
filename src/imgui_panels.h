@@ -25,14 +25,16 @@ struct AppChart
     Player* merge_B = nullptr;//2nd player to merge
     ImGuiTextFilter     filter;
     uint16_t last_export_total;
-	std::string export_path;
+	std::string export_dir = "";
+	std::string last_file_path = "";
 
     void clear(Tracker* tracker);
 
     void draw(Tracker* tracker, const char* title, bool* p_open, ImGuiWindowFlags flags, bool show_all);
 
     std::string toString(Tracker* tracker);
-    void writeToDisk(Tracker* tracker);
+	void exportData(Tracker* tracker);
+	void writeToDisk(Tracker* tracker);
 	std::string getDefaultExportPath();
 };
 

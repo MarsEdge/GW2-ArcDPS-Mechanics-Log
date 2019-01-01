@@ -64,7 +64,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::SameLine();
 //  Filter.Draw("Filter", -50.0f);
 //  ImGui::SameLine();
-    if (ImGui::Button("Export")) writeToDisk(tracker);
+    if (ImGui::Button("Export")) exportData(tracker);
     ImGui::SameLine();
     if (ImGui::Button("Copy")) ImGui::LogToClipboard();
     ImGui::Separator();
@@ -242,6 +242,13 @@ std::string AppChart::toString(Tracker* tracker)
     return output;
 }
 
+void AppChart::exportData(Tracker* tracker)
+{
+	writeToDisk(tracker);
+
+	ShellExecuteA(NULL, "open", last_file_path.c_str(), NULL, export_dir.c_str(), SW_HIDE);
+}
+
 void AppChart::writeToDisk(Tracker* tracker)
 {
     uint16_t new_export_total = tracker->getMechanicsTotal();
@@ -259,13 +266,17 @@ void AppChart::writeToDisk(Tracker* tracker)
         //std::cout << time_str << '\n';
     }
 
-    CreateDirectory(export_path.c_str(), NULL);
+    CreateDirectory(export_dir.c_str(), NULL);
 
-    std::ofstream out(export_path+"\\"+std::string(time_str)+"-"+std::to_string(new_export_total)+".csv");
+	std::string file_path = export_dir + "\\" + std::string(time_str) + "-" + std::to_string(new_export_total) + ".csv";
+
+    std::ofstream out(file_path);
     out << text;
     out.close();
 
     last_export_total = new_export_total;
+
+	last_file_path = file_path;
 }
 
 std::string AppChart::getDefaultExportPath()

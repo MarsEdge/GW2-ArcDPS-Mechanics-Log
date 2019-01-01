@@ -441,7 +441,7 @@ uintptr_t mod_options()
 
 static int changeExportPath(ImGuiTextEditCallbackData const *data)
 {
-	chart_ui.export_path = data->Buf;
+	chart_ui.export_dir = data->Buf;
 }
 
 void parseIni()
@@ -472,7 +472,7 @@ void parseIni()
 
 	pszValue = mechanics_ini.GetValue("chart", "export_path", chart_ui.getDefaultExportPath().c_str());
 	if (pszValue.length() < 5) pszValue = chart_ui.getDefaultExportPath();
-	chart_ui.export_path = pszValue;
+	chart_ui.export_dir = pszValue;
 
 	pszValue = mechanics_ini.GetValue("log", "key", "76");
 	log_key = std::stoi(pszValue);
@@ -502,7 +502,7 @@ void writeIni()
 {
 	SI_Error rc = mechanics_ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
 	rc = mechanics_ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());
-	rc = mechanics_ini.SetValue("chart", "export_path", chart_ui.export_path.c_str());
+	rc = mechanics_ini.SetValue("chart", "export_path", chart_ui.export_dir.c_str());
 
 	rc = mechanics_ini.SetValue("log", "key", std::to_string(log_key).c_str());
 	rc = mechanics_ini.SetValue("chart", "key", std::to_string(chart_key).c_str());
