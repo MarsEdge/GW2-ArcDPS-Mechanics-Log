@@ -427,13 +427,12 @@ uintptr_t mod_imgui()
 
 uintptr_t mod_options()
 {
-	const bool expand = ImGui::TreeNode("Mechanics");
-	if (expand || arc_clicklock_altui)
+	if (ImGui::BeginMenu("Mechanics"))
 	{
 		ImGui::Checkbox("Mechanics Log", &show_app_log);
 		ImGui::Checkbox("Mechanics Chart", &show_app_chart);
 		ImGui::Checkbox("Mechanics Options", &show_options);
-		if (expand)ImGui::TreePop();
+		ImGui::EndMenu();
 	}
 
     return 0;
