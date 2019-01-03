@@ -346,29 +346,26 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
             }
 		}
 
-        if(ev->dst_agent)
-        {
-            if(ev->result != CBTR_INTERRUPT && ev->result != CBTR_BLIND)
-            {
-				int64_t value = 0;
-				current_player = tracker.getPlayer(src);
-				Player* other_player = tracker.getPlayer(dst);
-                for(uint16_t index=0;index<mechanics.size();index++)
-                {
-					if (options.show_only_self)//skip mechanics that are not self if the option is set
-					{
-						if (mechanics[index].target_is_dst && !dst->self) continue;
-						if (!mechanics[index].target_is_dst && !src->self) continue;
-					}
+		if(ev->result != CBTR_INTERRUPT && ev->result != CBTR_BLIND)
+		{
+			int64_t value = 0;
+			current_player = tracker.getPlayer(src);
+			Player* other_player = tracker.getPlayer(dst);
+			for(uint16_t index=0;index<mechanics.size();index++)
+			{
+				if (options.show_only_self)//skip mechanics that are not self if the option is set
+				{
+					if (mechanics[index].target_is_dst && !dst->self) continue;
+					if (!mechanics[index].target_is_dst && !src->self) continue;
+				}
 
-					if(value = mechanics[index].isValidHit(ev, current_player, other_player))
-                    {
-						tracker.processMechanic(ev, current_player, other_player, &mechanics[index], value);
-						log_ui.scroll_to_bottom = true;
-                    }
-                }
-            }
-        }
+				if(value = mechanics[index].isValidHit(ev, current_player, other_player))
+				{
+					tracker.processMechanic(ev, current_player, other_player, &mechanics[index], value);
+					log_ui.scroll_to_bottom = true;
+				}
+			}
+		}
 
 		/* common */
 	}

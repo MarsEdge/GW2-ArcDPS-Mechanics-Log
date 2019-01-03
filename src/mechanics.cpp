@@ -46,9 +46,17 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
         return false;
     }
 
-	if (ev->is_activation != is_activation)
-	{
-		return false;
+	if (is_activation)
+	{//Normal and quickness activations are interchangable
+		if (is_activation == ACTV_NORMAL
+			|| is_activation == ACTV_QUICKNESS)
+		{
+			if (ev->is_activation != ACTV_NORMAL
+				&& ev->is_activation != ACTV_QUICKNESS)
+			{
+				return false;
+			}
+		}
 	}
 
 	if (is_buffremove//TODO: this check is wrong. overstack does not require buffremove
@@ -276,11 +284,13 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("was debuffed").setIds({MECHANIC_HORROR_DEBUFF}).setFailIfHit(false).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
-	Mechanic().setName("was puked on").setIds({MECHANIC_EATER_PUKE}).setFrequencyPlayer(3000).setBoss(&boss_soul_eater),
+	Mechanic().setName("was puked on").setIds({MECHANIC_EATER_PUKE}).setFrequencyPlayer(3000).setVerbosity(verbosity_chart).setBoss(&boss_soul_eater),
 
-	Mechanic().setName("stood in web").setIds({MECHANIC_EATER_WEB}).setFrequencyPlayer(3000).setBoss(&boss_soul_eater),
+	Mechanic().setName("stood in web").setIds({MECHANIC_EATER_WEB}).setFrequencyPlayer(3000).setVerbosity(verbosity_chart).setBoss(&boss_soul_eater),
 
 	Mechanic().setName("got an orb").setIds({MECHANIC_EATER_ORB}).setFrequencyPlayer(ms_per_tick).setBoss(&boss_soul_eater),
+
+	Mechanic().setName("threw an orb").setNameInternal("Reclaimed Energy").setIds({47942}).setTargetIsDst(false).setIsActivation(ACTV_NORMAL).setBoss(&boss_soul_eater),
 
 	Mechanic().setName("touched a messenger").setIds({MECHANIC_DHUUM_GOLEM}).setBoss(&boss_dhuum),
 
