@@ -80,10 +80,16 @@
     <ClCompile Include="src\simpleini\testsi.cpp">
       <Filter>Source Files\SimpleInI</Filter>
     </ClCompile>
+    <ClCompile Include="src\LogEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MechanicEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Options.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\LogEvent.cpp">
+    <ClCompile Include="src\PlayerEntry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,6 +146,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\LogEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MechanicEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayerEntry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -229,7 +229,7 @@ uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 /* one participant will be party/squad, or minion of. no spawn statechange events. despawn statechange only on marked boss npcs */
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision)
 {
-	Player* current_player = nullptr;
+	PlayerEntry* current_entry = nullptr;
 
 	/* ev is null. dst will only be valid on tracking add. skillname will also be null */
 	if (!ev)
@@ -276,27 +276,27 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
             //if rally
             else if(ev->is_statechange==CBTS_CHANGEUP)//TODO: make these into process functions in tracker.cpp
             {
-                if(current_player = tracker.getPlayer(src))
+                if(current_entry = tracker.getPlayerEntry(src))
                 {
-                    current_player->rally();
+                    current_entry->rally();
                 }
             }
 
             //if dead
             else if(ev->is_statechange==CBTS_CHANGEDEAD)
             {
-                if(current_player = tracker.getPlayer(src))
+                if(current_entry = tracker.getPlayerEntry(src))
                 {
-                    current_player->dead();
+                    current_entry->dead();
                 }
             }
 
             //if downed
             else if(ev->is_statechange==CBTS_CHANGEDOWN)
             {
-                if(current_player = tracker.getPlayer(src))
+                if(current_entry = tracker.getPlayerEntry(src))
                 {
-                    current_player->down();
+                    current_entry->down();
                 }
             }
             //if health update
@@ -317,18 +317,18 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                if(current_player = tracker.getPlayer(dst))
+                if(current_entry = tracker.getPlayerEntry(dst))
                 {
-                    current_player->setStabTime(ev->time+ms_per_tick);//cut the ending time of stab early
+                    current_entry->setStabTime(ev->time+ms_per_tick);//cut the ending time of stab early
                 }
             }
             else if (ev->skillid==BUFF_VAPOR_FORM//vapor form manual case
                      || ev->skillid==BUFF_ILLUSION_OF_LIFE//Illusion of Life manual case
                      )
             {
-                if(current_player = tracker.getPlayer(dst))
+                if(current_entry = tracker.getPlayerEntry(dst))
                 {
-                    current_player->fixDoubleDown();
+                    current_entry->fixDoubleDown();
                 }
             }
 
@@ -339,9 +339,9 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
         {
             if (ev->skillid==BUFF_STABILITY)//if it's stability
             {
-                if(current_player = tracker.getPlayer(dst))
+                if(current_entry = tracker.getPlayerEntry(dst))
                 {
-                    current_player->setStabTime(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
+                    current_entry->setStabTime(ev->time+ev->value+ms_per_tick);//add prediction of when new stab will end
                 }
             }
 		}
@@ -349,8 +349,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 		if(ev->result != CBTR_INTERRUPT && ev->result != CBTR_BLIND)
 		{
 			int64_t value = 0;
-			current_player = tracker.getPlayer(src);
-			Player* other_player = tracker.getPlayer(dst);
+			current_entry = tracker.getPlayerEntry(src);
+			PlayerEntry* other_entry = tracker.getPlayerEntry(dst);
 			for(uint16_t index=0;index<mechanics.size();index++)
 			{
 				if (options.show_only_self)//skip mechanics that are not self if the option is set
@@ -359,9 +359,11 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 					if (!mechanics[index].target_is_dst && !src->self) continue;
 				}
 
-				if(value = mechanics[index].isValidHit(ev, current_player, other_player))
+				if(value = mechanics[index].isValidHit(ev, 
+					(current_entry ? current_entry->player : nullptr),//check for null before getting player object
+					(other_entry ? other_entry->player: nullptr)))
 				{
-					tracker.processMechanic(ev, current_player, other_player, &mechanics[index], value);
+					tracker.processMechanic(ev, current_entry, other_entry, &mechanics[index], value);
 					log_ui.scroll_to_bottom = true;
 				}
 			}

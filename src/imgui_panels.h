@@ -21,8 +21,6 @@ struct AppLog
 
 struct AppChart
 {
-    Player* merge_A = nullptr;//1st player to merge
-    Player* merge_B = nullptr;//2nd player to merge
     ImGuiTextFilter     filter;
     uint16_t last_export_total;
 	std::string export_dir = "";

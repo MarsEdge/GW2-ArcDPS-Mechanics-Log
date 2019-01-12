@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 #include "arcdps_datastructures.h"
 #include "player.h"
@@ -94,6 +95,13 @@ struct DeimosOil
 	uint64_t first_touch_time = 0;
 	uint64_t last_touch_time = 0;
 };
+
+struct EndersEcho
+{
+	std::list<std::pair<uint16_t, uint64_t>> players_snatched;//pair is <instance id,last snatch time>
+};
+
+extern EndersEcho enders_echo;
 
 extern DeimosOil deimos_oils[max_deimos_oils];
 

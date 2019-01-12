@@ -2,6 +2,7 @@
 
 bool has_logged_mechanic = false;
 DeimosOil deimos_oils[max_deimos_oils];
+EndersEcho enders_echo;
 
 Mechanic::Mechanic() noexcept
 {
@@ -83,11 +84,9 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 
 	if (!current_player) return false;
 
-	if (is_multihit && ev->time < (current_player->getLastMechanicHitTime(ids[0]) + frequency_player)) return false;
-
 	if (!valid_if_down && current_player->is_downed) return false;
 
-	if (is_interupt && current_player->getLastStabTime() > ev->time) return false;
+	if (is_interupt && current_player->last_stab_time > ev->time) return false;
 
 	if (!special_requirement(*this, ev, src, dst, current_player)) return false;
 
@@ -110,15 +109,27 @@ bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* 
 
 bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
 {
-    if((current_player->getLastHitTime() + current_mechanic.frequency_player) < ev->time)
-    {
-        current_player->setLastHitTime(ev->time);
-        if(current_player->getLastMechanic() != MECHANIC_DHUUM_SNATCH)
-        {
-            return true;
-        }
-    }
-    return false;
+	for (auto current_pair = enders_echo.players_snatched.begin(); current_pair != enders_echo.players_snatched.end(); ++current_pair)
+	{
+		//if player has been snatched before and is in tracking
+		if (ev->dst_instid == current_pair->first)
+		{
+			if ((current_pair->second + current_mechanic.frequency_player) > ev->time)
+			{
+				current_pair->second = ev->time;
+				return false;
+			}
+			else
+			{
+				current_pair->second = ev->time;
+				return true;
+			}
+		}
+	}
+	
+	//if player not seen before
+	enders_echo.players_snatched.push_back(std::pair<uint16_t, uint64_t>(ev->dst_instid, ev->time));
+	return true;
 }
 
 bool requirementBuffApply(const Mechanic & current_mechanic, cbtevent * ev, Player * src, Player * dst, Player * current_player)

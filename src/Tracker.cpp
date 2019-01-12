@@ -1,12 +1,12 @@
 #include "Tracker.h"
 
-Player* Tracker::getPlayer(const ag* new_player)
+PlayerEntry* Tracker::getPlayerEntry(const ag* new_player)
 {
 	if (!isPlayer(new_player)) return nullptr;
-	auto it = std::find(players.begin(), players.end(), new_player->id);
+	auto it = std::find(player_entries.begin(), player_entries.end(), new_player->id);
 
 	//player not tracked yet
-	if (it == players.end())
+	if (it == player_entries.end())
 	{
 		return nullptr;
 	}
@@ -16,14 +16,14 @@ Player* Tracker::getPlayer(const ag* new_player)
 	}
 }
 
-Player * Tracker::getPlayer(uintptr_t new_player)
+PlayerEntry * Tracker::getPlayerEntry(uintptr_t new_player)
 {
 	if (!new_player) return nullptr;
 
-	auto it = std::find(players.begin(), players.end(), new_player);
+	auto it = std::find(player_entries.begin(), player_entries.end(), new_player);
 
 	//player not tracked yet
-	if (it == players.end())
+	if (it == player_entries.end())
 	{
 		return nullptr;
 	}
@@ -33,13 +33,13 @@ Player * Tracker::getPlayer(uintptr_t new_player)
 	}
 }
 
-Player * Tracker::getPlayer(std::string new_player)
+PlayerEntry * Tracker::getPlayerEntry(std::string new_player)
 {
 	if (new_player.empty()) return nullptr;
-	auto it = std::find(players.begin(), players.end(), new_player);
+	auto it = std::find(player_entries.begin(), player_entries.end(), new_player);
 
 	//player not tracked yet
-	if (it == players.end())
+	if (it == player_entries.end())
 	{
 		return nullptr;
 	}
@@ -63,17 +63,18 @@ bool Tracker::addPlayer(ag* src, ag* dst)
 	if (std::string(name).length() < 2) return false;
 	if (std::string(account).length() < 2) return false;
 
-	Player* new_player = getPlayer(account);
+	PlayerEntry* new_entry = getPlayerEntry(account);
 	//player not tracked yet
-	if (!new_player)
+	if (!new_entry)
 	{
-		players.push_back(generatePlayer(name, account, id));
+		players.push_back(Player(name, account, id));
+		player_entries.push_back(PlayerEntry(&players.back()));
 	}
 	else//player tracked
 	{
-		new_player->id = id;
-		new_player->name = name;
-		new_player->in_squad = true;
+		new_entry->player->id = id;
+		new_entry->player->name = name;
+		new_entry->player->in_squad = true;
 	}
 	return true;
 }
@@ -86,32 +87,18 @@ bool Tracker::removePlayer(const ag* src)
 	const char* account = src->name;//TODO: if account names are ever added, put it here
 	const uintptr_t id = src->id;
 
-	Player* new_player = getPlayer(id);
+	PlayerEntry* new_entry = getPlayerEntry(id);
 
 	//player not tracked yet
-	if (!new_player)
+	if (!new_entry)
 	{
 		return false;
 	}
 	else
 	{
-		new_player->in_squad = false;
+		new_entry->player->in_squad = false;
 		return true;
 	}
-}
-
-Player Tracker::generatePlayer(char* name, char* account, uintptr_t id)
-{
-	Player out = Player(name, account, id);
-
-	for (auto mechanic = mechanics.begin(); mechanic != mechanics.end(); ++mechanic)
-	{
-		out.receiveMechanic(0,mechanic->name, mechanic->ids[0], mechanic->fail_if_hit, mechanic->boss);
-	}
-
-	out.resetStats();
-
-	return out;
 }
 
 void Tracker::addPull(Boss* boss)
@@ -120,31 +107,25 @@ void Tracker::addPull(Boss* boss)
 	
 	boss->pulls++;
 
-	for (auto player = players.begin(); player != players.end(); ++player)
+	for (auto current_entry = player_entries.begin(); current_entry != player_entries.end(); ++current_entry)
 	{
-		player->addPull(boss);
+		current_entry->addPull(boss);
 	}
 }
 
 void Tracker::resetAllPlayerStats()
 {
 	std::lock_guard<std::mutex> lg(players_mtx);
-	for (auto player = players.begin(); player != players.end(); ++player)
-	{
-		player->resetStats();
-	}
+	player_entries.clear();
 }
 
 uint16_t Tracker::getMechanicsTotal()
 {
 	uint16_t result = 0;
 
-	for (auto player = players.begin(); player != players.end(); ++player)
+	for (auto current_entry = player_entries.begin(); current_entry != player_entries.end(); ++current_entry)
 	{
-		if (player->isRelevant())
-		{
-			result += player->getMechanicsTotal();
-		}
+		result += current_entry->getMechanicsTotal();
 	}
 	return result;
 }
@@ -165,10 +146,12 @@ uint8_t Tracker::getPlayerNumInCombat()
 
 void Tracker::processCombatEnter(const cbtevent* ev, ag* new_agent)
 {
-	Player* new_player = nullptr;
-	if (new_player = getPlayer(new_agent))
+	PlayerEntry* new_entry = nullptr;
+	if (new_entry = getPlayerEntry(new_agent))
 	{
-		new_player->combatEnter();
+		Player* new_player = new_entry->player;
+
+		new_entry->combatEnter();
 
 		if (new_agent && new_agent->self)
 		{
@@ -201,10 +184,12 @@ void Tracker::processCombatEnter(const cbtevent* ev, ag* new_agent)
 
 void Tracker::processCombatExit(const cbtevent* ev, ag* new_agent)
 {
-	Player* new_player = nullptr;
-	if (new_player = getPlayer(new_agent))
+	PlayerEntry* new_entry = nullptr;
+	if (new_entry = getPlayerEntry(new_agent))
 	{
-		new_player->combatExit();
+		Player* new_player = new_entry->player;
+
+		new_entry->combatExit();
 
 		if (getPlayerNumInCombat() == 0)
 		{
@@ -214,21 +199,21 @@ void Tracker::processCombatExit(const cbtevent* ev, ag* new_agent)
 	}
 }
 
-void Tracker::processMechanic(const cbtevent* ev, Player* new_player_src, Player* new_player_dst, Mechanic* new_mechanic, int64_t value)
+void Tracker::processMechanic(const cbtevent* ev, PlayerEntry* new_player_src, PlayerEntry* new_player_dst, Mechanic* new_mechanic, int64_t value)
 {
 	std::lock_guard<std::mutex> lg(tracker_mtx);
 
-	Player* relevant_player = new_mechanic->target_is_dst ? new_player_dst : new_player_src;
+	PlayerEntry* relevant_entry = new_mechanic->target_is_dst ? new_player_dst : new_player_src;
 
-	if (!relevant_player) return;
+	if (!relevant_entry) return;
 
-	if (new_mechanic->is_multihit && ev->time < (relevant_player->getLastMechanicHitTime(new_mechanic->ids[0]) + new_mechanic->frequency_player)) return;//check mechanic timing again to prevent race conditions
+	if (new_mechanic->is_multihit && ev->time < (relevant_entry->getLastMechanicHitTime(new_mechanic->ids[0]) + new_mechanic->frequency_player)) return;
 
 	if (new_mechanic->verbosity & verbosity_log)
 	{
 		std::lock_guard<std::mutex> lg2(log_events_mtx);
 		
-		log_events.push_back(LogEvent(relevant_player, new_mechanic, getElapsedTime(ev->time), value));
+		log_events.push_back(LogEvent(relevant_entry->player, new_mechanic, getElapsedTime(ev->time), value));
 		
 		if (log_events.size() > max_log_events)
 		{
@@ -239,7 +224,7 @@ void Tracker::processMechanic(const cbtevent* ev, Player* new_player_src, Player
 	
 	if (new_mechanic->verbosity & verbosity_chart)
 	{
-		relevant_player->receiveMechanic(ev->time, new_mechanic->name, new_mechanic->ids[0], new_mechanic->fail_if_hit, new_mechanic->boss);
+		relevant_entry->addMechanicEntry(ev->time, new_mechanic, new_mechanic->boss);
 	}
 }
 
