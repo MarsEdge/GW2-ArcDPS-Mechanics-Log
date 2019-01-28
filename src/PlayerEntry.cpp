@@ -94,9 +94,7 @@ void PlayerEntry::fixDoubleDown()
 
 bool PlayerEntry::isRelevant()
 {
-	return downs > 0
-		|| deaths > 0
-		|| mechanics_neutral > 0
+	return mechanics_neutral > 0
 		|| mechanics_failed > 0
 		|| player->in_squad;
 }
