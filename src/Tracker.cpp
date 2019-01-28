@@ -117,6 +117,7 @@ void Tracker::resetAllPlayerStats()
 {
 	std::lock_guard<std::mutex> lg(players_mtx);
 	player_entries.clear();
+	players.clear();
 }
 
 uint16_t Tracker::getMechanicsTotal()

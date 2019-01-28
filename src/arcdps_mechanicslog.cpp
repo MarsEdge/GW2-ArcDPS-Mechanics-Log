@@ -121,7 +121,7 @@ arcdps_exports* mod_init()
 uintptr_t mod_release()
 {
     chart_ui.writeToDisk(&tracker);
-	tracker.players.clear();//TODO encapsulate
+	tracker.resetAllPlayerStats();
 	writeIni();
 	return 0;
 }
