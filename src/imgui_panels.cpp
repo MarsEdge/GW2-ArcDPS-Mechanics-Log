@@ -113,7 +113,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 				for (auto current_player_mechanics = current_entry->entries.begin(); current_player_mechanics != current_entry->entries.end(); ++current_player_mechanics)
                 {
 					if (!current_player_mechanics->isRelevant()) continue;
-					if (!filter.PassFilter(current_player_mechanics->toString().c_str())) continue;
+					if (!filter.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
 
                     ImGui::PushItemWidth(window_width*0.9);
                     ImGui::Indent();
