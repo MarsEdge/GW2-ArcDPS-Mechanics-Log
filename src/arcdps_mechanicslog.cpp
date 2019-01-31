@@ -447,7 +447,7 @@ static int changeExportPath(ImGuiTextEditCallbackData const *data)
 void parseIni()
 {
 	SI_Error rc = arc_ini.LoadFile("addons\\arcdps\\arcdps.ini");
-	valid_arc_ini = rc < 0;
+	valid_arc_ini = rc >= 0;
 
 	std::string pszValue = arc_ini.GetValue("keys", "global_mod1", "0x10");
 	arc_global_mod1 = std::stoi(pszValue,nullptr,16);
@@ -462,7 +462,7 @@ void parseIni()
 	arc_clicklock_altui = std::stoi(pszValue);
 
 	rc = mechanics_ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
-	valid_mechanics_ini = rc < 0;
+	valid_mechanics_ini = rc >= 0;
 
 	pszValue = mechanics_ini.GetValue("log","show", "0");
 	show_app_log = std::stoi(pszValue);
