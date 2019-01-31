@@ -26,7 +26,7 @@ arcdps_exports* mod_init();
 uintptr_t mod_release();
 uintptr_t mod_wnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision);
-uintptr_t mod_imgui();
+uintptr_t mod_imgui(uint32_t not_charsel_or_loading);
 uintptr_t mod_options();
 static int changeExportPath(ImGuiTextEditCallbackData const *data);
 void parseIni();
@@ -110,7 +110,7 @@ arcdps_exports* mod_init()
 	arc_exports.wnd_nofilter = mod_wnd;
 	arc_exports.combat = mod_combat;
 	arc_exports.imgui = mod_imgui;
-	arc_exports.options = mod_options;
+	arc_exports.options_end = mod_options;
 
 	parseIni();
 
@@ -399,8 +399,10 @@ void ShowMechanicsOptions(bool* p_open)
 	}
 }
 
-uintptr_t mod_imgui()
+uintptr_t mod_imgui(uint32_t not_charsel_or_loading)
 {
+	if (!not_charsel_or_loading) return 0;
+
 	auto const io = &ImGui::GetIO();
 
 	if (io->KeysDown[arc_global_mod1] && io->KeysDown[arc_global_mod2])
