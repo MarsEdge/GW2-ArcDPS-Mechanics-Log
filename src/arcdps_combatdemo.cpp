@@ -14,46 +14,42 @@ typedef struct arcdps_exports {
 	char* out_build; /* build string */
 	void* wnd_nofilter; /* wndproc callback, fn(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) */
 	void* combat; /* combat event callback, fn(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision) */
-	void* imgui; /* id3dd9::present callback, before imgui::render, fn() */
-	void* options; /* id3dd9::present callback, appending to the end of options window in arcdps, fn() */
+	void* imgui; /* id3dd9::present callback, before imgui::render, fn(uint32_t not_charsel_or_loading) */
+	void* options_end; /* id3dd9::present callback, appending to the end of options window in arcdps, fn() */
 	void* combat_local;  /* combat event callback like area but from chat log, fn(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t id, uint64_t revision) */
 	void* wnd_filter; /* wndproc callback like above, input filered using modifiers */
+	void* options_windows; /* called once per 'window' option checkbox, with null at the end, non-zero return disables drawing that option, fn(char* windowname) */
 } arcdps_exports;
 
-/* combat event */
+/* combat event - see evtc docs for details, revision param in combat cb is equivalent of revision byte header */
 typedef struct cbtevent {
-	uint64_t time; /* timegettime() at time of event */
-	uint64_t src_agent; /* unique identifier */
-	uint64_t dst_agent; /* unique identifier */
-	int32_t value; /* event-specific */
-	int32_t buff_dmg; /* estimated buff damage. zero on application event */
-	uint16_t overstack_value; /* estimated overwritten stack duration for buff application */
-	uint16_t skillid; /* skill id */
-	uint16_t src_instid; /* agent map instance id */
-	uint16_t dst_instid; /* agent map instance id */
-	uint16_t src_master_instid; /* master source agent map instance id if source is a minion/pet */
-	uint8_t iss_offset; /* internal tracking. garbage */
-	uint8_t iss_offset_target; /* internal tracking. garbage */
-	uint8_t iss_bd_offset; /* internal tracking. garbage */
-	uint8_t iss_bd_offset_target; /* internal tracking. garbage */
-	uint8_t iss_alt_offset; /* internal tracking. garbage */
-	uint8_t iss_alt_offset_target; /* internal tracking. garbage */
-	uint8_t skar; /* internal tracking. garbage */
-	uint8_t skar_alt; /* internal tracking. garbage */
-	uint8_t skar_use_alt; /* internal tracking. garbage */
-	uint8_t iff; /* from iff enum */
-	uint8_t buff; /* buff application, removal, or damage event */
-	uint8_t result; /* from cbtresult enum */
-	uint8_t is_activation; /* from cbtactivation enum */
-	uint8_t is_buffremove; /* buff removed. src=relevant, dst=caused it (for strips/cleanses). from cbtr enum  */
-	uint8_t is_ninety; /* source agent health was over 90% */
-	uint8_t is_fifty; /* target agent health was under 50% */
-	uint8_t is_moving; /* source agent was moving */
-	uint8_t is_statechange; /* from cbtstatechange enum */
-	uint8_t is_flanking; /* target agent was not facing source */
-	uint8_t is_shields; /* all or partial damage was vs barrier/shield */
-	uint8_t is_offcycle; /* zero if buff dmg happened during tick, non-zero otherwise */
-	uint8_t pad64; /* internal tracking. garbage */
+	uint64_t time;
+	uintptr_t src_agent;
+	uintptr_t dst_agent;
+	int32_t value;
+	int32_t buff_dmg;
+	uint32_t overstack_value;
+	uint32_t skillid;
+	uint16_t src_instid;
+	uint16_t dst_instid;
+	uint16_t src_master_instid;
+	uint16_t dst_master_instid;
+	uint8_t iff;
+	uint8_t buff;
+	uint8_t result;
+	uint8_t is_activation;
+	uint8_t is_buffremove;
+	uint8_t is_ninety;
+	uint8_t is_fifty;
+	uint8_t is_moving;
+	uint8_t is_statechange;
+	uint8_t is_flanking;
+	uint8_t is_shields;
+	uint8_t is_offcycle;
+	uint8_t pad61;
+	uint8_t pad62;
+	uint8_t pad63;
+	uint8_t pad64;
 } cbtevent;
 
 /* agent short */
