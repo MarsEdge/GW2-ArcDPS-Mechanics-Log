@@ -4,7 +4,6 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
-	ImGui::PushAllowKeyboardFocus(false);
 	ImGui::BeginChild("Buttons",ImVec2(0,ImGui::GetItemsLineHeightWithSpacing()));
 	if (ImGui::Button("Clear")) tracker->log_events.clear();
     ImGui::SameLine();
@@ -40,7 +39,6 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
         ImGui::SetScrollHere(1.0f);
 	scroll_to_bottom = false;
     ImGui::EndChild();
-	ImGui::PopAllowKeyboardFocus();
     ImGui::End();
 }
 
@@ -53,7 +51,6 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 {
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open, flags);
-	ImGui::PushAllowKeyboardFocus(false);
 
     float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
@@ -140,7 +137,6 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
         }
     }
     ImGui::EndChild();
-	ImGui::PopAllowKeyboardFocus();
     ImGui::End();
 }
 
