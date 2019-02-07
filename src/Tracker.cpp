@@ -57,6 +57,7 @@ bool Tracker::addPlayer(ag* src, ag* dst)
 	char* name = src->name;
 	char* account = dst->name;
 	const uintptr_t id = src->id;
+	bool is_self = src->self;
 
 	if (!name) return false;
 	if (!account) return false;
@@ -67,7 +68,7 @@ bool Tracker::addPlayer(ag* src, ag* dst)
 	//player not tracked yet
 	if (!new_entry)
 	{
-		players.push_back(Player(name, account, id));
+		players.push_back(Player(name, account, id, is_self));
 		player_entries.push_back(PlayerEntry(&players.back()));
 	}
 	else//player tracked
@@ -75,6 +76,7 @@ bool Tracker::addPlayer(ag* src, ag* dst)
 		new_entry->player->id = id;
 		new_entry->player->name = name;
 		new_entry->player->in_squad = true;
+		new_entry->player->is_self = is_self;
 	}
 	return true;
 }
@@ -209,24 +211,19 @@ void Tracker::processMechanic(const cbtevent* ev, PlayerEntry* new_player_src, P
 	if (!relevant_entry) return;
 
 	if (new_mechanic->is_multihit && ev->time < (relevant_entry->getLastMechanicHitTime(new_mechanic->ids[0]) + new_mechanic->frequency_player)) return;
+		
+	std::lock_guard<std::mutex> lg2(log_events_mtx);
+		
+	log_events.push_back(LogEvent(relevant_entry->player, new_mechanic, getElapsedTime(ev->time), value));
+		
+	if (log_events.size() > max_log_events)
+	{
+		log_events.pop_front();
+	}
 
-	if (new_mechanic->verbosity & verbosity_log)
-	{
-		std::lock_guard<std::mutex> lg2(log_events_mtx);
-		
-		log_events.push_back(LogEvent(relevant_entry->player, new_mechanic, getElapsedTime(ev->time), value));
-		
-		if (log_events.size() > max_log_events)
-		{
-			log_events.pop_front();
-		}
-		has_logged_mechanic = true;
-	}
+	has_logged_mechanic = true;
 	
-	if (new_mechanic->verbosity & verbosity_chart)
-	{
-		relevant_entry->addMechanicEntry(ev->time, new_mechanic, new_mechanic->boss);
-	}
+	relevant_entry->addMechanicEntry(ev->time, new_mechanic, new_mechanic->boss);
 }
 
 int Tracker::getElapsedTime(uint64_t const &current_time) noexcept

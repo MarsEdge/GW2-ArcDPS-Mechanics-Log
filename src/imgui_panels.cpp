@@ -21,6 +21,14 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 
 	for (auto current_event = tracker->log_events.begin(); current_event != tracker->log_events.end(); ++current_event)
 	{
+		if (current_event->player
+			&& !current_event->player->is_self
+			&& tracker->show_only_self)
+			continue;
+		if (current_event->mechanic
+			&& !(current_event->mechanic->verbosity & verbosity_log))
+			continue;
+
 		if (filter.PassFilter(current_event->getFilterText().c_str()))
 		{
 			if (!beginning
@@ -85,6 +93,10 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     {
 		current_player = current_entry->player;
 
+		if (!current_player->is_self
+			&& tracker->show_only_self)
+			continue;
+
         if(current_entry->isRelevant())
         {
 			ImGui::Separator();
@@ -110,6 +122,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 				for (auto current_player_mechanics = current_entry->entries.begin(); current_player_mechanics != current_entry->entries.end(); ++current_player_mechanics)
                 {
 					if (!current_player_mechanics->isRelevant()) continue;
+					if (!(current_player_mechanics->mechanic->verbosity & verbosity_chart)) continue;
 					if (!filter.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
 
                     ImGui::PushItemWidth(window_width*0.9);
@@ -218,13 +231,12 @@ std::string AppChart::getDefaultExportPath()
 	return "";
 }
 
-void AppOptions::draw(Options* options, Tracker* tracker, const char * title, bool * p_open, ImGuiWindowFlags flags)
+void AppOptions::draw(Tracker* tracker, const char * title, bool * p_open, ImGuiWindowFlags flags)
 {
 	ImGui::SetNextWindowSize(ImVec2(550, 650), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
-	ImGui::PushAllowKeyboardFocus(false);
 	
-	ImGui::Checkbox("Only show mechanics for self", &options->show_only_self);
+	ImGui::Checkbox("Only show mechanics for self", &tracker->show_only_self);
 
 	ImGui::InputInt("Max mechanics in log", &tracker->max_log_events, 25);
 
@@ -234,17 +246,23 @@ void AppOptions::draw(Options* options, Tracker* tracker, const char * title, bo
 
 	ImGui::PushItemWidth(ImGui::GetWindowWidth()/3.0f);
 
-	for (auto current_mechanic = options->mechanics->begin(); current_mechanic != options->mechanics->end(); ++current_mechanic)
+	Boss* previous_boss = nullptr;
+
+	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)
 	{
-		ImGui::Combo(current_mechanic->getIniName().c_str(), &current_mechanic->verbosity,
+		if(previous_boss && previous_boss != current_mechanic->boss)
+			ImGui::Separator();
+
+		ImGui::Combo(current_mechanic->getChartName().c_str(), &current_mechanic->verbosity,
 			"Hidden\0"
 			"Chart Only\0"
 			"Log only\0"
 			"Everywhere\0\0",4);
+
+		previous_boss = current_mechanic->boss;
 	}
 	ImGui::PopItemWidth();
 
-	ImGui::PopAllowKeyboardFocus();
 	ImGui::End();
 }
 

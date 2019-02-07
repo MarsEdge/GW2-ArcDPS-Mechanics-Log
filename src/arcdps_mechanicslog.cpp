@@ -13,7 +13,6 @@
 #include "skill_ids.h"
 #include "npc_ids.h"
 #include "Tracker.h"
-#include "Options.h"
 
 /* proto/globals */
 arcdps_exports arc_exports;
@@ -57,8 +56,6 @@ CSimpleIniA mechanics_ini(true);
 bool valid_mechanics_ini = false;
 WPARAM log_key;
 WPARAM chart_key;
-
-Options options;
 
 
 
@@ -353,12 +350,6 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 			PlayerEntry* other_entry = tracker.getPlayerEntry(dst);
 			for(uint16_t index=0;index<mechanics.size();index++)
 			{
-				if (options.show_only_self)//skip mechanics that are not self if the option is set
-				{
-					if (mechanics[index].target_is_dst && !dst->self) continue;
-					if (!mechanics[index].target_is_dst && !src->self) continue;
-				}
-
 				if(value = mechanics[index].isValidHit(ev, 
 					(current_entry ? current_entry->player : nullptr),//check for null before getting player object
 					(other_entry ? other_entry->player: nullptr)))
@@ -394,7 +385,7 @@ void ShowMechanicsOptions(bool* p_open)
 {
 	if (show_options)
 	{
-		options_ui.draw(&options, &tracker, "Mechanics Options", p_open, ImGuiWindowFlags_NoCollapse
+		options_ui.draw(&tracker, "Mechanics Options", p_open, ImGuiWindowFlags_NoCollapse
 			| (!canMoveWindows() ? ImGuiWindowFlags_NoMove : 0));
 	}
 }
@@ -480,8 +471,8 @@ void parseIni()
 	pszValue = mechanics_ini.GetValue("chart", "key", "78");
 	chart_key = std::stoi(pszValue);
 
-	pszValue = mechanics_ini.GetValue("general", "self_only", std::to_string(options.show_only_self).c_str());
-	options.show_only_self = std::stoi(pszValue);
+	pszValue = mechanics_ini.GetValue("general", "self_only", std::to_string(tracker.show_only_self).c_str());
+	tracker.show_only_self = std::stoi(pszValue);
 
 	pszValue = mechanics_ini.GetValue("log", "max_mechanics", std::to_string(tracker.max_log_events).c_str());
 	tracker.max_log_events = std::stoi(pszValue);
@@ -494,8 +485,6 @@ void parseIni()
 		
 		current_mechanic->setVerbosity(std::stoi(pszValue));
 	}
-
-	options.mechanics = &mechanics;
 }
 
 void writeIni()
@@ -507,7 +496,7 @@ void writeIni()
 	rc = mechanics_ini.SetValue("log", "key", std::to_string(log_key).c_str());
 	rc = mechanics_ini.SetValue("chart", "key", std::to_string(chart_key).c_str());
 	
-	rc = mechanics_ini.SetValue("general", "self_only", std::to_string(options.show_only_self).c_str());
+	rc = mechanics_ini.SetValue("general", "self_only", std::to_string(tracker.show_only_self).c_str());
 	rc = mechanics_ini.SetValue("log", "max_mechanics", std::to_string(tracker.max_log_events).c_str());
 
 	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)

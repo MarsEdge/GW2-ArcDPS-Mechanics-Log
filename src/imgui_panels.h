@@ -3,7 +3,6 @@
 #include "player.h"
 #include "imgui.h"
 #include "Tracker.h"
-#include "Options.h"
 #include <string>
 #include <fstream>
 #include <windows.h>
@@ -38,7 +37,7 @@ struct AppChart
 
 struct AppOptions
 {
-	void    draw(Options* options, Tracker* tracker, const char* title, bool* p_open, ImGuiWindowFlags flags);
+	void    draw(Tracker* tracker, const char* title, bool* p_open, ImGuiWindowFlags flags);
 };
 
 float getChartColumnWidth(float window_width);
