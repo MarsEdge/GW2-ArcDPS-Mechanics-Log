@@ -26,6 +26,7 @@ struct Mechanic
 {
     std::string name = ""; //name of mechanic
     std::string name_internal = ""; //name of skill in skilldef
+	std::string description = ""; //detailed description of what the mechanic is
 	uint32_t ids[max_ids_per_mechanic] = { 0 }; //skill ids;
 	size_t ids_size = 0;
     Boss* boss = &boss_generic;//required boss, ignored if null
@@ -60,6 +61,7 @@ struct Mechanic
 
     Mechanic setName(std::string const new_name) {this->name = new_name; return *this;}
     Mechanic setNameInternal(std::string const new_name_internal) {this->name_internal = new_name_internal; return *this;}
+    Mechanic setDescription(std::string const new_description) {this->description = new_description; return *this;}
 	Mechanic setIds(std::initializer_list<uint32_t> const new_ids) { std::copy(new_ids.begin(), new_ids.end(), this->ids); this->ids_size = new_ids.size(); return *this; }
     Mechanic setBoss(Boss* const new_boss) {this->boss = new_boss; return *this;}
     Mechanic setFrequencyPlayer(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
