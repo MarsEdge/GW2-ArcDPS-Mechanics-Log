@@ -117,7 +117,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 
                     ImGui::PushItemWidth(window_width*0.9);
                     ImGui::Indent();
-                    ImGui::Text(current_player_mechanics->mechanic->name.c_str());
+                    ImGui::Text(current_player_mechanics->mechanic->getChartName().c_str());
                     if(!current_player_mechanics->mechanic->fail_if_hit)
                     {
                         ImGui::SameLine(getChartColumnLoc(window_width,1));

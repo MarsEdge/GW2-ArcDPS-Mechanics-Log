@@ -102,6 +102,12 @@ std::string Mechanic::getIniName()
 		+ " - " + name;
 }
 
+std::string Mechanic::getChartName()
+{
+	return (boss ? boss->name : "")
+		+ " - " + name;
+}
+
 bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
 {
     return true;

@@ -53,6 +53,7 @@ struct Mechanic
 	int64_t isValidHit(cbtevent* ev, Player* src, Player* dst);
 
 	std::string getIniName();
+	std::string getChartName();
 
     bool (*special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
     int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
