@@ -57,7 +57,7 @@ bool Tracker::addPlayer(ag* src, ag* dst)
 	char* name = src->name;
 	char* account = dst->name;
 	const uintptr_t id = src->id;
-	bool is_self = src->self;
+	bool is_self = dst->self;
 
 	if (!name) return false;
 	if (!account) return false;
