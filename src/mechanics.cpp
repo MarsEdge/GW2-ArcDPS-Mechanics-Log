@@ -1,8 +1,6 @@
 #include "mechanics.h"
 
 bool has_logged_mechanic = false;
-DeimosOil deimos_oils[max_deimos_oils];
-EndersEcho enders_echo;
 
 Mechanic::Mechanic() noexcept
 {
@@ -116,7 +114,9 @@ bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_s
 
 bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
-	for (auto current_pair = enders_echo.players_snatched.begin(); current_pair != enders_echo.players_snatched.end(); ++current_pair)
+	static std::list<std::pair<uint16_t, uint64_t>> players_snatched;//pair is <instance id,last snatch time>
+	
+	for (auto current_pair = players_snatched.begin(); current_pair != players_snatched.end(); ++current_pair)
 	{
 		//if player has been snatched before and is in tracking
 		if (ev->dst_instid == current_pair->first)
@@ -135,7 +135,7 @@ bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, ag* 
 	}
 	
 	//if player not seen before
-	enders_echo.players_snatched.push_back(std::pair<uint16_t, uint64_t>(ev->dst_instid, ev->time));
+	players_snatched.push_back(std::pair<uint16_t, uint64_t>(ev->dst_instid, ev->time));
 	return true;
 }
 
@@ -168,6 +168,9 @@ bool requirementKcCore(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_s
 
 bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
+	static const uint16_t max_deimos_oils = 3;
+	static DeimosOil deimos_oils[max_deimos_oils];
+	
 	DeimosOil* current_oil = nullptr;
 	DeimosOil* oldest_oil = &deimos_oils[0];
 

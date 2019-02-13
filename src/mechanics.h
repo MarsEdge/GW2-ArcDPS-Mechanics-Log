@@ -92,22 +92,12 @@ bool requirementKcCore(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_sr
 int64_t valueDefault(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
 int64_t valueDhuumShackles(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
 
-const uint16_t max_deimos_oils = 3;
 struct DeimosOil
 {
 	uint16_t id = 0;
 	uint64_t first_touch_time = 0;
 	uint64_t last_touch_time = 0;
 };
-
-struct EndersEcho
-{
-	std::list<std::pair<uint16_t, uint64_t>> players_snatched;//pair is <instance id,last snatch time>
-};
-
-extern EndersEcho enders_echo;
-
-extern DeimosOil deimos_oils[max_deimos_oils];
 
 bool requirementDeimosOil(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player * current_player);
 
