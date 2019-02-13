@@ -350,8 +350,8 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 			PlayerEntry* other_entry = tracker.getPlayerEntry(dst);
 			for(uint16_t index=0;index<mechanics.size();index++)
 			{
-				if(value = mechanics[index].isValidHit(ev, 
-					(current_entry ? current_entry->player : nullptr),//check for null before getting player object
+				if(value = mechanics[index].isValidHit(ev, src, dst, 
+					(current_entry ? current_entry->player : nullptr), //check for null before getting player object
 					(other_entry ? other_entry->player: nullptr)))
 				{
 					tracker.processMechanic(ev, current_entry, other_entry, &mechanics[index], value);

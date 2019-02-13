@@ -10,14 +10,14 @@ Mechanic::Mechanic() noexcept
 	special_value = valueDefault;
 }
 
-int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
+int64_t Mechanic::isValidHit(cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst)
 {
     uint16_t index = 0;
     bool correct_id = false;
     Player* current_player = nullptr;
 
 	if (!ev) return false;
-	if (!src && !dst) return false;
+	if (!player_src && !player_dst) return false;
 
 	if (can_block && ev->result == CBTR_BLOCK) return false;
 	if (can_evade && ev->result == CBTR_EVADE) return false;
@@ -34,7 +34,8 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
         }
     }
 
-	if (!correct_id) return false;
+	if (!correct_id 
+		&& ids_size > 0) return false;
 
     if(frequency_global != 0
         && ev->time < last_hit_time+frequency_global-ms_per_tick)
@@ -75,11 +76,11 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 
     if(target_is_dst)
     {
-        current_player = dst;
+        current_player = player_dst;
     }
     else
     {
-        current_player = src;
+        current_player = player_src;
     }
 
 	if (!current_player) return false;
@@ -88,11 +89,11 @@ int64_t Mechanic::isValidHit(cbtevent* ev, Player* src, Player* dst)
 
 	if (is_interupt && current_player->last_stab_time > ev->time) return false;
 
-	if (!special_requirement(*this, ev, src, dst, current_player)) return false;
+	if (!special_requirement(*this, ev, ag_src,ag_dst, player_src, player_dst, current_player)) return false;
 
     last_hit_time = ev->time;
 
-    return special_value(*this, ev, src, dst, current_player);
+    return special_value(*this, ev, ag_src, ag_dst, player_src, player_dst, current_player);
 }
 
 std::string Mechanic::getIniName()
@@ -108,12 +109,12 @@ std::string Mechanic::getChartName()
 		+ " - " + name;
 }
 
-bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
+bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
     return true;
 }
 
-bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
+bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
 	for (auto current_pair = enders_echo.players_snatched.begin(); current_pair != enders_echo.players_snatched.end(); ++current_pair)
 	{
@@ -138,14 +139,34 @@ bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Play
 	return true;
 }
 
-bool requirementBuffApply(const Mechanic & current_mechanic, cbtevent * ev, Player * src, Player * dst, Player * current_player)
+bool requirementBuffApply(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player * current_player)
 {
 	return ev
 		&& ev->buff
 		&& ev->buff_dmg==0;
 }
 
-bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
+bool requirementKcCore(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
+{
+	if (!ev) return false;
+	
+	//need player as src and agent (core) as dst
+	if (!player_src) return false;
+	if (!ag_dst) return false;
+	
+	//must be physical hit
+	if (ev->is_statechange) return false;
+	if (ev->is_activation) return false;
+	if (ev->is_buffremove) return false;
+	if (ev->buff) return false;
+	
+	//must be hitting kc core
+	if (ag_dst->prof != 16261) return false;
+
+	return true;
+}
+
+bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
 	DeimosOil* current_oil = nullptr;
 	DeimosOil* oldest_oil = &deimos_oils[0];
@@ -186,17 +207,17 @@ bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, Player
 	}
 }
 
-bool requirementOnSelf(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
+bool requirementOnSelf(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
 	return ev->src_instid == ev->dst_instid;
 }
 
-int64_t valueDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)
+int64_t valueDefault(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
 	return 1;
 }
 
-int64_t valueDhuumShackles(const Mechanic & current_mechanic, cbtevent * ev, Player * src, Player * dst, Player * current_player)
+int64_t valueDhuumShackles(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player * current_player)
 {
 	return (30000 - ev->value)/1000;
 }
@@ -245,6 +266,8 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("is fixated").setIds({MECHANIC_KC_FIXATE}).setFailIfHit(false).setBoss(&boss_kc),
 //	Mechanic().setName("is west fixated").setIds({MECHANIC_KC_FIXATE_WEST}).setFailIfHit(false).setBoss(&boss_kc),
+
+	Mechanic().setName("touched the core").setFailIfHit(false).setBoss(&boss_kc).setSpecialRequirement(requirementKcCore),
 
 //  Mechanic().setName("stood in the red half").setIds({MECHANIC_XERA_HALF}).setBoss(&boss_xera),
 

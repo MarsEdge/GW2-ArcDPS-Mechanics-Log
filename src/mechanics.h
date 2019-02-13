@@ -51,13 +51,13 @@ struct Mechanic
 
     Mechanic() noexcept;
 
-	int64_t isValidHit(cbtevent* ev, Player* src, Player* dst);
+	int64_t isValidHit(cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst);
 
 	std::string getIniName();
 	std::string getChartName();
 
-    bool (*special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
-    int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
+    bool (*special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
+    int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
 
     Mechanic setName(std::string const new_name) {this->name = new_name; return *this;}
     Mechanic setNameInternal(std::string const new_name_internal) {this->name_internal = new_name_internal; return *this;}
@@ -80,16 +80,17 @@ struct Mechanic
 	Mechanic setCanInvuln(bool const new_can_invuln) { this->can_invuln = new_can_invuln; return *this; }
 	Mechanic setVerbosity(int const new_verbosity) { this->verbosity = new_verbosity; return *this; }
 
-    Mechanic setSpecialRequirement(bool (*new_special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
-    Mechanic setSpecialReturnValue(int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
+    Mechanic setSpecialRequirement(bool (*new_special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
+    Mechanic setSpecialReturnValue(int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
 };
 
-bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
-bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
-bool requirementBuffApply(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
+bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
+bool requirementDhuumSnatch(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
+bool requirementBuffApply(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
+bool requirementKcCore(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
 
-int64_t valueDefault(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
-int64_t valueDhuumShackles(const Mechanic &current_mechanic, cbtevent* ev, Player* src, Player* dst, Player* current_player);
+int64_t valueDefault(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
+int64_t valueDhuumShackles(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
 
 const uint16_t max_deimos_oils = 3;
 struct DeimosOil
@@ -108,9 +109,9 @@ extern EndersEcho enders_echo;
 
 extern DeimosOil deimos_oils[max_deimos_oils];
 
-bool requirementDeimosOil(const Mechanic & current_mechanic, cbtevent * ev, Player * src, Player * dst, Player * current_player);
+bool requirementDeimosOil(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player * current_player);
 
-bool requirementOnSelf(const Mechanic & current_mechanic, cbtevent * ev, Player * src, Player * dst, Player * current_player);
+bool requirementOnSelf(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player * current_player);
 
 
 extern std::vector <Mechanic> mechanics;
