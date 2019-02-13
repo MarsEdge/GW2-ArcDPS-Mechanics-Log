@@ -269,7 +269,7 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("touched the core").setFailIfHit(false).setBoss(&boss_kc).setSpecialRequirement(requirementKcCore),
 
-//  Mechanic().setName("stood in the red half").setIds({MECHANIC_XERA_HALF}).setBoss(&boss_xera),
+	Mechanic().setName("stood in red half").setIds({MECHANIC_XERA_HALF}).setBoss(&boss_xera),
 
 	Mechanic().setName("has magic").setIds({MECHANIC_XERA_MAGIC}).setFailIfHit(false).setValidIfDown(true).setValue(15000).setBoss(&boss_xera),
 

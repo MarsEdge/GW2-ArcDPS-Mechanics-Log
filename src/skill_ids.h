@@ -42,7 +42,7 @@ const uint32_t MECHANIC_KC_FIXATE = 34912;//Fixated, previously just the east fi
 const uint32_t MECHANIC_KC_FIXATE_WEST = 34925;//Fixated, old and not used anymore
 
 //xera
-const uint32_t MECHANIC_XERA_HALF = 34883;
+const uint32_t MECHANIC_XERA_HALF = 34921;
 const uint32_t MECHANIC_XERA_ORB = 35128;//Temporal Shred
 const uint32_t MECHANIC_XERA_ORB_AOE = 34913;//Temporal Shred
 const uint32_t MECHANIC_XERA_MAGIC = 34956;
