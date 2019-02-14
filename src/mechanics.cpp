@@ -166,6 +166,41 @@ bool requirementKcCore(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_s
 	return true;
 }
 
+bool requirementDhuumMessenger(const Mechanic & current_mechanic, cbtevent * ev, ag * ag_src, ag * ag_dst, Player * player_src, Player * player_dst, Player * current_player)
+{
+	static std::list<uint16_t> messengers;
+	static std::mutex messengers_mtx;
+	
+	if (!ev) return false;
+
+	//need player as src and agent (messenger) as dst
+	if (!player_src) return false;
+	if (!ag_dst) return false;
+
+	//must be physical hit
+	if (ev->is_statechange) return false;
+	if (ev->is_activation) return false;
+	if (ev->is_buffremove) return false;
+	if (ev->buff) return false;
+
+	//must be hitting a messenger
+	if (ag_dst->prof != 19807) return false;
+
+	auto new_messenger = ev->dst_instid;
+
+	std::lock_guard<std::mutex> lg(messengers_mtx);
+
+	auto it = std::find(messengers.begin(), messengers.end(), new_messenger);
+
+	if (it != messengers.end())
+	{
+		return false;
+	}
+
+	messengers.push_front(new_messenger);
+	return true;
+}
+
 bool requirementDeimosOil(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
 {
 	static const uint16_t max_deimos_oils = 3;
@@ -354,6 +389,8 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("stood in dip aoe").setIds({MECHANIC_DHUUM_TELEPORT_AOE}).setBoss(&boss_dhuum),
 
 //	Mechanic().setName("died on green").setIds({MECHANIC_DHUUM_GREEN_TIMER}).setIsBuffremove(CBTB_MANUAL).setOverstackValue(0).setBoss(&boss_dhuum),
+
+	Mechanic().setName("aggroed a messenger").setNameInternal("").setTargetIsDst(false).setFailIfHit(false).setFrequencyPlayer(0).setValidIfDown(true).setBoss(&boss_dhuum).setSpecialRequirement(requirementDhuumMessenger),
 
 	Mechanic().setName("was snatched").setIds({MECHANIC_DHUUM_SNATCH}).setSpecialRequirement(requirementDhuumSnatch).setBoss(&boss_dhuum),
 
