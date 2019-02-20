@@ -2,11 +2,12 @@
 
 
 
-LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time, int64_t new_value)
+LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time, uint64_t new_time_absolute, int64_t new_value)
 {
 	player = new_player;
 	mechanic = new_mechanic;
 	time = new_time;
+	time_absolute = new_time_absolute;
 	value = new_value;
 
 	bakeStr();
