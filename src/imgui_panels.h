@@ -20,8 +20,8 @@ struct AppLog
 
 struct AppChart
 {
-    ImGuiTextFilter     filter;
-    uint16_t last_export_total;
+    ImGuiTextFilter filter;
+    uint16_t last_export_total = 0;
 	std::string export_dir = "";
 	std::string last_file_path = "";
 
@@ -40,6 +40,6 @@ struct AppOptions
 	void    draw(Tracker* tracker, const char* title, bool* p_open, ImGuiWindowFlags flags);
 };
 
-float getChartColumnWidth(float window_width);
+constexpr float getChartColumnWidth(float window_width);
 float getChartColumnLoc(float window_width, uint16_t col);
 static void showHelpMarker(const char* desc);

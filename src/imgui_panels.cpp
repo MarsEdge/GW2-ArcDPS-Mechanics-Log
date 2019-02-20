@@ -7,7 +7,7 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 	ImGui::BeginChild("Buttons",ImVec2(0,ImGui::GetItemsLineHeightWithSpacing()));
 	if (ImGui::Button("Clear")) tracker->log_events.clear();
     ImGui::SameLine();
-    bool copy = ImGui::Button("Copy");
+    const bool copy = ImGui::Button("Copy");
     ImGui::SameLine();
 	filter.Draw("Filter", -50.0f);
 	ImGui::EndChild();
@@ -52,6 +52,8 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 
 void    AppChart::clear(Tracker* tracker)
 {
+	if (!tracker) return;
+
 	tracker->resetAllPlayerStats();
 }
 
@@ -60,7 +62,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
     ImGui::Begin(title, p_open, flags);
 
-    float window_width = ImGui::GetWindowContentRegionWidth();
+    const float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
 
 	Player* current_player = nullptr;
@@ -92,6 +94,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 	for (auto current_entry = tracker->player_entries.begin(); current_entry != tracker->player_entries.end(); ++current_entry)
     {
 		current_player = current_entry->player;
+		if (!current_player) continue;
 
 		if (!current_player->is_self
 			&& tracker->show_only_self)
@@ -122,6 +125,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 				for (auto current_player_mechanics = current_entry->entries.begin(); current_player_mechanics != current_entry->entries.end(); ++current_player_mechanics)
                 {
 					if (!current_player_mechanics->isRelevant()) continue;
+					if (!current_player_mechanics->mechanic) continue;
 					if (!(current_player_mechanics->mechanic->verbosity & verbosity_chart)) continue;
 					if (!filter.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
 
@@ -153,7 +157,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::End();
 }
 
-float getChartColumnWidth(float window_width)
+constexpr float getChartColumnWidth(float window_width)
 {
     return window_width/6.0*3.0/5.0;
 }
@@ -183,12 +187,14 @@ void AppChart::exportData(Tracker* tracker)
 {
 	writeToDisk(tracker);
 
-	ShellExecuteA(NULL, "open", last_file_path.c_str(), NULL, export_dir.c_str(), SW_HIDE);
+	ShellExecuteA(nullptr, "open", last_file_path.c_str(), nullptr, export_dir.c_str(), SW_HIDE);
 }
 
 void AppChart::writeToDisk(Tracker* tracker)
 {
-    uint16_t new_export_total = tracker->getMechanicsTotal();
+	if (!tracker) return;
+
+    const uint16_t new_export_total = tracker->getMechanicsTotal();
     if(last_export_total == new_export_total || new_export_total < 2)
     {
         return;
@@ -196,14 +202,14 @@ void AppChart::writeToDisk(Tracker* tracker)
 
 	std::string text = toString(tracker);
 
-    std::time_t t = std::time(nullptr);
+    const std::time_t t = std::time(nullptr);
     char time_str[100];
     if (std::strftime(time_str, sizeof(time_str), "%Y%m%d-%H%M%S", std::localtime(&t)))
     {
         //std::cout << time_str << '\n';
     }
 
-    CreateDirectory(export_dir.c_str(), NULL);
+    CreateDirectory(export_dir.c_str(), nullptr);
 
 	std::string file_path = export_dir + "\\" + std::string(time_str) + "-" + std::to_string(new_export_total) + ".csv";
 
@@ -219,7 +225,7 @@ void AppChart::writeToDisk(Tracker* tracker)
 std::string AppChart::getDefaultExportPath()
 {
 	CHAR my_documents[MAX_PATH];
-	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+	const HRESULT result = SHGetFolderPath(nullptr, CSIDL_PERSONAL, nullptr, SHGFP_TYPE_CURRENT, my_documents);
 	if (result != S_OK)
 	{
 		//std::cout << "Error: " << result << "\n";

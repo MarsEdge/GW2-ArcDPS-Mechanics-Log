@@ -16,7 +16,6 @@ public:
 	int64_t value = 1;
 
 	LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time, int64_t new_value);
-	~LogEvent();
 
 	void draw();
 	void bakeStr();

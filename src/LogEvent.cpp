@@ -13,10 +13,6 @@ LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time
 }
 
 
-LogEvent::~LogEvent()
-{
-}
-
 void LogEvent::draw()
 {
 	if (!player && !mechanic)//if placeholder event
