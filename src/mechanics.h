@@ -19,7 +19,14 @@ const unsigned int max_ids_per_mechanic = 10;
 enum Verbosity
 {
 	verbosity_chart = 1 << 0,
-	verbosity_log = 1 << 1
+	verbosity_log = 1 << 1,
+	verbosity_all = (verbosity_chart | verbosity_log),
+};
+
+enum TargetLocation
+{
+	target_location_src,
+	target_location_dst,
 };
 
 struct Mechanic
@@ -49,7 +56,15 @@ struct Mechanic
 
 	int verbosity = (verbosity_chart | verbosity_log);
 
-    Mechanic() noexcept;
+	Mechanic() noexcept;
+	Mechanic(std::string new_name, std::initializer_list<uint32_t> new_ids, Boss* new_boss, bool new_fail_if_hit, bool new_valid_if_down, int new_verbosity,
+		bool new_is_interupt, bool new_is_multihit, int new_target_is_dst,
+		uint64_t new_frequency_player, uint64_t new_frequency_global, int32_t new_overstack_value, int32_t new_value,
+		uint8_t new_is_activation, uint8_t new_is_buffremove,
+		bool new_can_evade, bool new_can_block, bool new_can_invuln,
+		bool(*new_special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player),
+		int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player),
+			std::string new_name_internal, std::string new_description);
 
 	int64_t isValidHit(cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst);
 

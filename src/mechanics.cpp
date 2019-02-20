@@ -8,6 +8,49 @@ Mechanic::Mechanic() noexcept
 	special_value = valueDefault;
 }
 
+Mechanic::Mechanic(std::string new_name, std::initializer_list<uint32_t> new_ids, Boss* new_boss, bool new_fail_if_hit, bool new_valid_if_down, int new_verbosity,
+	bool new_is_interupt, bool new_is_multihit, int new_target_is_dst,
+	uint64_t new_frequency_player, uint64_t new_frequency_global, int32_t new_overstack_value, int32_t new_value,
+	uint8_t new_is_activation, uint8_t new_is_buffremove,
+	bool new_can_evade, bool new_can_block, bool new_can_invuln,
+	bool(*new_special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player),
+	int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player),
+	std::string new_name_internal, std::string new_description)
+{
+	name = new_name;
+	
+	std::copy(new_ids.begin(), new_ids.end(), ids);
+	ids_size = new_ids.size();
+
+	boss = new_boss;
+	fail_if_hit = new_fail_if_hit;
+	valid_if_down = new_valid_if_down;
+	verbosity = new_verbosity;
+	
+	is_interupt = new_is_interupt;
+	is_multihit = new_is_multihit;
+	target_is_dst = new_target_is_dst;
+
+	frequency_player = new_frequency_player;
+	frequency_global = new_frequency_global;
+
+	overstack_value = new_overstack_value;
+	value = new_value;
+
+	is_activation = new_is_activation;
+	is_buffremove = new_is_buffremove;
+
+	can_evade = new_can_evade;
+	can_block = new_can_block;
+	can_invuln = new_can_invuln;
+	
+	special_requirement = new_special_requirement;
+	special_value = new_special_value;
+	
+	name_internal = new_name_internal;
+	description = new_description;
+}
+
 int64_t Mechanic::isValidHit(cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst)
 {
     uint16_t index = 0;
@@ -186,7 +229,7 @@ bool requirementDhuumMessenger(const Mechanic & current_mechanic, cbtevent * ev,
 	//must be hitting a messenger
 	if (ag_dst->prof != 19807) return false;
 
-	auto new_messenger = ev->dst_instid;
+	const auto new_messenger = ev->dst_instid;
 
 	std::lock_guard<std::mutex> lg(messengers_mtx);
 
@@ -262,7 +305,9 @@ int64_t valueDhuumShackles(const Mechanic & current_mechanic, cbtevent* ev, ag* 
 
 std::vector <Mechanic> mechanics =
 {
-    Mechanic().setName("was teleported").setIds({MECHANIC_VG_TELEPORT_RAINBOW,MECHANIC_VG_TELEPORT_GREEN}).setBoss(&boss_vg),
+	Mechanic("was teleported",{31392,31860},&boss_vg,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,0,0,true,true,true,
+	requirementDefault,valueDefault,
+	"Unstable Magic Spike",""),
 
 	Mechanic().setName("stood in the green circle").setIds({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).setFailIfHit(false).setBoss(&boss_vg).setCanInvuln(false).setVerbosity(verbosity_chart),
 
