@@ -414,6 +414,8 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("got an orb").setIds({MECHANIC_EATER_ORB}).setFrequencyPlayer(ms_per_tick).setFailIfHit(false).setBoss(&boss_soul_eater),
 	Mechanic().setName("threw an orb").setNameInternal("Reclaimed Energy").setIds({47942}).setTargetIsDst(false).setIsActivation(ACTV_NORMAL).setFailIfHit(false).setBoss(&boss_soul_eater),
 
+	Mechanic("got a green",{47013},&boss_ice_king,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,0,0,true,true,true,requirementDefault,valueDefault,"Hailstorm",""),
+
 	Mechanic().setName("touched a messenger").setIds({MECHANIC_DHUUM_GOLEM}).setBoss(&boss_dhuum),
 
 	Mechanic().setName("is shackled").setIds({MECHANIC_DHUUM_SHACKLE}).setFailIfHit(false).setTargetIsDst(false).setBoss(&boss_dhuum),
