@@ -350,7 +350,7 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("is fixated").setIds({MECHANIC_KC_FIXATE}).setFailIfHit(false).setBoss(&boss_kc),
 //	Mechanic().setName("is west fixated").setIds({MECHANIC_KC_FIXATE_WEST}).setFailIfHit(false).setBoss(&boss_kc),
 
-	Mechanic().setName("touched the core").setFailIfHit(false).setTargetIsDst(false).setFrequencyPlayer(3000).setBoss(&boss_kc).setSpecialRequirement(requirementKcCore),
+	Mechanic().setName("touched the core").setFailIfHit(false).setTargetIsDst(false).setFrequencyPlayer(8000).setBoss(&boss_kc).setSpecialRequirement(requirementKcCore),
 
 	Mechanic().setName("stood in red half").setIds({MECHANIC_XERA_HALF}).setBoss(&boss_xera),
 
