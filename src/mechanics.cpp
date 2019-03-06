@@ -305,7 +305,7 @@ int64_t valueDhuumShackles(const Mechanic & current_mechanic, cbtevent* ev, ag* 
 
 std::vector <Mechanic> mechanics =
 {
-	Mechanic("was teleported",{31392,31860},&boss_vg,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,0,0,true,true,true,
+	Mechanic("was teleported",{31392,31860},&boss_vg,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 	requirementDefault,valueDefault,
 	"Unstable Magic Spike",""),
 
@@ -352,7 +352,9 @@ std::vector <Mechanic> mechanics =
 
 	Mechanic().setName("touched the core").setFailIfHit(false).setTargetIsDst(false).setFrequencyPlayer(8000).setBoss(&boss_kc).setSpecialRequirement(requirementKcCore),
 
-	Mechanic().setName("stood in red half").setIds({MECHANIC_XERA_HALF}).setBoss(&boss_xera),
+	Mechanic("stood in red half",{34921},&boss_xera,true,false,verbosity_all,false,true,target_location_dst,4000,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,true,
+	requirementDefault,valueDefault,
+	"TODO:check internal name",""),
 
 	Mechanic().setName("has magic").setIds({MECHANIC_XERA_MAGIC}).setFailIfHit(false).setValidIfDown(true).setValue(15000).setBoss(&boss_xera),
 
@@ -414,7 +416,7 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("got an orb").setIds({MECHANIC_EATER_ORB}).setFrequencyPlayer(ms_per_tick).setFailIfHit(false).setBoss(&boss_soul_eater),
 	Mechanic().setName("threw an orb").setNameInternal("Reclaimed Energy").setIds({47942}).setTargetIsDst(false).setIsActivation(ACTV_NORMAL).setFailIfHit(false).setBoss(&boss_soul_eater),
 
-	Mechanic("got a green",{47013},&boss_ice_king,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,0,0,true,true,true,requirementDefault,valueDefault,"Hailstorm",""),
+	Mechanic("got a green",{47013},&boss_ice_king,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,requirementDefault,valueDefault,"Hailstorm",""),
 
 	Mechanic().setName("touched a messenger").setIds({MECHANIC_DHUUM_GOLEM}).setBoss(&boss_dhuum),
 

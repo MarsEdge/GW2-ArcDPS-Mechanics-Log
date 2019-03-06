@@ -40,8 +40,8 @@ struct Mechanic
     uint64_t frequency_player = 2000; //minimum time between instances of this mechanic per player(ms)
     uint64_t frequency_global = 0; //minimum time between instances of this mechanic globally(ms)
     uint64_t last_hit_time = 0; //time of last instance of mechanic
-	uint8_t is_activation = 0;
-	uint8_t is_buffremove = 0;
+	uint8_t is_activation = ACTV_NONE;
+	uint8_t is_buffremove = CBTB_NONE;
 	int32_t overstack_value = -1;//required overstack value
 	int32_t value = -1;//required value
     bool is_interupt = false;
@@ -54,7 +54,7 @@ struct Mechanic
 	bool can_block = true;
 	bool can_invuln = true;
 
-	int verbosity = (verbosity_chart | verbosity_log);
+	int verbosity = verbosity_all;
 
 	Mechanic() noexcept;
 	Mechanic(std::string new_name, std::initializer_list<uint32_t> new_ids, Boss* new_boss, bool new_fail_if_hit, bool new_valid_if_down, int new_verbosity,
