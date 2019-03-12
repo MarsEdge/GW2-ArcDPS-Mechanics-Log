@@ -122,6 +122,14 @@ void Tracker::resetAllPlayerStats()
 	players.clear();
 }
 
+void Tracker::clearLog()
+{
+	std::lock_guard<std::mutex> lg(log_events_mtx);
+
+	log_events.clear();
+	has_logged_mechanic = false;
+}
+
 uint16_t Tracker::getMechanicsTotal()
 {
 	uint16_t result = 0;
@@ -160,15 +168,21 @@ void Tracker::processCombatEnter(const cbtevent* ev, ag* new_agent)
 		{
 			start_time = ev->time;
 
+			if (log_events.size() > 1
+				&& (ev->time - log_events.back().time_absolute) < 3000)
+			{//if a mechanic happens when the fight starts, it's probably part of the new fight and not the old one
+				log_events.back().time = getElapsedTime(ev->time);
+				log_events.back().bakeStr();
+			}
+
 			if (has_logged_mechanic)
 			{
 				has_logged_mechanic = false;
 
-				if ((ev->time - log_events.back().time_absolute) < 40)
+				if (log_events.size() > 1
+					&& (ev->time - log_events.back().time_absolute) < 3000)
 				{//if a mechanic happens when the fight starts, ensure the separator is before the mechanic
 					log_events.insert(--log_events.end(), LogEvent(nullptr, nullptr, getElapsedTime(ev->time), ev->time, 1));
-
-					log_events.back().time = getElapsedTime(ev->time);
 				}
 				else
 				{

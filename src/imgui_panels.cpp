@@ -5,7 +5,7 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
     ImGui::SetNextWindowSize(ImVec2(500,400), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin(title, p_open, flags);
 	ImGui::BeginChild("Buttons",ImVec2(0,ImGui::GetItemsLineHeightWithSpacing()));
-	if (ImGui::Button("Clear")) tracker->log_events.clear();
+	if (ImGui::Button("Clear")) tracker->clearLog();;
     ImGui::SameLine();
     const bool copy = ImGui::Button("Copy");
     ImGui::SameLine();

@@ -41,6 +41,7 @@ public:
 
 	void addPull(Boss* boss);
 	void resetAllPlayerStats();
+	void clearLog();
 	uint16_t getMechanicsTotal();
 	uint8_t getPlayerNumInCombat();
 
