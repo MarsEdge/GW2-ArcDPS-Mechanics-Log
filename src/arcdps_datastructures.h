@@ -140,3 +140,6 @@ typedef struct ag
 	uint32_t self; /* 1 if self, 0 if not */
 	uint16_t team; /* sep21+ */
 } ag;
+
+const unsigned int combat_api_delay = 3000;//delay from realtime, guess, in ms
+const unsigned int ms_per_tick = 40;// 1000ms/25hz

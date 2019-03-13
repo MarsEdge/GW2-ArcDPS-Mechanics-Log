@@ -12,8 +12,6 @@
 
 extern bool has_logged_mechanic;
 
-const unsigned int ms_per_tick = 40;// 1000/25
-const unsigned int combatapi_delay = 5000;
 const unsigned int max_ids_per_mechanic = 10;
 
 enum Verbosity

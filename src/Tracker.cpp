@@ -169,7 +169,7 @@ void Tracker::processCombatEnter(const cbtevent* ev, ag* new_agent)
 			start_time = ev->time;
 
 			if (log_events.size() > 1
-				&& (ev->time - log_events.back().time_absolute) < 3000)
+				&& (ev->time - log_events.back().time_absolute) < combat_api_delay)
 			{//if a mechanic happens when the fight starts, it's probably part of the new fight and not the old one
 				log_events.back().time = getElapsedTime(ev->time);
 				log_events.back().bakeStr();
@@ -180,7 +180,7 @@ void Tracker::processCombatEnter(const cbtevent* ev, ag* new_agent)
 				has_logged_mechanic = false;
 
 				if (log_events.size() > 1
-					&& (ev->time - log_events.back().time_absolute) < 3000)
+					&& (ev->time - log_events.back().time_absolute) < combat_api_delay)
 				{//if a mechanic happens when the fight starts, ensure the separator is before the mechanic
 					log_events.insert(--log_events.end(), LogEvent(nullptr, nullptr, getElapsedTime(ev->time), ev->time, 1));
 				}
