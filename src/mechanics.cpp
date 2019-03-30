@@ -209,6 +209,27 @@ bool requirementKcCore(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_s
 	return true;
 }
 
+bool requirementShTdCc(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
+{
+	if (!ev) return false;
+
+	//need player as src and agent (TD) as dst
+	if (!player_src) return false;
+	if (!ag_dst) return false;
+
+	//must be buff apply
+	if (ev->is_statechange) return false;
+	if (ev->is_activation) return false;
+	if (ev->is_buffremove) return false;
+	if (!ev->buff) return false;
+	if (ev->buff_dmg) return false;
+
+	//must be hitting a tormented dead
+	if (ag_dst->prof != 19422) return false;
+
+	return true;
+}
+
 bool requirementDhuumMessenger(const Mechanic & current_mechanic, cbtevent * ev, ag * ag_src, ag * ag_dst, Player * player_src, Player * player_dst, Player * current_player)
 {
 	static std::list<uint16_t> messengers;
@@ -408,6 +429,9 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("took fixate").setIds({MECHANIC_HORROR_FIXATE}).setFailIfHit(false).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
 	Mechanic().setName("was debuffed").setIds({MECHANIC_HORROR_DEBUFF}).setFailIfHit(false).setVerbosity(verbosity_chart).setBoss(&boss_sh),
+
+	Mechanic("CCed a tormented dead",{872,833},&boss_sh,true,true,verbosity_all,false,true,target_location_src,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,requirementShTdCc,valueDefault,
+		"Stun, Daze",""),
 
 	Mechanic().setName("was puked on").setIds({MECHANIC_EATER_PUKE}).setFrequencyPlayer(3000).setVerbosity(verbosity_chart).setBoss(&boss_soul_eater),
 
