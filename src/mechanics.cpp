@@ -460,10 +460,6 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("was sucked center").setIds({MECHANIC_DHUUM_SUCK_AOE}).setBoss(&boss_dhuum),
 
 	Mechanic().setName("stood in dip aoe").setIds({MECHANIC_DHUUM_TELEPORT_AOE}).setBoss(&boss_dhuum),
-	
-	Mechanic("was targeted for dip",{48176},&boss_dhuum,false,true,verbosity_all,false,false,target_location_dst,1000,0,-1,-1,false,false,false,false,false,
-		requirementDefault,valueDefault,
-		"",""),
 
 //	Mechanic().setName("died on green").setIds({MECHANIC_DHUUM_GREEN_TIMER}).setIsBuffremove(CBTB_MANUAL).setOverstackValue(0).setBoss(&boss_dhuum),
 
