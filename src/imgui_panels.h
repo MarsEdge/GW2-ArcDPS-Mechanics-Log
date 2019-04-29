@@ -11,9 +11,11 @@
 
 struct AppLog
 {
-    ImGuiTextFilter filter;
+    ImGuiTextFilter filter_player;
+    ImGuiTextFilter filter_mechanic;
+	bool show_pull_separators = true;
     bool scroll_to_bottom = false;
-	uint64_t line_break_frequency = 5;
+	uint64_t line_break_frequency = 5000;
 
     void draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tracker* tracker);
 };

@@ -9,7 +9,21 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
     ImGui::SameLine();
     const bool copy = ImGui::Button("Copy");
     ImGui::SameLine();
-	filter.Draw("Filter", -50.0f);
+
+	std::string filter_button_text = "Filter - " 
+		+ ((filter_player.IsActive() || filter_mechanic.IsActive()) ? std::string("Active") : std::string("Inactive"));
+
+	if (ImGui::Button(filter_button_text.c_str(),ImVec2(-1,0))) ImGui::OpenPopup("FilterOptions");
+	if (ImGui::BeginPopup("FilterOptions"))
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+		filter_player.Draw("Player");
+		filter_mechanic.Draw("Mechanic");
+		ImGui::Checkbox("Show Separators Between Pulls", &show_pull_separators);
+		ImGui::PopStyleVar();
+		ImGui::EndPopup();
+	}
+	
 	ImGui::EndChild();
     ImGui::Separator();
     ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -29,18 +43,19 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 			&& !(current_event->mechanic->verbosity & verbosity_log))
 			continue;
 
-		if (filter.PassFilter(current_event->getFilterText().c_str()))
+		if (current_event->player && !filter_player.PassFilter(current_event->player->name.c_str())) continue;
+		if (current_event->mechanic && !filter_mechanic.PassFilter(current_event->mechanic->name.c_str())) continue;
+		if (!show_pull_separators && current_event->isPlaceholder()) continue;
+
+		if (!beginning
+			&& current_event->time_absolute > (last_mechanic_time + line_break_frequency))
 		{
-			if (!beginning
-				&& current_event->time > (last_mechanic_time + line_break_frequency))
-			{
-				ImGui::Dummy(ImVec2(0, ImGui::GetTextLineHeight()));
-			}
-			last_mechanic_time = current_event->time;
-			
-			current_event->draw();
-			beginning = false;
+			ImGui::Dummy(ImVec2(0, ImGui::GetTextLineHeight()));
 		}
+		last_mechanic_time = current_event->time_absolute;
+			
+		current_event->draw();
+		beginning = false;
     }
 
     if (scroll_to_bottom)
