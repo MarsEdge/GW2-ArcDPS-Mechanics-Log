@@ -20,6 +20,7 @@ public:
 
 	void draw();
 	void bakeStr();
+	bool isPlaceholder();
 	std::string getFilterText();
 };
 

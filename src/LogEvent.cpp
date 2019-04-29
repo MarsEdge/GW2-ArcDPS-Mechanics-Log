@@ -16,7 +16,7 @@ LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time
 
 void LogEvent::draw()
 {
-	if (!player && !mechanic)//if placeholder event
+	if (isPlaceholder())//if placeholder event
 	{
 		ImGui::Separator();//TODO: make function for if an event is a placeholder
 		return;
@@ -27,7 +27,7 @@ void LogEvent::draw()
 
 void LogEvent::bakeStr()
 {
-	if (!player && !mechanic)
+	if (isPlaceholder())
 	{
 		return;
 	}
@@ -61,9 +61,14 @@ void LogEvent::bakeStr()
 	str = output;
 }
 
+bool LogEvent::isPlaceholder()
+{
+	return !player && !mechanic;
+}
+
 std::string LogEvent::getFilterText()
 {
-	if (!player && !mechanic)//if placeholder event
+	if (isPlaceholder())
 	{
 		return "=";
 	}
