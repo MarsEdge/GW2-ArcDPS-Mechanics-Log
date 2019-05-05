@@ -10,14 +10,17 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
     const bool copy = ImGui::Button("Copy");
     ImGui::SameLine();
 
+	bool filter_active = filter_player.IsActive() || filter_boss.IsActive() || filter_mechanic.IsActive();
+
 	std::string filter_button_text = "Filter - " 
-		+ ((filter_player.IsActive() || filter_mechanic.IsActive()) ? std::string("Active") : std::string("Inactive"));
+		+ (filter_active ? std::string("Active") : std::string("Inactive"));
 
 	if (ImGui::Button(filter_button_text.c_str(),ImVec2(-1,0))) ImGui::OpenPopup("FilterOptions");
 	if (ImGui::BeginPopup("FilterOptions"))
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 		filter_player.Draw("Player");
+		filter_boss.Draw("Boss");
 		filter_mechanic.Draw("Mechanic");
 		ImGui::Checkbox("Show Separators Between Pulls", &show_pull_separators);
 		ImGui::PopStyleVar();
@@ -44,6 +47,8 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 			continue;
 
 		if (current_event->player && !filter_player.PassFilter(current_event->player->name.c_str())) continue;
+		if (current_event->mechanic && current_event->mechanic->boss
+			&& !filter_boss.PassFilter(current_event->mechanic->boss->name.c_str())) continue;
 		if (current_event->mechanic && !filter_mechanic.PassFilter(current_event->mechanic->name.c_str())) continue;
 		if (!show_pull_separators && current_event->isPlaceholder()) continue;
 
@@ -88,7 +93,25 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::SameLine();
     if (ImGui::Button("Copy")) ImGui::LogToClipboard();
 	ImGui::SameLine();
-	filter.Draw("Filter", -50.0f);
+
+	bool filter_active = filter_player.IsActive() || filter_boss.IsActive() || filter_mechanic.IsActive() || show_in_squad_only;
+
+	std::string filter_button_text = "Filter - "
+		+ (filter_active ? std::string("Active") : std::string("Inactive"));
+
+	if (ImGui::Button(filter_button_text.c_str(), ImVec2(-1, 0))) ImGui::OpenPopup("FilterOptions");
+	if (ImGui::BeginPopup("FilterOptions"))
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+		filter_player.Draw("Player");
+		filter_boss.Draw("Boss");
+		filter_mechanic.Draw("Mechanic");
+		ImGui::Checkbox("Only show players currently in squad", &show_in_squad_only);
+		ImGui::PopStyleVar();
+		ImGui::EndPopup();
+	}
+
+	
     ImGui::Separator();
 
     ImGui::BeginGroup();
@@ -113,6 +136,13 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 
 		if (!current_player->is_self
 			&& tracker->show_only_self)
+			continue;
+
+		if (show_in_squad_only
+			&& !current_player->in_squad)
+			continue;
+
+		if (!filter_player.PassFilter(current_player->name.c_str()))
 			continue;
 
         if(current_entry->isRelevant())
@@ -142,7 +172,9 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 					if (!current_player_mechanics->isRelevant()) continue;
 					if (!current_player_mechanics->mechanic) continue;
 					if (!(current_player_mechanics->mechanic->verbosity & verbosity_chart)) continue;
-					if (!filter.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
+					if (current_player_mechanics->current_boss
+						&& !filter_boss.PassFilter(current_player_mechanics->current_boss->name.c_str())) continue;
+					if (!filter_mechanic.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
 
                     ImGui::PushItemWidth(window_width*0.9);
                     ImGui::Indent();
