@@ -230,6 +230,28 @@ bool requirementShTdCc(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_s
 	return true;
 }
 
+bool requirementCaveEyeCc(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)
+{
+	if (!ev) return false;
+
+	//need player as src and agent (Eye) as dst
+	if (!player_src) return false;
+	if (!ag_dst) return false;
+
+	//must be buff apply
+	if (ev->is_statechange) return false;
+	if (ev->is_activation) return false;
+	if (ev->is_buffremove) return false;
+	if (!ev->buff) return false;
+	if (ev->buff_dmg) return false;
+
+	//must be hitting an eye
+	if (ag_dst->prof != 0x4CC3
+		&& ag_dst->prof != 0x4D84) return false;
+
+	return true;
+}
+
 bool requirementDhuumMessenger(const Mechanic & current_mechanic, cbtevent * ev, ag * ag_src, ag * ag_dst, Player * player_src, Player * player_dst, Player * current_player)
 {
 	static std::list<uint16_t> messengers;
@@ -441,6 +463,9 @@ std::vector <Mechanic> mechanics =
 	Mechanic().setName("threw an orb").setNameInternal("Reclaimed Energy").setIds({47942}).setTargetIsDst(false).setIsActivation(ACTV_NORMAL).setFailIfHit(false).setBoss(&boss_soul_eater),
 
 	Mechanic("got a green",{47013},&boss_ice_king,false,true,verbosity_chart,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,requirementDefault,valueDefault,"Hailstorm",""),
+
+	Mechanic("CCed an eye",{872},&boss_cave,false,true,verbosity_all,false,false,target_location_src,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,requirementCaveEyeCc,valueDefault,
+		"Stun",""),
 
 	Mechanic().setName("touched a messenger").setIds({MECHANIC_DHUUM_GOLEM}).setBoss(&boss_dhuum),
 
