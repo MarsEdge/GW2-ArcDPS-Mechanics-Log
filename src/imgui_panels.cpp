@@ -20,7 +20,9 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 		filter_player.Draw("Player");
+		ImGui::Separator();
 		filter_boss.Draw("Boss");
+		ImGui::Separator();
 		filter_mechanic.Draw("Mechanic");
 		ImGui::Checkbox("Show Separators Between Pulls", &show_pull_separators);
 		ImGui::PopStyleVar();
@@ -104,7 +106,9 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 		filter_player.Draw("Player");
+		ImGui::Separator();
 		filter_boss.Draw("Boss");
+		ImGui::Separator();
 		filter_mechanic.Draw("Mechanic");
 		ImGui::Checkbox("Only show players currently in squad", &show_in_squad_only);
 		ImGui::PopStyleVar();
