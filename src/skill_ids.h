@@ -103,7 +103,7 @@ const uint32_t MECHANIC_DHUUM_MARK = 48760;//Putrid Bomb
 const uint32_t MECHANIC_DHUUM_SUCK_AOE = 48398;//Cataclysmic Cycle
 const uint32_t MECHANIC_DHUUM_TELEPORT_AOE = 48176;//Death Mark
 const uint32_t MECHANIC_DHUUM_GREEN_TIMER = 48281;//Mortal Coil
-const uint32_t MECHANIC_DHUUM_SNATCH = 47076;//nameless
+const uint32_t MECHANIC_DHUUM_SNATCH = 48483;//nameless
 const uint32_t MECHANIC_DHUUM_BUTTON_CHANNEL = 47002;//nameless
 const uint32_t MECHANIC_DHUUM_CONE = 47561;//Slash
 
