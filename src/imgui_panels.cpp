@@ -149,59 +149,56 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 		if (!filter_player.PassFilter(current_player->name.c_str()))
 			continue;
 
-        if(current_entry->isRelevant())
+		ImGui::Separator();
+        ImGui::PushItemWidth(window_width*0.9);
+        ImGui::AlignFirstTextHeightToWidgets();
+        expand = ImGui::TreeNode(current_player->name.c_str());
+
+        ImGui::SameLine(getChartColumnLoc(window_width,1));
+        ImGui::Text("%d", current_entry->mechanics_neutral);
+        ImGui::SameLine(getChartColumnLoc(window_width,2));
+        ImGui::Text("%d", current_entry->mechanics_failed);
+        ImGui::SameLine(getChartColumnLoc(window_width,3));
+        ImGui::Text("%d", current_entry->downs);
+        ImGui::SameLine(getChartColumnLoc(window_width,4));
+        ImGui::Text("%d", current_entry->deaths);
+        ImGui::SameLine(getChartColumnLoc(window_width,5));
+        ImGui::Text("%d", current_entry->pulls);
+        ImGui::PopItemWidth();
+
+        if(expand
+			|| show_all)
         {
-			ImGui::Separator();
-            ImGui::PushItemWidth(window_width*0.9);
-            ImGui::AlignFirstTextHeightToWidgets();
-            expand = ImGui::TreeNode(current_player->name.c_str());
-
-            ImGui::SameLine(getChartColumnLoc(window_width,1));
-            ImGui::Text("%d", current_entry->mechanics_neutral);
-            ImGui::SameLine(getChartColumnLoc(window_width,2));
-            ImGui::Text("%d", current_entry->mechanics_failed);
-            ImGui::SameLine(getChartColumnLoc(window_width,3));
-            ImGui::Text("%d", current_entry->downs);
-            ImGui::SameLine(getChartColumnLoc(window_width,4));
-            ImGui::Text("%d", current_entry->deaths);
-            ImGui::SameLine(getChartColumnLoc(window_width,5));
-            ImGui::Text("%d", current_entry->pulls);
-            ImGui::PopItemWidth();
-
-            if(expand
-				|| show_all)
+			for (auto current_player_mechanics = current_entry->entries.begin(); current_player_mechanics != current_entry->entries.end(); ++current_player_mechanics)
             {
-				for (auto current_player_mechanics = current_entry->entries.begin(); current_player_mechanics != current_entry->entries.end(); ++current_player_mechanics)
+				if (!current_player_mechanics->isRelevant()) continue;
+				if (!current_player_mechanics->mechanic) continue;
+				if (!(current_player_mechanics->mechanic->verbosity & verbosity_chart)) continue;
+				if (current_player_mechanics->current_boss
+					&& !filter_boss.PassFilter(current_player_mechanics->current_boss->name.c_str())) continue;
+				if (!filter_mechanic.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
+
+                ImGui::PushItemWidth(window_width*0.9);
+                ImGui::Indent();
+                ImGui::Text(current_player_mechanics->mechanic->getChartName().c_str());
+                if(!current_player_mechanics->mechanic->fail_if_hit)
                 {
-					if (!current_player_mechanics->isRelevant()) continue;
-					if (!current_player_mechanics->mechanic) continue;
-					if (!(current_player_mechanics->mechanic->verbosity & verbosity_chart)) continue;
-					if (current_player_mechanics->current_boss
-						&& !filter_boss.PassFilter(current_player_mechanics->current_boss->name.c_str())) continue;
-					if (!filter_mechanic.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
-
-                    ImGui::PushItemWidth(window_width*0.9);
-                    ImGui::Indent();
-                    ImGui::Text(current_player_mechanics->mechanic->getChartName().c_str());
-                    if(!current_player_mechanics->mechanic->fail_if_hit)
-                    {
-                        ImGui::SameLine(getChartColumnLoc(window_width,1));
-                    }
-                    else
-                    {
-                        ImGui::SameLine(getChartColumnLoc(window_width,2));
-                    }
-                    ImGui::Text("%d", current_player_mechanics->hits);
-                    ImGui::SameLine(getChartColumnLoc(window_width,5));
-                    ImGui::Text("%d", current_player_mechanics->pulls);
-                    ImGui::Unindent();
-                    ImGui::PopItemWidth();
-
-                    ImGui::Separator();
+                    ImGui::SameLine(getChartColumnLoc(window_width,1));
                 }
+                else
+                {
+                    ImGui::SameLine(getChartColumnLoc(window_width,2));
+                }
+                ImGui::Text("%d", current_player_mechanics->hits);
+                ImGui::SameLine(getChartColumnLoc(window_width,5));
+                ImGui::Text("%d", current_player_mechanics->pulls);
+                ImGui::Unindent();
+                ImGui::PopItemWidth();
 
-				if (expand) ImGui::TreePop();
+                ImGui::Separator();
             }
+
+			if (expand) ImGui::TreePop();
         }
     }
     ImGui::EndChild();
