@@ -3,6 +3,9 @@
 PlayerEntry* Tracker::getPlayerEntry(const ag* new_player)
 {
 	if (!isPlayer(new_player)) return nullptr;
+
+	std::lock_guard<std::mutex> lg(players_mtx);
+
 	auto it = std::find(player_entries.begin(), player_entries.end(), new_player->id);
 
 	//player not tracked yet
@@ -20,6 +23,8 @@ PlayerEntry * Tracker::getPlayerEntry(uintptr_t new_player)
 {
 	if (!new_player) return nullptr;
 
+	std::lock_guard<std::mutex> lg(players_mtx);
+
 	auto it = std::find(player_entries.begin(), player_entries.end(), new_player);
 
 	//player not tracked yet
@@ -36,6 +41,9 @@ PlayerEntry * Tracker::getPlayerEntry(uintptr_t new_player)
 PlayerEntry * Tracker::getPlayerEntry(std::string new_player)
 {
 	if (new_player.empty()) return nullptr;
+
+	std::lock_guard<std::mutex> lg(players_mtx);
+
 	auto it = std::find(player_entries.begin(), player_entries.end(), new_player);
 
 	//player not tracked yet
@@ -65,7 +73,11 @@ bool Tracker::addPlayer(ag* src, ag* dst)
 	if (std::string(account).length() < 2) return false;
 
 	PlayerEntry* new_entry = getPlayerEntry(account);
+	
 	//player not tracked yet
+
+	std::lock_guard<std::mutex> lg(players_mtx);
+
 	if (!new_entry)
 	{
 		players.push_back(Player(name, account, id, is_self));
@@ -92,6 +104,9 @@ bool Tracker::removePlayer(const ag* src)
 	PlayerEntry* new_entry = getPlayerEntry(id);
 
 	//player not tracked yet
+
+	std::lock_guard<std::mutex> lg(players_mtx);
+
 	if (!new_entry)
 	{
 		return false;
