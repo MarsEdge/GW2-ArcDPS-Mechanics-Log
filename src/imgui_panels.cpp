@@ -86,6 +86,8 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 
     const float window_width = ImGui::GetWindowContentRegionWidth();
     bool expand = false;
+	int current_mechanic_fail_count = 0;//number of mechanics for a given player given current filter settings
+	int current_mechanic_neutral_count = 0;
 
 	Player* current_player = nullptr;
 
@@ -133,6 +135,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
     ImGui::EndGroup();
 
     ImGui::BeginChild("scrolling");
+	ImGui::PushItemWidth(window_width*0.9);
 	for (auto current_entry = tracker->player_entries.begin(); current_entry != tracker->player_entries.end(); ++current_entry)
     {
 		current_player = current_entry->player;
@@ -150,21 +153,22 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 			continue;
 
 		ImGui::Separator();
-        ImGui::PushItemWidth(window_width*0.9);
         ImGui::AlignFirstTextHeightToWidgets();
         expand = ImGui::TreeNode(current_player->name.c_str());
 
-        ImGui::SameLine(getChartColumnLoc(window_width,1));
-        ImGui::Text("%d", current_entry->mechanics_neutral);
-        ImGui::SameLine(getChartColumnLoc(window_width,2));
-        ImGui::Text("%d", current_entry->mechanics_failed);
-        ImGui::SameLine(getChartColumnLoc(window_width,3));
-        ImGui::Text("%d", current_entry->downs);
-        ImGui::SameLine(getChartColumnLoc(window_width,4));
-        ImGui::Text("%d", current_entry->deaths);
-        ImGui::SameLine(getChartColumnLoc(window_width,5));
-        ImGui::Text("%d", current_entry->pulls);
-        ImGui::PopItemWidth();
+		if (!expand && !show_all)
+		{
+			ImGui::SameLine(getChartColumnLoc(window_width, 1));
+			ImGui::Text("%d", current_entry->mechanics_neutral);
+			ImGui::SameLine(getChartColumnLoc(window_width, 2));
+			ImGui::Text("%d", current_entry->mechanics_failed);
+			ImGui::SameLine(getChartColumnLoc(window_width, 3));
+			ImGui::Text("%d", current_entry->downs);
+			ImGui::SameLine(getChartColumnLoc(window_width, 4));
+			ImGui::Text("%d", current_entry->deaths);
+			ImGui::SameLine(getChartColumnLoc(window_width, 5));
+			ImGui::Text("%d", current_entry->pulls);
+		}
 
         if(expand
 			|| show_all)
@@ -178,29 +182,46 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 					&& !filter_boss.PassFilter(current_player_mechanics->current_boss->name.c_str())) continue;
 				if (!filter_mechanic.PassFilter(current_player_mechanics->mechanic->name.c_str())) continue;
 
-                ImGui::PushItemWidth(window_width*0.9);
                 ImGui::Indent();
                 ImGui::Text(current_player_mechanics->mechanic->getChartName().c_str());
                 if(!current_player_mechanics->mechanic->fail_if_hit)
                 {
                     ImGui::SameLine(getChartColumnLoc(window_width,1));
+					current_mechanic_neutral_count += current_player_mechanics->hits;
                 }
                 else
                 {
                     ImGui::SameLine(getChartColumnLoc(window_width,2));
+					current_mechanic_fail_count += current_player_mechanics->hits;
                 }
                 ImGui::Text("%d", current_player_mechanics->hits);
                 ImGui::SameLine(getChartColumnLoc(window_width,5));
                 ImGui::Text("%d", current_player_mechanics->pulls);
                 ImGui::Unindent();
-                ImGui::PopItemWidth();
+                
 
                 ImGui::Separator();
             }
 
+			ImGui::Indent();
+			ImGui::Text("Total (with current filters)");
+
+			ImGui::SameLine(getChartColumnLoc(window_width, 1));
+			ImGui::Text("%d", current_mechanic_neutral_count);
+			ImGui::SameLine(getChartColumnLoc(window_width, 2));
+			ImGui::Text("%d", current_mechanic_fail_count);
+			ImGui::SameLine(getChartColumnLoc(window_width, 3));
+			ImGui::Text("%d", current_entry->downs);
+			ImGui::SameLine(getChartColumnLoc(window_width, 4));
+			ImGui::Text("%d", current_entry->deaths);
+			ImGui::SameLine(getChartColumnLoc(window_width, 5));
+			ImGui::Text("%d", current_entry->pulls);
+
+
 			if (expand) ImGui::TreePop();
         }
     }
+	ImGui::PopItemWidth();
     ImGui::EndChild();
     ImGui::End();
 }
