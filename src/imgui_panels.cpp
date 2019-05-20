@@ -291,7 +291,10 @@ void AppOptions::draw(Tracker* tracker, const char * title, bool * p_open, ImGui
 			"Log only\0"
 			"Everywhere\0\0",4);
 
-		ImGui::SameLine(); showHelpMarker(current_mechanic->description.c_str());
+		if (current_mechanic->description.length() > 0)
+		{
+			ImGui::SameLine(); showHelpMarker(current_mechanic->description.c_str());
+		}
 
 		previous_boss = current_mechanic->boss;
 	}
