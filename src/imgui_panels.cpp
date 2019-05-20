@@ -28,6 +28,7 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
     ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
 	int64_t last_mechanic_time = 0;
 	bool beginning = true;
+	bool previous_was_placeholder = false;
 	if (copy) ImGui::LogToClipboard();
 
 	std::lock_guard<std::mutex> lg(tracker->log_events_mtx);
@@ -45,6 +46,7 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 		if (!filter.passFilter(&*current_event)) continue;
 
 		if (!show_pull_separators && current_event->isPlaceholder()) continue;
+		if (previous_was_placeholder && current_event->isPlaceholder()) continue;//don't show multiple placeholders if nothing is between them
 
 		if (!beginning
 			&& current_event->time_absolute > (last_mechanic_time + line_break_frequency))
@@ -55,6 +57,7 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 			
 		current_event->draw();
 		beginning = false;
+		previous_was_placeholder = current_event->isPlaceholder();
     }
 
     if (scroll_to_bottom)
