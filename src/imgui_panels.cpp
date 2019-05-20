@@ -137,7 +137,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 
 		ImGui::Separator();
         ImGui::AlignFirstTextHeightToWidgets();
-        ImGui::Text(current_player->name.c_str());
+        ImGui::Text(current_player->name_account_combo.c_str());
 
 		for (auto current_player_mechanics = current_entry->entries.begin(); current_player_mechanics != current_entry->entries.end(); ++current_player_mechanics)
         {
