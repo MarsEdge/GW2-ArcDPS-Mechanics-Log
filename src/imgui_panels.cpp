@@ -179,7 +179,12 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 		ImGui::SameLine(getChartColumnLoc(window_width, 4));
 		ImGui::Text("%d", current_entry->deaths);
 		ImGui::SameLine(getChartColumnLoc(window_width, 5));
-		ImGui::Text("%d", current_entry->pulls);        
+		ImGui::Text("%d", current_entry->pulls);
+		ImGui::Unindent();
+		ImGui::Separator();
+
+		current_mechanic_neutral_count = 0;
+		current_mechanic_fail_count = 0;
     }
 	ImGui::PopItemWidth();
     ImGui::EndChild();

@@ -49,6 +49,10 @@ bool MechanicFilter::passFilter(Player* new_player, Boss* new_boss, Mechanic* ne
 	if (new_mechanic)
 	{
 		if (!filter_mechanic.PassFilter(new_mechanic->name.c_str())) return false;
+		if (new_mechanic->boss)
+		{
+			if (!filter_boss.PassFilter(new_mechanic->boss->name.c_str())) return false;
+		}
 	}
 	
 	return true;
