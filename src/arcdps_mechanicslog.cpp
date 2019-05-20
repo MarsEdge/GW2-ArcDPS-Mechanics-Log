@@ -8,10 +8,10 @@
 #include "imgui_panels.h"
 #include "arcdps_datastructures.h"
 #include "helpers.h"
+#include "npc_ids.h"
 #include "mechanics.h"
 #include "player.h"
 #include "skill_ids.h"
-#include "npc_ids.h"
 #include "Tracker.h"
 
 /* proto/globals */
@@ -348,13 +348,13 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 			int64_t value = 0;
 			current_entry = tracker.getPlayerEntry(src);
 			PlayerEntry* other_entry = tracker.getPlayerEntry(dst);
-			for(uint16_t index=0;index<mechanics.size();index++)
+			for(uint16_t index=0;index<getMechanics().size();index++)
 			{
-				if(value = mechanics[index].isValidHit(ev, src, dst, 
+				if(value = getMechanics()[index].isValidHit(ev, src, dst,
 					(current_entry ? current_entry->player : nullptr), //check for null before getting player object
 					(other_entry ? other_entry->player: nullptr)))
 				{
-					tracker.processMechanic(ev, current_entry, other_entry, &mechanics[index], value);
+					tracker.processMechanic(ev, current_entry, other_entry, &getMechanics()[index], value);
 					log_ui.scroll_to_bottom = true;
 				}
 			}
@@ -477,7 +477,7 @@ void parseIni()
 	pszValue = mechanics_ini.GetValue("log", "max_mechanics", std::to_string(tracker.max_log_events).c_str());
 	tracker.max_log_events = std::stoi(pszValue);
 
-	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)
+	for (auto current_mechanic = getMechanics().begin(); current_mechanic != getMechanics().end(); ++current_mechanic)
 	{
 		pszValue = mechanics_ini.GetValue("mechanic verbosity",
 			current_mechanic->getIniName().c_str(),
@@ -499,7 +499,7 @@ void writeIni()
 	rc = mechanics_ini.SetValue("general", "self_only", std::to_string(tracker.show_only_self).c_str());
 	rc = mechanics_ini.SetValue("log", "max_mechanics", std::to_string(tracker.max_log_events).c_str());
 
-	for (auto current_mechanic = mechanics.begin(); current_mechanic != mechanics.end(); ++current_mechanic)
+	for (auto current_mechanic = getMechanics().begin(); current_mechanic != getMechanics().end(); ++current_mechanic)
 	{
 		if (current_mechanic->verbosity == 0) continue;//hide disabled mechanics
 		

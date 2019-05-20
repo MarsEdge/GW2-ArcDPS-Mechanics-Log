@@ -72,10 +72,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>d3d9_arcdps_mechanics</TargetName>
+    <SourcePath>E:\My Documents\Guild Wars 2\ArcDPS Mechanics Log\ArcDPS Mechanics Log\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>d3d9_arcdps_mechanics</TargetName>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <SourcePath>E:\My Documents\Guild Wars 2\ArcDPS Mechanics Log\ArcDPS Mechanics Log\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -135,6 +137,7 @@ copy /Y "$(TargetPath)" "C:\Program Files\Guild Wars 2\bin64\$(TargetFileName)"<
     <ClCompile Include="src\imgui_panels.cpp" />
     <ClCompile Include="src\LogEvent.cpp" />
     <ClCompile Include="src\MechanicEntry.cpp" />
+    <ClCompile Include="src\MechanicFilter.cpp" />
     <ClCompile Include="src\mechanics.cpp" />
     <ClCompile Include="src\npc_ids.cpp" />
     <ClCompile Include="src\player.cpp" />
@@ -163,6 +166,7 @@ copy /Y "$(TargetPath)" "C:\Program Files\Guild Wars 2\bin64\$(TargetFileName)"<
     <ClInclude Include="src\imgui_panels.h" />
     <ClInclude Include="src\LogEvent.h" />
     <ClInclude Include="src\MechanicEntry.h" />
+    <ClInclude Include="src\MechanicFilter.h" />
     <ClInclude Include="src\mechanics.h" />
     <ClInclude Include="src\npc_ids.h" />
     <ClInclude Include="src\player.h" />

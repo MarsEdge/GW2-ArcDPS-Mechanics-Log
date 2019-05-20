@@ -31,6 +31,8 @@ struct Mechanic
 {
     std::string name = ""; //name of mechanic
     std::string name_internal = ""; //name of skill in skilldef
+    std::string name_chart = ""; //name in chart (boss name - mechanic name)
+    std::string name_ini = ""; //name used for ini saving
 	std::string description = ""; //detailed description of what the mechanic is
 	uint32_t ids[max_ids_per_mechanic] = { 0 }; //skill ids;
 	size_t ids_size = 0;
@@ -72,11 +74,11 @@ struct Mechanic
     bool (*special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
     int64_t (*special_value)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
 
-    Mechanic setName(std::string const new_name) {this->name = new_name; return *this;}
+    Mechanic setName(std::string const new_name) {this->name = new_name; this->name_chart = this->getChartName(); return *this;}
     Mechanic setNameInternal(std::string const new_name_internal) {this->name_internal = new_name_internal; return *this;}
     Mechanic setDescription(std::string const new_description) {this->description = new_description; return *this;}
 	Mechanic setIds(std::initializer_list<uint32_t> const new_ids) { std::copy(new_ids.begin(), new_ids.end(), this->ids); this->ids_size = new_ids.size(); return *this; }
-    Mechanic setBoss(Boss* const new_boss) {this->boss = new_boss; return *this;}
+    Mechanic setBoss(Boss* const new_boss) {this->boss = new_boss; this->name_chart = this->getChartName(); return *this;}
     Mechanic setFrequencyPlayer(uint64_t const new_frequency_player) {this->frequency_player = new_frequency_player; return *this;}
     Mechanic setFrequencyGlobal(uint64_t const new_frequency_global) {this->frequency_global = new_frequency_global; return *this;}
     Mechanic setIsActivation(uint8_t const new_is_activation) {this->is_activation = new_is_activation; return *this;}
@@ -95,6 +97,8 @@ struct Mechanic
 
     Mechanic setSpecialRequirement(bool (*new_special_requirement)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)) {this->special_requirement = new_special_requirement; return *this;}
     Mechanic setSpecialReturnValue(int64_t(*new_special_value)(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player)) {this->special_value = new_special_value; return *this;}
+
+	bool operator==(Mechanic* other_mechanic);
 };
 
 bool requirementDefault(const Mechanic &current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player* current_player);
@@ -119,5 +123,4 @@ bool requirementDeimosOil(const Mechanic & current_mechanic, cbtevent* ev, ag* a
 
 bool requirementOnSelf(const Mechanic & current_mechanic, cbtevent* ev, ag* ag_src, ag* ag_dst, Player * player_src, Player * player_dst, Player * current_player);
 
-
-extern std::vector <Mechanic> mechanics;
+std::vector<Mechanic>& getMechanics();

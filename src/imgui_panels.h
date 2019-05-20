@@ -3,6 +3,7 @@
 #include "player.h"
 #include "imgui.h"
 #include "Tracker.h"
+#include "MechanicFilter.h"
 #include <string>
 #include <fstream>
 #include <windows.h>
@@ -11,9 +12,7 @@
 
 struct AppLog
 {
-    ImGuiTextFilter filter_player;
-	ImGuiTextFilter filter_boss;
-    ImGuiTextFilter filter_mechanic;
+	MechanicFilter filter;
 	bool show_pull_separators = true;
     bool scroll_to_bottom = false;
 	uint64_t line_break_frequency = 5000;
@@ -23,9 +22,7 @@ struct AppLog
 
 struct AppChart
 {
-	ImGuiTextFilter filter_player;
-	ImGuiTextFilter filter_boss;
-	ImGuiTextFilter filter_mechanic;
+	MechanicFilter filter;
     uint16_t last_export_total = 0;
 	std::string export_dir = "";
 	std::string last_file_path = "";
