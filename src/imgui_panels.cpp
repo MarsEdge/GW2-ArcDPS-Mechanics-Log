@@ -18,7 +18,7 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 		filter.drawPopup();
-		ImGui::Checkbox("Show Separators Between Pulls", &show_pull_separators);
+		ImGui::Checkbox("Show separators between pulls", &show_pull_separators);
 		ImGui::PopStyleVar();
 		ImGui::EndPopup();
 	}
