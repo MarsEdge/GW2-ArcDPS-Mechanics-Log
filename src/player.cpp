@@ -25,6 +25,11 @@ Player::Player(char* new_name, char* new_account, uintptr_t new_id, bool new_is_
 	is_self = new_is_self;
 }
 
+bool Player::operator==(Player* other_player)
+{
+	return other_player && id == other_player->id;
+}
+
 bool Player::operator==(uintptr_t other_id)
 {
 	return id == other_id;

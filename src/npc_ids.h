@@ -22,6 +22,8 @@ public:
 	Boss setName(std::string const new_name) { this->name = new_name; return *this; }
 	Boss setTimer(int64_t const new_timer) { this->timer = new_timer; return *this; }
 	Boss setHealth(uint64_t const new_health) { this->health = new_health; return *this; }
+
+	bool operator==(Boss* other_boss);
 };
 
 extern Boss boss_generic;

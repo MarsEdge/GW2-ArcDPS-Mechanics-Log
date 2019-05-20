@@ -22,6 +22,7 @@ struct Player
     Player(ag* new_player);
     Player(char* new_name, char* new_account, uintptr_t new_id, bool new_is_self);
 
+	bool operator==(Player* other_player);
 	bool operator==(uintptr_t other_id);
 	bool operator==(std::string other_str);
 };

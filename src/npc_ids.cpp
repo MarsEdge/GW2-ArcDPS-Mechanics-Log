@@ -21,6 +21,12 @@ bool Boss::hasId(uint32_t new_id)
     return false;
 }
 
+bool Boss::operator==(Boss * other_boss)
+{
+	return other_boss && ids.size()>0 && other_boss->ids.size()>0 
+		&& ids[0] == other_boss->ids[0];
+}
+
 Boss boss_generic = Boss().setName("Generic");
 Boss boss_vg = Boss().setIds({ 0x3C4E }).setTimer(8 * 60 * 1000).setHealth(22021440).setName("Vale Guardian");
 Boss boss_gors = Boss().setIds({ 0x3C45 }).setTimer(7 * 60 * 1000).setHealth(21628200).setName("Gorseval the Multifarious");
