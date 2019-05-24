@@ -56,6 +56,8 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 		last_mechanic_time = current_event->time_absolute;
 			
 		current_event->draw();
+//		if (ImGui::IsItemHovered() && !current_event->isPlaceholder()) current_event->drawTooltip();
+
 		beginning = false;
 		previous_was_placeholder = current_event->isPlaceholder();
     }

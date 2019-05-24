@@ -2,13 +2,15 @@
 
 
 
-LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time, uint64_t new_time_absolute, int64_t new_value)
+LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time, uint64_t new_time_absolute, int64_t new_value, const cbtevent* new_ev)
 {
 	player = new_player;
 	mechanic = new_mechanic;
 	time = new_time;
 	time_absolute = new_time_absolute;
 	value = new_value;
+	
+	if (new_ev)ev = *new_ev;
 
 	bakeStr();
 }
@@ -23,6 +25,20 @@ void LogEvent::draw()
 	}
 
 	ImGui::TextUnformatted(str.c_str());
+}
+
+void LogEvent::drawTooltip()
+{
+	if (!player) return;
+
+	ImGui::BeginTooltip();
+	
+	ImGui::Text("Event time: %d", ev.time);
+	ImGui::Text("Source: ");
+	ImGui::Text("Destination: ");
+	ImGui::Text("Skill ID: %d", ev.skillid);
+
+	ImGui::EndTooltip();
 }
 
 void LogEvent::bakeStr()

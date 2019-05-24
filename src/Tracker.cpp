@@ -197,11 +197,11 @@ void Tracker::processCombatEnter(const cbtevent* ev, ag* new_agent)
 				if (log_events.size() > 1
 					&& (ev->time - log_events.back().time_absolute) < combat_api_delay)
 				{//if a mechanic happens when the fight starts, ensure the separator is before the mechanic
-					log_events.insert(--log_events.end(), LogEvent(nullptr, nullptr, getElapsedTime(ev->time), ev->time, 1));
+					log_events.insert(--log_events.end(), LogEvent(nullptr, nullptr, getElapsedTime(ev->time), ev->time, 1,nullptr));
 				}
 				else
 				{
-					log_events.push_back(LogEvent(nullptr, nullptr, getElapsedTime(ev->time), ev->time, 1));//TODO: make function for pushing log events
+					log_events.push_back(LogEvent(nullptr, nullptr, getElapsedTime(ev->time), ev->time, 1,nullptr));//TODO: make function for pushing log events
 				}
 
 				if (log_events.size() > max_log_events)
@@ -253,7 +253,7 @@ void Tracker::processMechanic(const cbtevent* ev, PlayerEntry* new_player_src, P
 		
 	std::lock_guard<std::mutex> lg2(log_events_mtx);
 		
-	log_events.push_back(LogEvent(relevant_entry->player, new_mechanic, getElapsedTime(ev->time), ev->time, value));
+	log_events.push_back(LogEvent(relevant_entry->player, new_mechanic, getElapsedTime(ev->time), ev->time, value, ev));
 		
 	if (log_events.size() > max_log_events)
 	{
