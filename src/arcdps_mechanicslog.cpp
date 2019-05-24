@@ -28,6 +28,7 @@ uintptr_t mod_combat(cbtevent* ev, ag* src, ag* dst, char* skillname, uint64_t i
 uintptr_t mod_imgui(uint32_t not_charsel_or_loading);
 uintptr_t mod_options();
 static int changeExportPath(ImGuiTextEditCallbackData const *data);
+void readArcExports();
 void parseIni();
 void writeIni();
 bool modsPressed();
@@ -37,7 +38,16 @@ bool canClickWindows();
 typedef uint64_t(*arc_export_func_u64)();
 auto arc_dll = LoadLibraryA(TEXT("d3d9.dll"));
 auto arc_export_e6 = (arc_export_func_u64)GetProcAddress(arc_dll, "e6");
+bool arc_hide_all = false;
+bool arc_panel_always_draw = false;
+bool arc_movelock_altui = false;
+bool arc_clicklock_altui = false;
+bool arc_window_fastclose = false;
+
 auto arc_export_e7 = (arc_export_func_u64)GetProcAddress(arc_dll, "e7");
+DWORD arc_global_mod1 = 0;
+DWORD arc_global_mod2 = 0;
+DWORD arc_global_mod_multi = 0;
 
 bool show_app_log = false;
 AppLog log_ui;
@@ -49,13 +59,6 @@ bool show_options = false;
 AppOptions options_ui;
 
 Tracker tracker;
-
-CSimpleIniA arc_ini(true);
-bool valid_arc_ini = false;
-WPARAM arc_global_mod1;
-WPARAM arc_global_mod2;
-bool arc_movelock_altui = false;
-bool arc_clicklock_altui = false;
 
 CSimpleIniA mechanics_ini(true);
 bool valid_mechanics_ini = false;
@@ -395,6 +398,8 @@ void ShowMechanicsOptions(bool* p_open)
 
 uintptr_t mod_imgui(uint32_t not_charsel_or_loading)
 {
+	readArcExports();
+	
 	if (!not_charsel_or_loading) return 0;
 
 	auto const io = &ImGui::GetIO();
@@ -430,8 +435,6 @@ uintptr_t mod_options()
 		ImGui::EndMenu();
 	}
 
-//	parseIni();
-
     return 0;
 }
 
@@ -440,43 +443,30 @@ static int changeExportPath(ImGuiTextEditCallbackData const *data)
 	chart_ui.export_dir = data->Buf;
 }
 
-void parseIni()
+void readArcExports()
 {
-	SI_Error rc = arc_ini.LoadFile("addons\\arcdps\\arcdps.ini");
-	valid_arc_ini = rc >= 0;
-
 	uint64_t e6_result = arc_export_e6();
 	uint64_t e7_result = arc_export_e7();
 
-	bool hide_all = (e6_result & 0x01);
-	bool panel_always_draw = (e6_result & 0x02);
-	bool movelock_altui = (e6_result & 0x04);
-	bool clicklock_altui = (e6_result & 0x08);
-	bool window_fastclose = (e6_result & 0x10);
+	arc_hide_all = (e6_result & 0x01);
+	arc_panel_always_draw = (e6_result & 0x02);
+	arc_movelock_altui = (e6_result & 0x04);
+	arc_clicklock_altui = (e6_result & 0x08);
+	arc_window_fastclose = (e6_result & 0x10);
 
-	DWORD mod1 = (e7_result & 0x000000ff);
-	DWORD mod2 = (e7_result & 0x0000ff00) >> 8;
-	DWORD modmulti = (e7_result & 0x00ff0000) >> 16;
-	DWORD modnone = (e7_result & 0xff000000) >> 24;
 
-	std::string pszValue = "";
+	uint16_t* ra = (uint16_t*)&e7_result;
+	arc_global_mod1 = ra[0];
+	arc_global_mod2 = ra[1];
+	arc_global_mod_multi = ra[2];
+}
 
-	pszValue = arc_ini.GetValue("keys", "global_mod1", "0x10");
-	arc_global_mod1 = std::stoi(pszValue, nullptr, 16);
-
-	pszValue = arc_ini.GetValue("keys", "global_mod2", "0x12");
-	arc_global_mod2 = std::stoi(pszValue,nullptr,16);
-
-	pszValue = arc_ini.GetValue("session", "movelock_altui", "0");
-	arc_movelock_altui = std::stoi(pszValue);
-
-	pszValue = arc_ini.GetValue("session", "clicklock_altui", "0");
-	arc_clicklock_altui = std::stoi(pszValue);
-
-	rc = mechanics_ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
+void parseIni()
+{
+	SI_Error rc = mechanics_ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
 	valid_mechanics_ini = rc >= 0;
 
-	pszValue = mechanics_ini.GetValue("log","show", "0");
+	std::string pszValue = mechanics_ini.GetValue("log","show", "0");
 	show_app_log = std::stoi(pszValue);
 
 	pszValue = mechanics_ini.GetValue("chart", "show", "0");
