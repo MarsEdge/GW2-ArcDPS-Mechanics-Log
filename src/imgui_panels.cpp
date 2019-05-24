@@ -282,6 +282,8 @@ void AppOptions::draw(Tracker* tracker, const char * title, bool * p_open, ImGui
 
 	ImGui::InputInt("Max mechanics in log", &tracker->max_log_events, 25);
 
+	ImGui::Checkbox("Export chart to CSV when game is closed", &tracker->export_chart_on_close);
+
 	ImGui::Separator();
 	
 	ImGui::Text("Where to show each mechanic");

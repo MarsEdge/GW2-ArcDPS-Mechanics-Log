@@ -27,6 +27,7 @@ public:
 	int max_log_events = 300;
 	
 	bool show_only_self = false;
+	bool export_chart_on_close = true;
 
 	std::list<PlayerEntry> player_entries;
 	
