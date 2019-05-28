@@ -392,6 +392,12 @@ std::vector<Mechanic>& getMechanics()
 
 		Mechanic().setName("is fixated").setIds({MECHANIC_SLOTH_FIXATE}).setFailIfHit(false).setBoss(&boss_sloth),
 
+		Mechanic("threw a beehive",{34533},&boss_trio,false,false,verbosity_all,false,false,target_location_src,0,0,-1,-1,ACTV_NORMAL,CBTB_NONE,false,false,false,
+		requirementDefault,valueDefault,"Beehive",""),
+		
+		Mechanic("threw an oil keg",{34471},&boss_trio,false,false,verbosity_all,false,false,target_location_src,0,0,-1,-1,ACTV_NORMAL,CBTB_NONE,false,false,false,
+		requirementDefault,valueDefault,"Throw",""),
+
 		//Mechanic().setName("was hadoukened").setIds({MECHANIC_MATT_HADOUKEN_HUMAN,MECHANIC_MATT_HADOUKEN_ABOM}).setBoss(&boss_matti),
 
 		Mechanic().setName("reflected shards").setIds({MECHANIC_MATT_SHARD_HUMAN,MECHANIC_MATT_SHARD_ABOM}).setTargetIsDst(false).setBoss(&boss_matti),
