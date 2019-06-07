@@ -411,8 +411,8 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("touched a ghost",{34413},&boss_matti,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,requirementDefault,valueDefault,
 		"Surrender",""),
 
-		Mechanic("touched an icy patch",{26766},&boss_matti,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,requirementDefault,valueDefault,
-		"Icy Patch",""),
+		//Mechanic("touched an icy patch",{26766},&boss_matti,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,10000,ACTV_NONE,CBTB_NONE,true,true,true,requirementDefault,valueDefault,
+		//"Slow",""),//look for Slow application with 10 sec duration. Disabled because some mob in Istan applies the same duration of slow
 
 		Mechanic("stood in tornado",{34466},&boss_matti,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,requirementDefault,valueDefault,
 		"Fiery Vortex",""),
