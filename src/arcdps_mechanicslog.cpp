@@ -456,15 +456,20 @@ void readArcExports()
 
 
 	uint16_t* ra = (uint16_t*)&e7_result;
-	arc_global_mod1 = ra[0];
-	arc_global_mod2 = ra[1];
-	arc_global_mod_multi = ra[2];
+	if (ra)
+	{
+		arc_global_mod1 = ra[0];
+		arc_global_mod2 = ra[1];
+		arc_global_mod_multi = ra[2];
+	}
 }
 
 void parseIni()
 {
 	SI_Error rc = mechanics_ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
 	valid_mechanics_ini = rc >= 0;
+
+	if (!valid_mechanics_ini) return;
 
 	std::string pszValue = mechanics_ini.GetValue("log","show", "0");
 	show_app_log = std::stoi(pszValue);
@@ -503,6 +508,9 @@ void parseIni()
 
 void writeIni()
 {
+
+	if (!valid_mechanics_ini) return;
+
 	SI_Error rc = mechanics_ini.SetValue("log", "show", std::to_string(show_app_log).c_str());
 	rc = mechanics_ini.SetValue("chart", "show", std::to_string(show_app_chart).c_str());
 	rc = mechanics_ini.SetValue("chart", "export_path", chart_ui.export_dir.c_str());
