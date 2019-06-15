@@ -466,6 +466,9 @@ void readArcExports()
 
 void parseIni()
 {
+	static bool has_read_ini = false;
+	if (has_read_ini) return;
+
 	SI_Error rc = mechanics_ini.LoadFile("addons\\arcdps\\arcdps_mechanics.ini");
 	valid_mechanics_ini = rc >= 0;
 
@@ -504,6 +507,7 @@ void parseIni()
 		
 		current_mechanic->setVerbosity(std::stoi(pszValue));
 	}
+	has_read_ini = true;
 }
 
 void writeIni()
