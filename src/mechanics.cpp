@@ -572,6 +572,15 @@ std::vector<Mechanic>& getMechanics()
 		//Mechanic("has pillar",{47860},&boss_adina,false,false,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,
 		//	requirementDefault,valueDefault,"",""),//wrong id?
 
+		Mechanic("touched big tornado",{56202},&boss_sabir,true,true,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Dire Drafts",""),
+
+		Mechanic("was shockwaved",{56643},&boss_sabir,true,true,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,true,
+			requirementDefault,valueDefault,"Unbridled Tempest",""),
+
+		Mechanic("wasn't in bubble",{56372},&boss_sabir,true,true,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,
+			requirementDefault,valueDefault,"Fury of the Storm",""),
+
 		Mechanic("is tank",{56510},&boss_qadim2,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Fixated",""),
 
