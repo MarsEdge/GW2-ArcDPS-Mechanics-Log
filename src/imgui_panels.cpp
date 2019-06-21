@@ -39,9 +39,6 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
 			&& !current_event->player->is_self
 			&& tracker->show_only_self)
 			continue;
-		if (current_event->mechanic
-			&& !(current_event->mechanic->verbosity & verbosity_log))
-			continue;
 
 		if (!filter.passFilter(&*current_event)) continue;
 
@@ -134,7 +131,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
 			&& tracker->show_only_self)
 			continue;
 
-		if (!filter.passFilter(current_player,nullptr,nullptr))
+		if (!filter.passFilter(current_player,nullptr,nullptr,verbosity_all))
 			continue;
 
 		ImGui::Separator();
@@ -145,8 +142,7 @@ void    AppChart::draw(Tracker* tracker, const char* title, bool* p_open, ImGuiW
         {
 			if (!current_player_mechanics->isRelevant()) continue;
 			if (!current_player_mechanics->mechanic) continue;
-			if (!(current_player_mechanics->mechanic->verbosity & verbosity_chart)) continue;
-			if (!filter.passFilter(current_player, nullptr, current_player_mechanics->mechanic)) continue;
+			if (!filter.passFilter(current_player, nullptr, current_player_mechanics->mechanic,verbosity_chart)) continue;
 
             ImGui::Indent();
             ImGui::Text(current_player_mechanics->mechanic->getChartName().c_str());
@@ -313,18 +309,4 @@ void AppOptions::draw(Tracker* tracker, const char * title, bool * p_open, ImGui
 	ImGui::PopItemWidth();
 
 	ImGui::End();
-}
-
-// Helper to display a little (?) mark which shows a tooltip when hovered.
-static void showHelpMarker(const char* desc)
-{
-	ImGui::TextDisabled("(?)");
-	if (ImGui::IsItemHovered())
-	{
-		ImGui::BeginTooltip();
-		ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
-		ImGui::TextUnformatted(desc);
-		ImGui::PopTextWrapPos();
-		ImGui::EndTooltip();
-	}
 }

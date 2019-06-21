@@ -27,6 +27,8 @@ void MechanicFilter::drawPopup()
 	filter_mechanic.Draw("Mechanic");
 
 	ImGui::Checkbox("Only show players currently in squad", &show_in_squad_only);
+	ImGui::Checkbox("Show all mechanics", &show_all_mechanics);
+	ImGui::SameLine(); showHelpMarker("Display all mechanics regardless of default options. Can be spammy.");
 }
 
 bool MechanicFilter::isActive()
@@ -34,7 +36,7 @@ bool MechanicFilter::isActive()
 	return filter_player.IsActive() || filter_boss.IsActive() || filter_mechanic.IsActive() || show_in_squad_only;
 }
 
-bool MechanicFilter::passFilter(Player* new_player, Boss* new_boss, Mechanic* new_mechanic)
+bool MechanicFilter::passFilter(Player* new_player, Boss* new_boss, Mechanic* new_mechanic, int new_display_section)
 {
 	if (new_player)
 	{
@@ -45,6 +47,10 @@ bool MechanicFilter::passFilter(Player* new_player, Boss* new_boss, Mechanic* ne
 	if (new_boss)
 	{
 		if (!filter_boss.PassFilter(new_boss->name.c_str())) return false;
+	}
+	if (!show_all_mechanics)
+	{
+		if (new_mechanic && !(new_mechanic->verbosity & new_display_section)) return false;
 	}
 	if (new_mechanic)
 	{
@@ -68,5 +74,5 @@ bool MechanicFilter::passFilter(LogEvent* new_event)
 
 	Mechanic* current_mechanic = new_event->mechanic;
 
-	return passFilter(current_player, current_boss, current_mechanic);
+	return passFilter(current_player, current_boss, current_mechanic,verbosity_log);
 }

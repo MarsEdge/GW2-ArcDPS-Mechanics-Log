@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "Tracker.h"
 #include "MechanicFilter.h"
+#include "helpers.h"
 #include <string>
 #include <fstream>
 #include <windows.h>
@@ -45,4 +46,3 @@ struct AppOptions
 
 constexpr float getChartColumnWidth(float window_width);
 float getChartColumnLoc(float window_width, uint16_t col);
-static void showHelpMarker(const char* desc);
