@@ -79,6 +79,8 @@ extern Boss boss_qadim;
 
 extern Boss boss_adina;
 
+extern Boss boss_sabir;
+
 extern Boss boss_qadim2;
 
 extern Boss boss_fotm_generic;
