@@ -28,7 +28,7 @@ void    AppLog::draw(const char* title, bool* p_open, ImGuiWindowFlags flags, Tr
     ImGui::BeginChild("scrolling", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
 	int64_t last_mechanic_time = 0;
 	bool beginning = true;
-	bool previous_was_placeholder = false;
+	bool previous_was_placeholder = true;
 	if (copy) ImGui::LogToClipboard();
 
 	std::lock_guard<std::mutex> lg(tracker->log_events_mtx);
