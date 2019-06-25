@@ -587,6 +587,27 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("touched lava", {56180,56378},&boss_qadim2,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Residual Impact",""),//ids are big,small AoEs
 
+		Mechanic("was struck by lightning AoE",{56656},&boss_qadim2,true,false,verbosity_all,false,false,target_location_dst,1000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Brandstorm Lightning",""),
+
+		Mechanic("touched arcing line",{56145},&boss_qadim2,true,false,verbosity_all,false,false,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Chaos Called",""),
+
+		Mechanic("was shockwaved",{56134},&boss_qadim2,true,false,verbosity_all,true,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Force of Retaliation",""),
+
+		Mechanic("touched purple line",{56441},&boss_qadim2,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Force of Havoc",""),
+
+		Mechanic("was ran over",{56616},&boss_qadim2,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Battering Blitz",""),
+
+		Mechanic("was sniped",{56332},&boss_qadim2,true,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Caustic Chaos",""),
+
+		Mechanic("was splashed by sniper",{56543},&boss_qadim2,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Caustic Chaos",""),
+
 		//Mechanic("has lightning", {51371},&boss_qadim2,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 		//	requirementDefault,valueDefault,"",""),
 
