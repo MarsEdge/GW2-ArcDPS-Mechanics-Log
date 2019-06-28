@@ -18,9 +18,9 @@ LogEvent::LogEvent(Player* new_player, Mechanic* new_mechanic, uint64_t new_time
 
 void LogEvent::draw()
 {
-	if (isPlaceholder())//if placeholder event
+	if (isPlaceholder())
 	{
-		ImGui::Separator();//TODO: make function for if an event is a placeholder
+		ImGui::Separator();
 		return;
 	}
 
