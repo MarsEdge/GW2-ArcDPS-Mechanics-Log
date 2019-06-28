@@ -58,7 +58,7 @@ struct Mechanic
 
 	Mechanic() noexcept;
 	Mechanic(std::string new_name, std::initializer_list<uint32_t> new_ids, Boss* new_boss, bool new_fail_if_hit, bool new_valid_if_down, int new_verbosity,
-		bool new_is_interupt, bool new_is_multihit, int new_target_is_dst,
+		bool new_is_interupt, bool new_is_multihit, int new_target_location,
 		uint64_t new_frequency_player, uint64_t new_frequency_global, int32_t new_overstack_value, int32_t new_value,
 		uint8_t new_is_activation, uint8_t new_is_buffremove,
 		bool new_can_evade, bool new_can_block, bool new_can_invuln,
