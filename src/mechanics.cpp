@@ -508,7 +508,7 @@ std::vector<Mechanic>& getMechanics()
 
 		Mechanic().setName("has affliction").setIds({MECHANIC_DHUUM_AFFLICTION}).setFrequencyPlayer(13000 + ms_per_tick).setFailIfHit(false).setValidIfDown(true).setBoss(&boss_dhuum),
 
-		Mechanic("popped affliction",{47646},&boss_dhuum,false,false,verbosity_all,false,false,target_location_src,0,0,-1,-1,ACTV_NONE,CBTB_MANUAL,false,false,false,
+		Mechanic("took affliction damage",{48121},&boss_dhuum,false,true,verbosity_chart,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,
 			requirementDefault,valueDefault,"Arcing Affliction",""),
 
 		Mechanic().setName("stood in a crack").setIds({MECHANIC_DHUUM_CRACK}).setBoss(&boss_dhuum),
