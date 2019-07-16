@@ -534,7 +534,7 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic().setName("used a sword").setNameInternal("Conjured Greatsword").setIds({52325}).setTargetIsDst(false).setIsActivation(ACTV_NORMAL).setFailIfHit(false).setBoss(&boss_ca),
 		Mechanic().setName("used a shield").setNameInternal("Conjured Protection").setIds({52780}).setTargetIsDst(false).setIsActivation(ACTV_NORMAL).setFailIfHit(false).setBoss(&boss_ca),
 
-		Mechanic().setName("was shockwaved").setIds({MECHANIC_LARGOS_SHOCKWAVE}).setBoss(&boss_largos),
+		Mechanic().setName("was shockwaved").setIds({MECHANIC_LARGOS_SHOCKWAVE}).setIsInterupt(true).setBoss(&boss_largos),
 
 		Mechanic().setName("was waterlogged").setIds({MECHANIC_LARGOS_WATERLOGGED}).setVerbosity(verbosity_chart).setValidIfDown(true).setFrequencyPlayer(1).setBoss(&boss_largos),
 
@@ -584,7 +584,7 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("wasn't in bubble",{56372},&boss_sabir,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,
 			requirementDefault,valueDefault,"Fury of the Storm",""),
 
-		Mechanic("was bopped at phase", {56094},&boss_sabir,true,false,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+		Mechanic("was bopped at phase", {56094},&boss_sabir,true,false,verbosity_chart,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Walloping Wind",""),
 
 		Mechanic("is tank",{56510},&boss_qadim2,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
@@ -593,7 +593,7 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("touched lava", {56180,56378,56541},&boss_qadim2,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Residual Impact, Pylon Debris Field",""),//ids are big,small(CM),pylon
 
-		Mechanic("was struck by small lightning",{56656},&boss_qadim2,true,false,verbosity_all,false,false,target_location_dst,1000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+		Mechanic("was struck by small lightning",{56656},&boss_qadim2,true,false,verbosity_chart,false,false,target_location_dst,1000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Brandstorm Lightning",""),
 		
 		Mechanic("was struck by expanding lightning",{56527},&boss_qadim2,true,false,verbosity_all,false,false,target_location_dst,1000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
@@ -605,7 +605,7 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("was shockwaved",{56134},&boss_qadim2,true,false,verbosity_all,true,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Force of Retaliation",""),
 
-		Mechanic("touched purple rectangle",{56441},&boss_qadim2,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+		Mechanic("touched purple rectangle",{56441},&boss_qadim2,true,false,verbosity_chart,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Force of Havoc",""),
 
 		Mechanic("was ran over",{56616},&boss_qadim2,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
@@ -614,7 +614,7 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("was sniped",{56332},&boss_qadim2,true,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Caustic Chaos",""),
 
-		Mechanic("was splashed by sniper",{56543},&boss_qadim2,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+		Mechanic("was splashed by sniper",{56543},&boss_qadim2,false,true,verbosity_chart,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Caustic Chaos",""),
 
 		//Mechanic("has lightning", {51371},&boss_qadim2,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
