@@ -596,8 +596,8 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("was struck by small lightning",{56656},&boss_qadim2,true,false,verbosity_chart,false,false,target_location_dst,1000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Brandstorm Lightning",""),
 		
-		Mechanic("was struck by expanding lightning",{56527},&boss_qadim2,true,false,verbosity_all,false,false,target_location_dst,1000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
-			requirementDefault,valueDefault,"Rain of Chaos",""),//TODO: unsure if right id?
+		Mechanic("was hit by triple lightning",{56527},&boss_qadim2,true,false,verbosity_all,false,false,target_location_dst,1000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDefault,valueDefault,"Rain of Chaos",""),
 
 		Mechanic("touched arcing line",{56145},&boss_qadim2,true,false,verbosity_all,false,false,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Chaos Called",""),
