@@ -464,7 +464,7 @@ std::vector<Mechanic>& getMechanics()
 
 		Mechanic().setName("closed a tear").setIds({MECHANIC_DEIMOS_TEAR}).setFailIfHit(false).setBoss(&boss_deimos),
 
-		Mechanic().setName("has the teleport").setIds({MECHANIC_DEIMOS_PORT_BUFF}).setValue(6500).setBoss(&boss_deimos),
+		Mechanic().setName("has the teleport").setIds({MECHANIC_DEIMOS_PORT_BUFF}).setBoss(&boss_deimos),
 
 		Mechanic().setName("was teleported").setIds({MECHANIC_DEIMOS_PORT}).setVerbosity(verbosity_chart).setBoss(&boss_deimos),
 
