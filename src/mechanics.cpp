@@ -611,10 +611,10 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("was ran over",{56616},&boss_qadim2,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Battering Blitz",""),
 
-		Mechanic("was sniped",{56332},&boss_qadim2,true,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+		Mechanic("was sniped",{56332},&boss_qadim2,true,true,verbosity_all,false,false,target_location_dst,100,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Caustic Chaos",""),
 
-		Mechanic("was splashed by sniper",{56543},&boss_qadim2,false,true,verbosity_chart,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+		Mechanic("was splashed by sniper",{56543},&boss_qadim2,false,true,verbosity_chart,false,false,target_location_dst,100,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 			requirementDefault,valueDefault,"Caustic Chaos",""),
 
 		//Mechanic("has lightning", {51371},&boss_qadim2,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
