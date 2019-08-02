@@ -364,7 +364,12 @@ std::vector<Mechanic>& getMechanics()
 		requirementDefault,valueDefault,
 		"Unstable Magic Spike",""),
 
-		Mechanic().setName("stood in the green circle").setIds({MECHANIC_VG_GREEN_A,MECHANIC_VG_GREEN_B,MECHANIC_VG_GREEN_C,MECHANIC_VG_GREEN_D}).setFailIfHit(false).setBoss(&boss_vg).setCanInvuln(false).setVerbosity(verbosity_chart),
+		//I'm not sure why this mechanic has 4 ids, but it appears to for some reason
+		//all these ids are for when 4 people are in the green circle
+		//it appears to be a separate id for the 90% hp blast when <4 people are in the green
+		//all 4 ids are called "Distributed Magic"
+		Mechanic("stood in the green circle",{31340,31391,31529,31750},&boss_vg,false,false,verbosity_chart,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,
+		requirementDefault,valueDefault,"Distributed Magic",""),
 
 		Mechanic().setName("was slammed").setIds({MECHANIC_GORS_SLAM}).setIsInterupt(true).setBoss(&boss_gors),
 

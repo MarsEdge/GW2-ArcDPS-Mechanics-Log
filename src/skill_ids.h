@@ -1,14 +1,5 @@
 #pragma once
 
-//vale guardian
-const uint32_t MECHANIC_VG_TELEPORT_GREEN = 31860;//Unstable Magic Spike
-const uint32_t MECHANIC_VG_TELEPORT_RAINBOW = 31392;//Unstable Magic Spike
-
-const uint32_t MECHANIC_VG_GREEN_A = 31340;//I'm not sure why this mechanic has 4 ids, but it appears to for some reason
-const uint32_t MECHANIC_VG_GREEN_B = 31391;//all these ids are for when 4 people are in the green circle
-const uint32_t MECHANIC_VG_GREEN_C = 31529;//it appears to be a separate id for the 90% hp blast when <4 people are in the green
-const uint32_t MECHANIC_VG_GREEN_D = 31750;//all 4 ids are called "Distributed Magic"
-
 //gorseval
 const uint32_t MECHANIC_GORS_SLAM = 31875;//Spectral Impact
 const uint32_t MECHANIC_GORS_EGG = 31623;//Ghastly Prison
