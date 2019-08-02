@@ -70,13 +70,11 @@ const uint32_t MECHANIC_SAM_GREEN_BIG = 37966;//unnamed
 const uint32_t MECHANIC_SAM_GREEN_SMALL = 38247;//unnamed
 
 //deimos
-const uint32_t MECHANIC_DEIMOS_OIL = 37716;
 const uint32_t MECHANIC_DEIMOS_SMASH = 38208; //smash from the actual boss
 const uint32_t MECHANIC_DEIMOS_SMASH_INITIAL = 37929; //smash while killing the initial chains
 const uint32_t MECHANIC_DEIMOS_SMASH_END_A = 37980;//Demonic Shock Wave,smash during last 10%
 const uint32_t MECHANIC_DEIMOS_SMASH_END_B = 37982;//different skill id for the 2 sides of the platform
 const uint32_t MECHANIC_DEIMOS_TEAR = 37733;//Tear Instability, buff from closing a tear
-const uint32_t MECHANIC_DEIMOS_PORT_BUFF = 37730;//Chosen by Eye of Janthir
 const uint32_t MECHANIC_DEIMOS_PORT = 38169;
 
 //Soulless Horror

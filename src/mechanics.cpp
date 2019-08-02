@@ -458,15 +458,18 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic().setName("has big green").setIds({MECHANIC_SAM_GREEN_BIG}).setFailIfHit(false).setBoss(&boss_sam),
 		Mechanic().setName("has small green").setIds({MECHANIC_SAM_GREEN_SMALL}).setFailIfHit(false).setBoss(&boss_sam),
 
-		Mechanic().setName("touched an oil").setIds({MECHANIC_DEIMOS_OIL}).setFrequencyPlayer(5000).setBoss(&boss_deimos).setSpecialRequirement(requirementDeimosOil),
+		Mechanic("touched an oil",{37716},&boss_deimos,true,false,verbosity_all,false,true,target_location_dst,5000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+			requirementDeimosOil,valueDefault,"Rapid Decay",""),
 
 		Mechanic().setName("was smashed").setIds({MECHANIC_DEIMOS_SMASH,MECHANIC_DEIMOS_SMASH_INITIAL,MECHANIC_DEIMOS_SMASH_END_A,MECHANIC_DEIMOS_SMASH_END_B}).setBoss(&boss_deimos),
 
 		Mechanic().setName("closed a tear").setIds({MECHANIC_DEIMOS_TEAR}).setFailIfHit(false).setBoss(&boss_deimos),
 
-		Mechanic().setName("has the teleport").setIds({MECHANIC_DEIMOS_PORT_BUFF}).setBoss(&boss_deimos),
+		Mechanic("has the teleport",{37730},&boss_deimos,false,true,verbosity_all,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,
+			requirementDefault,valueDefault,"Chosen by Eye of Janthir",""),
 
-		Mechanic().setName("was teleported").setIds({MECHANIC_DEIMOS_PORT}).setVerbosity(verbosity_chart).setBoss(&boss_deimos),
+		Mechanic("was teleported",{38169},&boss_deimos,false,true,verbosity_chart,false,false,target_location_dst,0,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,false,
+			requirementDefault,valueDefault,"",""),
 
 		Mechanic().setName("stood in inner ring").setIds({MECHANIC_HORROR_DONUT_INNER}).setVerbosity(verbosity_chart).setBoss(&boss_sh),
 
