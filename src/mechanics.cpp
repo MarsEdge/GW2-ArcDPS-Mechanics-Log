@@ -433,6 +433,9 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic("was squashed",{35086},&boss_kc,true,false,verbosity_all,true,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
 		requirementDefault,valueDefault,"Tower Drop",""),
 
+		Mechanic("stood in donut",{35137,34971,35086},&boss_kc,true,false,verbosity_all,false,true,target_location_dst,2000,0,-1,-1,ACTV_NONE,CBTB_NONE,true,true,true,
+		requirementDefault,valueDefault,"Phantasmal Blades",""),
+
 		Mechanic("stood in red half",{34921},&boss_xera,true,false,verbosity_all,false,true,target_location_dst,4000,0,-1,-1,ACTV_NONE,CBTB_NONE,false,false,true,
 		requirementDefault,valueDefault,
 		"TODO:check internal name",""),
