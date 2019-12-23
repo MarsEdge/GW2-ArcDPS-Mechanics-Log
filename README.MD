@@ -193,18 +193,21 @@ All the combat data used by this plugin are in the arcdps .evtc log files anyway
 Some of the mechanics are not necessarily bad. Getting a bomb on sloth is normal, but if the bomb is then dropped in a bad place, you can see who had it.
 
 Vapor Form / Illusion of Life do not count as 2nd downs in the chart
-Reading the Chart:
+
+# Reading the Chart:
 
 A “neutral” mechanic is a mechanic that a player might have to deal with during the fight. This isn’t bad, but it might lower that player’s personal DPS to do the mechanic (e.g. Matthias corruption, Dhuum shackles, etc)
 
 A “failed” mechanic is a negative mechanic that a player was hit by (e.g. Vale Guardian teleports, expanding a Deimos oil, etc)
 
 Some mechanics are not necessarily the hit player’s fault. If 1 sub-group gets slammed on Gorseval, that might be the chrono’s fault (depending on the group’s strategy).
-FAQ:
+
+# FAQ:
 
 Q: Is it Terms of Service compliant?
 
-A: Yes. I’ve talked to Chris Cleary from Anet and he did not see any issues with compliance. (part1 part2)
+A: Yes. I’ve talked to Chris Cleary from Anet and he did not see any issues with compliance. ([part1](https://i.imgur.com/hwAe5L9.png) [part2](https://i.imgur.com/pnLhxQd.png))
+
 # Known Issues:
 
 If a player has a magnetic aura, reflecting distortion, etc and reflects a shard on Matthias, it will say the player with the buff reflected and not the player that granted the buff.
