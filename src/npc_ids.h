@@ -28,75 +28,70 @@ public:
 
 extern Boss boss_generic;
 
+//Raids
+
+//W1
 extern Boss boss_vg;
-
 extern Boss boss_gors;
-
 extern Boss boss_sab;
 
+//W2
 extern Boss boss_sloth;
-
 extern Boss boss_trio;
-
 extern Boss boss_matti;
 
-
+//W3
 //TODO: Add escort boss
-
 extern Boss boss_kc;
-
 extern Boss boss_xera;
 
-
+//W4
 extern Boss boss_cairn;
-
 extern Boss boss_mo;
-
 extern Boss boss_sam;
-
 extern Boss boss_deimos;
 
-
+//W5
 extern Boss boss_sh;
-
 //TODO: Add soul river boss
-
 extern Boss boss_soul_eater;
-
 extern Boss boss_ice_king;
-
 extern Boss boss_cave;
-
 extern Boss boss_dhuum;
 
-
+//W6
 extern Boss boss_ca;
-
 extern Boss boss_largos;
-
 extern Boss boss_qadim;
 
-
+//W7
 extern Boss boss_adina;
-
 extern Boss boss_sabir;
-
 extern Boss boss_qadim2;
 
+//Fractals
 extern Boss boss_fotm_generic;
 
-
+//99 CM
 extern Boss boss_mama;
-
 extern Boss boss_siax;
-
 extern Boss boss_ensolyss;
 
-
+//100 CM
 extern Boss boss_skorvald;
-
 extern Boss boss_artsariiv;
-
 extern Boss boss_arkk;
+
+//Strikes
+extern Boss boss_strike_generic;
+
+//Bjora
+extern Boss boss_boneskinner;
+extern Boss boss_fraenir;
+extern Boss boss_kodan;
+
+//Bjora2
+
+//Grothmar
 
 extern std::list<Boss*> bosses;

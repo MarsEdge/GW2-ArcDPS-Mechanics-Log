@@ -662,9 +662,14 @@ std::vector<Mechanic>& getMechanics()
 
 		Mechanic().setName("has a bomb").setIds({MECHANIC_ARKK_BOMB}).setFailIfHit(false).setValidIfDown(true).setBoss(&boss_arkk),//TODO Add BOSS_ARTSARIIV_ID and make boss id a vector
 
-		Mechanic().setName("has green").setIds({39268}).setNameInternal("Cosmic Meteor").setFailIfHit(false).setValidIfDown(true).setBoss(&boss_arkk),
+		Mechanic().setName("has green").setIds({ 39268 }).setNameInternal("Cosmic Meteor").setFailIfHit(false).setValidIfDown(true).setBoss(&boss_arkk),
 
 		//Mechanic().setName("didn't block the goop").setIds({MECHANIC_ARKK_GOOP}).setBoss(&boss_arkk).setCanEvade(false),
+
+
+		Mechanic().setName("was hit by charge").setIds({ MECHANIC_BONESKINNER_CHARGE }).setIsInterupt(true).setBoss(&boss_boneskinner),
+		Mechanic().setName("was hit by Death Wind").setIds({ MECHANIC_BONESKINNER_DEATH_WIND }).setIsInterupt(true).setBoss(&boss_boneskinner),
+
 	};
 	return *mechanics;
 }

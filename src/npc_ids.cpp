@@ -58,6 +58,10 @@ Boss boss_ensolyss = Boss().setIds({ 0x4234 }).setHealth(14059890).setName("Enso
 Boss boss_skorvald = Boss().setIds({ 0x44E0 }).setHealth(5551340).setName("Skorvald the Shattered");//TODO get normal mode id
 Boss boss_artsariiv = Boss().setIds({ 0x461D }).setHealth(5962266).setName("Artsariiv");//TODO get normal mode id
 Boss boss_arkk = Boss().setIds({ 0x455F }).setHealth(9942250).setName("Arkk");//TODO get normal mode id
+Boss boss_strike_generic = Boss().setName("Strike Generic");
+Boss boss_boneskinner = Boss().setIds({ 22521 }).setName("Boneskinner");//TODO get timer & health
+Boss boss_fraenir = Boss().setIds({ 22492 }).setName("Fraenir");//TODO get timer & health
+Boss boss_kodan = Boss().setIds({ 22343, 22481, 22315 }).setName("Kodan Brothers");//TODO get timer & health
 
 std::list<Boss*> bosses =
 {
@@ -89,4 +93,7 @@ std::list<Boss*> bosses =
 	&boss_skorvald,
 	&boss_artsariiv,
 	&boss_arkk,
+	&boss_boneskinner,
+	&boss_fraenir,
+	&boss_kodan,
 };

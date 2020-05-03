@@ -151,6 +151,10 @@ const uint32_t MECHANIC_ARKK_OVERHEAD_SMASH = 38844;//Overhead Smash
 const uint32_t MECHANIC_ARKK_BOMB = 38880;//Corporeal Reassignment
 const uint32_t MECHANIC_ARKK_GOOP = 39711;//unnamed,the projectile that spawns the goop
 
+//Boneskinner
+const uint32_t MECHANIC_BONESKINNER_CHARGE = 58851;
+const uint32_t MECHANIC_BONESKINNER_DEATH_WIND = 58546;
+
 //Buffs
 const uint32_t BUFF_STABILITY = 1122;//Stability
 const uint32_t BUFF_VAPOR_FORM = 5620;//Vapor Form
