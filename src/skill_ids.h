@@ -182,10 +182,6 @@ const uint32_t MECHANIC_ICEBROOD_CRYSTAL = 57663;
 const uint32_t MECHANIC_ICEBROOD_FLAIL_1 = 57678;
 const uint32_t MECHANIC_ICEBROOD_FLAIL_2 = 57463;
 
-            }
-
-            }
-
 
 //Buffs
 const uint32_t BUFF_STABILITY = 1122;//Stability
