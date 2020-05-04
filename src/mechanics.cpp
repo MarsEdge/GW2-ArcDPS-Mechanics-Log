@@ -670,6 +670,9 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic().setName("was hit by charge").setIds({ MECHANIC_BONESKINNER_CHARGE }).setIsInterupt(true).setBoss(&boss_boneskinner),
 		Mechanic().setName("was hit by Death Wind").setIds({ MECHANIC_BONESKINNER_DEATH_WIND }).setIsInterupt(true).setBoss(&boss_boneskinner),
 
+		Mechanic().setName("was trapped").setIds({ MECHANIC_KODAN_TRAP }).setBoss(&boss_kodan).setSpecialRequirement(requirementBuffApply),
+
+
 	};
 	return *mechanics;
 }

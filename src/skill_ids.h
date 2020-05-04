@@ -155,6 +155,10 @@ const uint32_t MECHANIC_ARKK_GOOP = 39711;//unnamed,the projectile that spawns t
 const uint32_t MECHANIC_BONESKINNER_CHARGE = 58851;
 const uint32_t MECHANIC_BONESKINNER_DEATH_WIND = 58546;
 
+//Kodan
+const uint32_t MECHANIC_KODAN_TRAP = 727;
+
+
 //Buffs
 const uint32_t BUFF_STABILITY = 1122;//Stability
 const uint32_t BUFF_VAPOR_FORM = 5620;//Vapor Form
