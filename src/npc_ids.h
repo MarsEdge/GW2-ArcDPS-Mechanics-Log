@@ -91,6 +91,7 @@ extern Boss boss_fraenir;
 extern Boss boss_kodan;
 
 //Bjora2
+extern Boss boss_whisper;
 
 //Grothmar
 

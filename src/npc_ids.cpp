@@ -62,6 +62,7 @@ Boss boss_strike_generic = Boss().setName("Strike Generic");
 Boss boss_boneskinner = Boss().setIds({ 22521 }).setName("Boneskinner");//TODO get timer & health
 Boss boss_fraenir = Boss().setIds({ 22492 }).setName("Fraenir");//TODO get timer & health
 Boss boss_kodan = Boss().setIds({ 22343, 22481, 22315 }).setName("Kodan Brothers");//TODO get timer & health
+Boss boss_whisper = Boss().setIds({ 22711 }).setName("Whisper of Jormag");//TODO get timer & health
 
 std::list<Boss*> bosses =
 {
