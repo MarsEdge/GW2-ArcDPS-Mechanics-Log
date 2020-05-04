@@ -158,6 +158,11 @@ const uint32_t MECHANIC_BONESKINNER_DEATH_WIND = 58546;
 //Kodan
 const uint32_t MECHANIC_KODAN_TRAP = 727;
 
+//Fraenir
+const uint32_t MECHANIC_FRAENIR_ICEQUAKE = 58811;
+const uint32_t MECHANIC_FRAENIR_ICE_SHOCK_WAVE = 58740;
+const uint32_t MECHANIC_FRAENIR_FROZEN = 58376;
+
 
 //Buffs
 const uint32_t BUFF_STABILITY = 1122;//Stability

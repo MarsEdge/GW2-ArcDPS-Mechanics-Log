@@ -672,6 +672,10 @@ std::vector<Mechanic>& getMechanics()
 
 		Mechanic().setName("was trapped").setIds({ MECHANIC_KODAN_TRAP }).setBoss(&boss_kodan).setSpecialRequirement(requirementBuffApply),
 
+		Mechanic().setName("was hit by icequake").setIds({ MECHANIC_FRAENIR_ICEQUAKE }).setBoss(&boss_fraenir),
+		Mechanic().setName("was hit by shock wave").setIds({ MECHANIC_FRAENIR_ICE_SHOCK_WAVE }).setBoss(&boss_fraenir),
+		Mechanic().setName("was frozen").setIds({ MECHANIC_FRAENIR_FROZEN }).setBoss(&boss_fraenir).setSpecialRequirement(requirementBuffApply),
+
 
 	};
 	return *mechanics;
