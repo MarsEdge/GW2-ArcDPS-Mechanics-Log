@@ -684,6 +684,12 @@ std::vector<Mechanic>& getMechanics()
 		Mechanic().setName("has a chain").setIds({ MECHANIC_WHISPER_HAS_CHAINS }).setBoss(&boss_whisper).setFailIfHit(false).setSpecialRequirement(requirementBuffApply),
 
 
+		Mechanic().setName("was hit by deadly shock wave").setIds({ MECHANIC_ICEBROOD_SHOCK_WAVE_DEADLY }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by arm swing").setIds({ MECHANIC_ICEBROOD_ARM_SWING }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by shock wave").setIds({ MECHANIC_ICEBROOD_SHOCK_WAVE_1, MECHANIC_ICEBROOD_SHOCK_WAVE_2, MECHANIC_ICEBROOD_SHOCK_WAVE_3 }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by ice shatter").setIds({ MECHANIC_ICEBROOD_SHATTER }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by crystal").setIds({ MECHANIC_ICEBROOD_CRYSTAL }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by flail").setIds({ MECHANIC_ICEBROOD_FLAIL_1, MECHANIC_ICEBROOD_FLAIL_2 }).setBoss(&boss_icebrood_construct),
 
 	};
 	return *mechanics;

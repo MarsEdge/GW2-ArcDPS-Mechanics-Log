@@ -63,6 +63,7 @@ Boss boss_boneskinner = Boss().setIds({ 22521 }).setName("Boneskinner");//TODO g
 Boss boss_fraenir = Boss().setIds({ 22492 }).setName("Fraenir");//TODO get timer & health
 Boss boss_kodan = Boss().setIds({ 22343, 22481, 22315 }).setName("Kodan Brothers");//TODO get timer & health
 Boss boss_whisper = Boss().setIds({ 22711 }).setName("Whisper of Jormag");//TODO get timer & health
+Boss boss_icebrood_construct = Boss().setIds({ 22154, 22436 }).setName("Icebrood Construct");//TODO get timer & health
 
 std::list<Boss*> bosses =
 {
@@ -97,4 +98,6 @@ std::list<Boss*> bosses =
 	&boss_boneskinner,
 	&boss_fraenir,
 	&boss_kodan,
+	&boss_whisper,
+	&boss_icebrood_construct,
 };

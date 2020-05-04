@@ -94,5 +94,6 @@ extern Boss boss_kodan;
 extern Boss boss_whisper;
 
 //Grothmar
+extern Boss boss_icebrood_construct;
 
 extern std::list<Boss*> bosses;
