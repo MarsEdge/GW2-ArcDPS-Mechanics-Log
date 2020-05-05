@@ -141,6 +141,30 @@ Here are some example screenshots (with names redacted):
       - cone knockback
       - getting a bomb
       - getting a green circle
+- Strike Missions
+  - Boneskinner
+    - Charge
+    - Death Wind
+  - Fraenir
+    - Icequake
+    - Ice Shock Wave
+    - Freeze
+  - Kodan Brothers
+    - Trap
+  - Whisper of Jormag
+    - Chains
+    - Hit by Chains
+    - Preading ice
+    - Icy Slice
+    - Tornado
+  - Icebrood Construct
+    - Shock Wave
+    - Deadly Shockwave
+    - Arm Swing
+    - Ice Crystal
+    - Flail
+    - Ice Shatter
+  
 
 If you have any ideas for things I’m missing, please let me know.
 
