@@ -662,9 +662,35 @@ std::vector<Mechanic>& getMechanics()
 
 		Mechanic().setName("has a bomb").setIds({MECHANIC_ARKK_BOMB}).setFailIfHit(false).setValidIfDown(true).setBoss(&boss_arkk),//TODO Add BOSS_ARTSARIIV_ID and make boss id a vector
 
-		Mechanic().setName("has green").setIds({39268}).setNameInternal("Cosmic Meteor").setFailIfHit(false).setValidIfDown(true).setBoss(&boss_arkk),
+		Mechanic().setName("has green").setIds({ 39268 }).setNameInternal("Cosmic Meteor").setFailIfHit(false).setValidIfDown(true).setBoss(&boss_arkk),
 
 		//Mechanic().setName("didn't block the goop").setIds({MECHANIC_ARKK_GOOP}).setBoss(&boss_arkk).setCanEvade(false),
+
+
+		Mechanic().setName("was hit by charge").setIds({ MECHANIC_BONESKINNER_CHARGE }).setIsInterupt(true).setBoss(&boss_boneskinner),
+		Mechanic().setName("was hit by Death Wind").setIds({ MECHANIC_BONESKINNER_DEATH_WIND }).setIsInterupt(true).setBoss(&boss_boneskinner),
+
+		Mechanic().setName("was trapped").setIds({ MECHANIC_KODAN_TRAP }).setBoss(&boss_kodan).setSpecialRequirement(requirementBuffApply),
+
+		Mechanic().setName("was hit by icequake").setIds({ MECHANIC_FRAENIR_ICEQUAKE }).setBoss(&boss_fraenir),
+		Mechanic().setName("was hit by shock wave").setIds({ MECHANIC_FRAENIR_ICE_SHOCK_WAVE }).setBoss(&boss_fraenir),
+		Mechanic().setName("was frozen").setIds({ MECHANIC_FRAENIR_FROZEN }).setBoss(&boss_fraenir).setSpecialRequirement(requirementBuffApply),
+
+		Mechanic().setName("was hit by chains").setIds({ MECHANIC_WHISPER_CHAINS }).setBoss(&boss_whisper),
+		Mechanic().setName("was hit by own spreading ice").setIds({ MECHANIC_WHISPER_OWN_ICE }).setBoss(&boss_whisper),
+		Mechanic().setName("was hit by other spreading ice").setIds({ MECHANIC_WHISPER_OTHER_ICE }).setBoss(&boss_whisper),
+		Mechanic().setName("was hit by icy slice").setIds({ MECHANIC_WHISPER_ICY_SLICE }).setBoss(&boss_whisper),
+		Mechanic().setName("was hit by ice tornado").setIds({ MECHANIC_WHISPER_ICE_TEMPEST }).setBoss(&boss_whisper),
+		Mechanic().setName("has a chain").setIds({ MECHANIC_WHISPER_HAS_CHAINS }).setBoss(&boss_whisper).setFailIfHit(false).setSpecialRequirement(requirementBuffApply),
+
+
+		Mechanic().setName("was hit by deadly shock wave").setIds({ MECHANIC_ICEBROOD_SHOCK_WAVE_DEADLY }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by arm swing").setIds({ MECHANIC_ICEBROOD_ARM_SWING }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by shock wave").setIds({ MECHANIC_ICEBROOD_SHOCK_WAVE_1, MECHANIC_ICEBROOD_SHOCK_WAVE_2, MECHANIC_ICEBROOD_SHOCK_WAVE_3 }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by ice shatter").setIds({ MECHANIC_ICEBROOD_SHATTER }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by crystal").setIds({ MECHANIC_ICEBROOD_CRYSTAL }).setBoss(&boss_icebrood_construct),
+		Mechanic().setName("was hit by flail").setIds({ MECHANIC_ICEBROOD_FLAIL_1, MECHANIC_ICEBROOD_FLAIL_2 }).setBoss(&boss_icebrood_construct),
+
 	};
 	return *mechanics;
 }
